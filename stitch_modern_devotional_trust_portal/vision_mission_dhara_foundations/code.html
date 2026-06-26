@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vision &amp; Mission - Dhara Foundations</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-fixed-dim": "#ffb870",
+                        "tertiary": "#4d6700",
+                        "on-background": "#1b1c19",
+                        "outline": "#867463",
+                        "surface-container-high": "#eae8e3",
+                        "on-surface": "#1b1c19",
+                        "on-secondary-container": "#2b6f62",
+                        "on-primary-fixed": "#2c1600",
+                        "on-tertiary-container": "#354900",
+                        "secondary-container": "#acf0df",
+                        "on-secondary-fixed": "#00201b",
+                        "surface-dim": "#dbdad5",
+                        "primary": "#8a5000",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#8a5000",
+                        "outline-variant": "#d9c3b0",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#394d00",
+                        "secondary-fixed-dim": "#90d3c3",
+                        "surface-container-highest": "#e4e2dd",
+                        "primary-container": "#f49b33",
+                        "ethereal-white": "#FFFFFF",
+                        "tertiary-fixed": "#ccf078",
+                        "tertiary-container": "#9abb4b",
+                        "surface": "#fbf9f4",
+                        "surface-container-low": "#f5f3ee",
+                        "on-secondary-fixed-variant": "#005045",
+                        "deep-forest": "#00322B",
+                        "on-tertiary-fixed": "#151f00",
+                        "saffron-glow": "#FFD27F",
+                        "tertiary-fixed-dim": "#b0d360",
+                        "on-surface-variant": "#534436",
+                        "inverse-on-surface": "#f2f1ec",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#ffdcbe",
+                        "background": "#fbf9f4",
+                        "inverse-surface": "#30312e",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e4e2dd",
+                        "surface-container": "#f0eee9",
+                        "inverse-primary": "#ffb870",
+                        "secondary-fixed": "#acf0df",
+                        "on-error-container": "#93000a",
+                        "on-primary-container": "#633800",
+                        "temple-gold": "#D4AF37",
+                        "surface-bright": "#fbf9f4",
+                        "on-primary": "#ffffff",
+                        "secondary": "#24695c",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#693c00"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        "2xl": "1.5rem",
+                        full: "9999px"
+                    },
+                    spacing: {
+                        "margin-desktop": "48px",
+                        "section-gap-lg": "120px",
+                        "margin-mobile": "16px",
+                        "container-max": "1280px",
+                        "unit": "8px",
+                        "section-gap-md": "80px",
+                        "gutter": "24px"
+                    },
+                    fontFamily: {
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "caption": ["Plus Jakarta Sans"],
+                        "headline-sm": ["Playfair Display"],
+                        "label-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Playfair Display"],
+                        "display-lg": ["Playfair Display"],
+                        "body-md": ["Plus Jakarta Sans"]
+                    },
+                    fontSize: {
+                        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+                        "display-lg-mobile": ["36px", { lineHeight: "44px", fontWeight: "700" }],
+                        "caption": ["12px", { lineHeight: "16px", fontWeight: "500" }],
+                        "headline-sm": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+                        "label-lg": ["14px", { lineHeight: "20px", letterSpacing: "0.05em", fontWeight: "600" }],
+                        "headline-md": ["32px", { lineHeight: "40px", fontWeight: "600" }],
+                        "display-lg": ["56px", { lineHeight: "64px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(138, 80, 0, 0.05);
+        }
+        .text-glow {
+            text-shadow: 0 0 20px rgba(255, 210, 127, 0.5);
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            background-color: theme('colors.primary');
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased font-body-md">
+<!-- TopNavBar -->
+<nav class="docked full-width top-0 sticky backdrop-blur-md shadow-sm z-50 bg-ethereal-white/70 dark:bg-deep-forest/70 hover:shadow-md transition-shadow duration-300">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-saffron-glow">
+                Dhara Foundations
+            </div>
+<div class="hidden md:flex space-x-8 items-center">
+<a class="nav-link relative text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow transition-colors font-label-lg text-label-lg hover:scale-105 transition-transform duration-300" href="#">Home</a>
+<a class="nav-link active relative text-primary dark:text-saffron-glow font-label-lg text-label-lg hover:scale-105 transition-transform duration-300" href="#">About Us</a>
+<a class="nav-link relative text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow transition-colors font-label-lg text-label-lg hover:scale-105 transition-transform duration-300" href="#">Programs</a>
+<a class="nav-link relative text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow transition-colors font-label-lg text-label-lg hover:scale-105 transition-transform duration-300" href="#">Events</a>
+<a class="nav-link relative text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow transition-colors font-label-lg text-label-lg hover:scale-105 transition-transform duration-300" href="#">Gallery</a>
+<a class="nav-link relative text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow transition-colors font-label-lg text-label-lg hover:scale-105 transition-transform duration-300" href="#">Contact</a>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-lg text-label-lg hover:scale-105 transition-transform duration-300 shadow-[inset_0_0_10px_rgba(255,255,255,0.2)]">
+                Donate Now
+            </button>
+</div>
+</nav>
+<!-- Hero Section -->
+<header class="relative w-full h-[716px] min-h-[600px] flex items-center justify-center overflow-hidden parallax-bg" data-alt="A serene, wide-angle landscape depicting a sacred Indian temple bathed in the warm, golden light of early dawn. Soft mist rolls over lush, botanical green hills in the foreground. The sky is painted with ethereal saffron and soft peach hues, creating a deeply spiritual and uplifting mood. The architectural details are crisp, reflecting ancient Sanatana Dharma traditions, while the overall composition maintains a clean, modern, and expansive aesthetic suitable for a high-end foundation website." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDBsN3cx8eSZyGJ8DxG6UipXqmWXbo9HtOdCEdYB-RznCIRmh32vqvoMPQLGPQZjKg51-dIaX7Qth4RQeYECtt9VbIWE4TWEP44-3WR-BANzDLbDes6nUzB2_OVUBMH-B2HDeU4or-sE-trNSXuGLPkMYay19f7JdJT29UHldOY9c2BYTMcw1D96590FZXRGHo2bdljUx52yvumeAJZ8zz5q3nOLA1UjHtst5vyI3vZhZqKQfGidNdQK3_H6s8UyNNLG-jrS63u9A4')">
+<div class="absolute inset-0 bg-gradient-to-b from-deep-forest/40 via-transparent to-background/90"></div>
+<div class="relative z-10 text-center px-margin-mobile md:px-margin-desktop max-w-4xl mx-auto fade-in-up">
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-ethereal-white mb-6 text-glow">
+                Guided by Light, Rooted in Dharma
+            </h1>
+<p class="font-body-lg text-body-lg text-surface-container-low/90 max-w-2xl mx-auto">
+                Our vision and mission embody the divine vitality of Sanatana Dharma, dedicated to nurturing compassion, wisdom, and sustainable growth in our communities.
+            </p>
+</div>
+</header>
+<!-- Vision & Mission Bento Grid -->
+<section class="py-section-gap-md md:py-section-gap-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Vision Card -->
+<div class="md:col-span-7 fade-in-up">
+<div class="glass-card rounded-[24px] p-8 md:p-12 h-full relative overflow-hidden group hover:-translate-y-2 transition-transform duration-300">
+<div class="absolute -right-10 -top-10 text-primary-container/10 group-hover:text-primary-container/20 transition-colors duration-500 pointer-events-none">
+<span class="material-symbols-outlined !text-[200px]" style="font-variation-settings: 'FILL' 1;">visibility</span>
+</div>
+<div class="relative z-10">
+<div class="inline-flex items-center space-x-2 bg-saffron-glow/20 text-primary px-4 py-1 rounded-full font-label-lg text-label-lg mb-6">
+<span class="material-symbols-outlined text-[18px]">flare</span>
+<span>Our Vision</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-deep-forest mb-6">
+                            A World Illuminated by Sacred Wisdom
+                        </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+                            To reawaken the timeless principles of Sanatana Dharma, creating a global community where spiritual vitality, ecological harmony, and profound compassion guide humanity towards an enlightened and sustainable future. We envision spaces where ancient traditions breathe life into modern existence.
+                        </p>
+</div>
+</div>
+</div>
+<!-- Mission Image/Accent -->
+<div class="md:col-span-5 fade-in-up" style="transition-delay: 100ms;">
+<div class="rounded-[24px] overflow-hidden h-full min-h-[300px] relative group shadow-[0_8px_30px_rgba(36,105,92,0.1)]">
+<img class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A close-up, highly detailed photograph of hands gently cupping a glowing oil lamp (diya) during a traditional evening arti ceremony. The warm, radiant saffron light illuminates intricate henna patterns on the hands. The background is a soft, dark, bokeh blur of deep forest greens and subtle gold sparks, emphasizing a mood of deep devotion, action, and inner peace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYLQSS1lpIV_SWARiVcoOg2WroRA3D3WJTaN-GMOs3Qs80dkhAXw0lqTgBxiB00BR-Ru-SthFR2w7c0ytgibVbnxqy-dGvXIJiq7t2QpKc9ieRrXbk7GCe5Nx7sy3avWoCkxYqso5iBSMB7RLrF8tBmIJS3nItHi2KxjDQ1Xlf-JdWuQzKbGpw9w5P3gpN7REweJEv3CyFJggoiF10O1llK8xO69dHefFQH9_8KMtXF1eEDDZe9OAgULL06-b2NOG3o8MDIiqSKdc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-deep-forest/80 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-8">
+<span class="material-symbols-outlined text-saffron-glow text-4xl mb-2" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
+<h3 class="font-headline-sm text-headline-sm text-ethereal-white">Practical Devotion</h3>
+</div>
+</div>
+</div>
+<!-- Mission Card -->
+<div class="md:col-span-12 mt-4 fade-in-up" style="transition-delay: 200ms;">
+<div class="bg-ethereal-white rounded-[24px] p-8 md:p-12 shadow-[0_8px_30px_rgba(0,50,43,0.04)] relative overflow-hidden group hover:-translate-y-2 transition-transform duration-300">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+<div>
+<div class="inline-flex items-center space-x-2 bg-tertiary-container/20 text-secondary px-4 py-1 rounded-full font-label-lg text-label-lg mb-6">
+<span class="material-symbols-outlined text-[18px]">track_changes</span>
+<span>Our Mission</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-deep-forest mb-6">
+                                Cultivating Roots, Empowering Branches
+                            </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-6">
+                                We actively preserve and propagate sacred knowledge through comprehensive educational programs, community service, and the restoration of spiritual heritage sites.
+                            </p>
+<ul class="space-y-4">
+<li class="flex items-start space-x-3">
+<span class="material-symbols-outlined text-primary mt-1">check_circle</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Establishing learning centers for Vedic studies.</span>
+</li>
+<li class="flex items-start space-x-3">
+<span class="material-symbols-outlined text-primary mt-1">check_circle</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Implementing eco-conscious initiatives modeled on natural dharma.</span>
+</li>
+<li class="flex items-start space-x-3">
+<span class="material-symbols-outlined text-primary mt-1">check_circle</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Providing accessible spiritual sanctuaries for all seekers.</span>
+</li>
+</ul>
+</div>
+<div class="h-full min-h-[400px] rounded-[16px] overflow-hidden relative">
+<img class="absolute inset-0 w-full h-full object-cover" data-alt="A bright, uplifting scene of a modern, open-air learning center built with sustainable materials, blending seamlessly with a lush, green natural environment. Sunlight filters through a canopy of trees, casting dappled shadows over a group of diverse students sitting in a circle, engaged in peaceful discussion. The architectural style incorporates subtle Indian motifs within a clean, modern aesthetic. The atmosphere is vibrant, educational, and harmonious." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQLOVQzzwoe4sj5GqINO51tsyBHu7CcxYG9lv7Ccfq_shbWXi3Zvi8WdiTAaS3vu0kCgy5u9_WCdNBTS2kIve9sKMqycGvG3dCPkJV627ZS6k61Dxd-vCX3uomswZHxQhvaWGR0Tcpb-o2o-0WVjn-AxeNXuklXLsHXUN_FPgn7R09Wd2LHYyiSAmO_oEz1Yp7DzeyXp-bwIWnyVEW78_6KLbvOvQtSu6hIm_jPNaPo4j2QHyql0SEJKILc89C6c5fhetaIkfLXmU"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Core Values Section -->
+<section class="py-section-gap-md md:py-section-gap-lg bg-surface-container-low px-margin-mobile md:px-margin-desktop relative">
+<div class="max-w-container-max mx-auto">
+<div class="text-center mb-16 fade-in-up">
+<h2 class="font-headline-md text-headline-md text-deep-forest mb-4">Core Values</h2>
+<div class="w-24 h-1 bg-primary mx-auto rounded-full mb-6"></div>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+                    The pillars of our foundation, guiding every action and intention with divine vitality.
+                </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Value 1 -->
+<div class="bg-ethereal-white p-8 rounded-[24px] shadow-sm hover:shadow-[0_12px_40px_rgba(138,80,0,0.08)] hover:-translate-y-2 transition-all duration-300 fade-in-up" style="transition-delay: 100ms;">
+<div class="w-16 h-16 rounded-full bg-saffron-glow/20 flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">self_improvement</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-deep-forest mb-4">Spiritual Purity</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                        Maintaining the authenticity and sanctity of ancient teachings while adapting their delivery for the modern soul.
+                    </p>
+</div>
+<!-- Value 2 -->
+<div class="bg-ethereal-white p-8 rounded-[24px] shadow-sm hover:shadow-[0_12px_40px_rgba(36,105,92,0.08)] hover:-translate-y-2 transition-all duration-300 fade-in-up" style="transition-delay: 200ms;">
+<div class="w-16 h-16 rounded-full bg-secondary-container/30 flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary text-3xl" style="font-variation-settings: 'FILL' 1;">eco</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-deep-forest mb-4">Harmonious Ecology</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                        Honoring the earth as sacred, promoting sustainability, and living in balance with the natural rhythms of life.
+                    </p>
+</div>
+<!-- Value 3 -->
+<div class="bg-ethereal-white p-8 rounded-[24px] shadow-sm hover:shadow-[0_12px_40px_rgba(138,80,0,0.08)] hover:-translate-y-2 transition-all duration-300 fade-in-up" style="transition-delay: 300ms;">
+<div class="w-16 h-16 rounded-full bg-primary-fixed/50 flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">diversity_1</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-deep-forest mb-4">Compassionate Action</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                        Translating devotion into tangible service, ensuring our communities thrive through support and mutual respect.
+                    </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-deep-forest dark:bg-surface-container-lowest full-width border-t border-outline-variant/20">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop py-section-gap-md max-w-container-max mx-auto">
+<div class="col-span-1 md:col-span-1 flex flex-col items-start">
+<span class="font-headline-sm text-headline-sm text-ethereal-white dark:text-deep-forest mb-4">
+                    Dhara Foundations
+                </span>
+<p class="font-body-md text-body-md text-secondary-fixed-dim max-w-xs">
+                    Rooted in Dharma, guided by light. Fostering spiritual growth and community vitality.
+                </p>
+</div>
+<div class="col-span-1 md:col-span-2 flex justify-center space-x-8">
+<div class="flex flex-col space-y-3">
+<a class="font-body-md text-body-md text-secondary-fixed-dim hover:text-ethereal-white transition-colors hover:translate-x-1 transition-transform duration-200" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-secondary-fixed-dim hover:text-ethereal-white transition-colors hover:translate-x-1 transition-transform duration-200" href="#">CSR Policy</a>
+</div>
+<div class="flex flex-col space-y-3">
+<a class="font-body-md text-body-md text-secondary-fixed-dim hover:text-ethereal-white transition-colors hover:translate-x-1 transition-transform duration-200" href="#">Donation FAQ</a>
+<a class="font-body-md text-body-md text-secondary-fixed-dim hover:text-ethereal-white transition-colors hover:translate-x-1 transition-transform duration-200" href="#">Careers</a>
+</div>
+</div>
+<div class="col-span-1 flex items-end justify-start md:justify-end">
+<span class="font-body-md text-body-md text-saffron-glow dark:text-primary">
+                    © 2024 Dhara Foundations. All rights reserved.
+                </span>
+</div>
+</div>
+</footer>
+<script>
+        // Intersection Observer for scroll animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            document.querySelectorAll('.fade-in-up').forEach((element) => {
+                observer.observe(element);
+            });
+        });
+    </script>
+</body></html>

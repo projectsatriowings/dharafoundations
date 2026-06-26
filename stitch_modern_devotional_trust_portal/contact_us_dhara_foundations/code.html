@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Contact Us - Dhara Foundations</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed-dim": "#ffb870",
+                      "tertiary": "#4d6700",
+                      "on-background": "#1b1c19",
+                      "outline": "#867463",
+                      "surface-container-high": "#eae8e3",
+                      "on-surface": "#1b1c19",
+                      "on-secondary-container": "#2b6f62",
+                      "on-primary-fixed": "#2c1600",
+                      "on-tertiary-container": "#354900",
+                      "secondary-container": "#acf0df",
+                      "on-secondary-fixed": "#00201b",
+                      "surface-dim": "#dbdad5",
+                      "primary": "#8a5000",
+                      "error-container": "#ffdad6",
+                      "surface-tint": "#8a5000",
+                      "outline-variant": "#d9c3b0",
+                      "on-tertiary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#394d00",
+                      "secondary-fixed-dim": "#90d3c3",
+                      "surface-container-highest": "#e4e2dd",
+                      "primary-container": "#f49b33",
+                      "ethereal-white": "#FFFFFF",
+                      "tertiary-fixed": "#ccf078",
+                      "tertiary-container": "#9abb4b",
+                      "surface": "#fbf9f4",
+                      "surface-container-low": "#f5f3ee",
+                      "on-secondary-fixed-variant": "#005045",
+                      "deep-forest": "#00322B",
+                      "on-tertiary-fixed": "#151f00",
+                      "saffron-glow": "#FFD27F",
+                      "tertiary-fixed-dim": "#b0d360",
+                      "on-surface-variant": "#534436",
+                      "inverse-on-surface": "#f2f1ec",
+                      "on-error": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-fixed": "#ffdcbe",
+                      "background": "#fbf9f4",
+                      "inverse-surface": "#30312e",
+                      "error": "#ba1a1a",
+                      "surface-variant": "#e4e2dd",
+                      "surface-container": "#f0eee9",
+                      "inverse-primary": "#ffb870",
+                      "secondary-fixed": "#acf0df",
+                      "on-error-container": "#93000a",
+                      "on-primary-container": "#633800",
+                      "temple-gold": "#D4AF37",
+                      "surface-bright": "#fbf9f4",
+                      "on-primary": "#ffffff",
+                      "secondary": "#24695c",
+                      "on-secondary": "#ffffff",
+                      "on-primary-fixed-variant": "#693c00"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "48px",
+                      "section-gap-lg": "120px",
+                      "margin-mobile": "16px",
+                      "container-max": "1280px",
+                      "unit": "8px",
+                      "section-gap-md": "80px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "body-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "display-lg-mobile": [
+                              "Playfair Display"
+                      ],
+                      "caption": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-sm": [
+                              "Playfair Display"
+                      ],
+                      "label-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-md": [
+                              "Playfair Display"
+                      ],
+                      "display-lg": [
+                              "Playfair Display"
+                      ],
+                      "body-md": [
+                              "Plus Jakarta Sans"
+                      ]
+              },
+              "fontSize": {
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "36px",
+                              {
+                                      "lineHeight": "44px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "caption": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-sm": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-lg": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "56px",
+                              {
+                                      "lineHeight": "64px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .input-focus-glow:focus {
+            box-shadow: 0 0 0 4px rgba(255, 210, 127, 0.2);
+            border-color: #8a5000;
+        }
+
+        .btn-hover-glow:hover {
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.3), 0 4px 15px rgba(138, 80, 0, 0.2);
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-lg min-h-screen flex flex-col antialiased">
+<!-- TopNavBar from JSON -->
+<header class="bg-ethereal-white/70 dark:bg-deep-forest/70 font-label-lg text-label-lg w-full top-0 sticky backdrop-blur-md shadow-sm shadow-sm hover:shadow-md transition-shadow duration-300 z-50">
+<div class="flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto z-50">
+<a class="font-headline-md text-headline-md font-bold text-primary dark:text-saffron-glow flex items-center gap-2 hover:scale-105 transition-transform duration-300" href="#">
+                Dhara Foundations
+            </a>
+<!-- Desktop Nav -->
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow transition-colors hover:scale-105 transition-transform duration-300" href="#">Home</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow transition-colors hover:scale-105 transition-transform duration-300" href="#">About Us</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow transition-colors hover:scale-105 transition-transform duration-300" href="#">Programs</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow transition-colors hover:scale-105 transition-transform duration-300" href="#">Events</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow transition-colors hover:scale-105 transition-transform duration-300" href="#">Gallery</a>
+<a class="text-primary dark:text-saffron-glow border-b-2 border-primary dark:border-saffron-glow pb-1 hover:scale-105 transition-transform duration-300" href="#">Contact</a>
+</nav>
+<a class="hidden md:inline-flex items-center justify-center px-6 py-2 bg-primary text-on-primary rounded-full font-label-lg hover:scale-105 transition-transform duration-300 btn-hover-glow" href="#">
+                Donate Now
+            </a>
+<!-- Mobile Menu Button -->
+<button class="md:hidden text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">menu</span>
+</button>
+</div>
+</header>
+<main class="flex-grow flex flex-col">
+<!-- Hero Section -->
+<section class="relative pt-24 pb-16 px-margin-mobile md:px-margin-desktop overflow-hidden flex items-center justify-center min-h-[409px]">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-gradient-to-b from-surface-container-high/50 to-background"></div>
+</div>
+<div class="relative z-10 text-center max-w-3xl mx-auto fade-in-up">
+<h1 class="font-display-lg-mobile md:font-display-lg text-primary mb-4">Get in Touch</h1>
+<p class="font-body-lg text-on-surface-variant max-w-2xl mx-auto">
+                    We welcome your inquiries, partnerships, and support. Reach out to us to learn more about our initiatives and how you can contribute to a better tomorrow.
+                </p>
+</div>
+</section>
+<!-- Main Content Area -->
+<section class="py-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-gutter">
+<!-- Contact Info & Map (Left Column) -->
+<div class="lg:col-span-5 flex flex-col gap-8 fade-in-up" style="transition-delay: 100ms;">
+<!-- Info Card -->
+<div class="bg-ethereal-white rounded-[24px] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-surface-variant transition-transform hover:-translate-y-2 duration-300">
+<h2 class="font-headline-md text-deep-forest mb-6">Contact Information</h2>
+<div class="flex flex-col gap-6">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-full bg-saffron-glow/20 flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+<div>
+<h3 class="font-label-lg text-on-surface mb-1">Our Office</h3>
+<p class="font-body-md text-on-surface-variant">123 Temple Road, Mylapore<br/>Chennai, Tamil Nadu 600004<br/>India</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-full bg-saffron-glow/20 flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">mail</span>
+</div>
+<div>
+<h3 class="font-label-lg text-on-surface mb-1">Email Us</h3>
+<a class="font-body-md text-primary hover:text-deep-forest transition-colors" href="mailto:namaste@dharafoundations.org">namaste@dharafoundations.org</a>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-full bg-saffron-glow/20 flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">call</span>
+</div>
+<div>
+<h3 class="font-label-lg text-on-surface mb-1">Call Us</h3>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="tel:+919876543210">+91 98765 43210</a>
+</div>
+</div>
+</div>
+<hr class="my-8 border-outline-variant/30"/>
+<div>
+<h3 class="font-label-lg text-on-surface mb-4">Follow Our Journey</h3>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-deep-forest hover:bg-primary hover:text-ethereal-white hover:border-primary transition-all duration-300" href="#">
+<!-- Minimal SVG placeholders for social icons -->
+<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path></svg>
+</a>
+<a class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-deep-forest hover:bg-primary hover:text-ethereal-white hover:border-primary transition-all duration-300" href="#">
+<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+</a>
+<a class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-deep-forest hover:bg-primary hover:text-ethereal-white hover:border-primary transition-all duration-300" href="#">
+<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path></svg>
+</a>
+</div>
+</div>
+</div>
+<!-- Map Container -->
+<div class="bg-surface-container-low rounded-[24px] overflow-hidden h-[300px] border border-surface-variant relative shadow-sm">
+<!-- Placeholder for Map -->
+<div class="absolute inset-0 bg-surface-dim flex items-center justify-center" data-location="Chennai, India" style="">
+<span class="font-body-md text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined">map</span> Chennai Location Map
+                        </span>
+<!-- In a real implementation, an iframe would go here -->
+<iframe allowfullscreen="" height="100%" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3886.861787220556!2d80.2661555!3d13.0336215!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a52664c39176ec7%3A0x6b7dbf1d1edec94!2sMylapore%2C%20Chennai%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" style="border:0; position:absolute; top:0; left:0; filter: grayscale(20%) sepia(10%) hue-rotate(80deg);" width="100%">
+</iframe>
+</div>
+</div>
+</div>
+<!-- Contact Form (Right Column) -->
+<div class="lg:col-span-7 fade-in-up" style="transition-delay: 200ms;">
+<div class="bg-ethereal-white rounded-[24px] p-8 md:p-12 shadow-[0_12px_40px_rgb(0,0,0,0.06)] border border-outline-variant/30 relative overflow-hidden h-full">
+<!-- Decorative subtle element -->
+<div class="absolute -top-24 -right-24 w-48 h-48 bg-saffron-glow/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute -bottom-24 -left-24 w-64 h-64 bg-secondary-fixed/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="relative z-10">
+<h2 class="font-headline-md text-deep-forest mb-2">Send a Message</h2>
+<p class="font-body-md text-on-surface-variant mb-8">Fill out the form below and our team will get back to you promptly.</p>
+<form class="space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- First Name -->
+<div>
+<label class="block font-label-lg text-on-surface mb-2" for="firstName">First Name</label>
+<input class="w-full bg-surface-container-lowest border-0 border-b-2 border-outline-variant px-4 py-3 font-body-md text-on-surface focus:ring-0 input-focus-glow transition-all duration-300 rounded-t-md" id="firstName" name="firstName" placeholder="Ram" required="" type="text"/>
+</div>
+<!-- Last Name -->
+<div>
+<label class="block font-label-lg text-on-surface mb-2" for="lastName">Last Name</label>
+<input class="w-full bg-surface-container-lowest border-0 border-b-2 border-outline-variant px-4 py-3 font-body-md text-on-surface focus:ring-0 input-focus-glow transition-all duration-300 rounded-t-md" id="lastName" name="lastName" placeholder="Kumar" required="" type="text"/>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Email -->
+<div>
+<label class="block font-label-lg text-on-surface mb-2" for="email">Email Address</label>
+<input class="w-full bg-surface-container-lowest border-0 border-b-2 border-outline-variant px-4 py-3 font-body-md text-on-surface focus:ring-0 input-focus-glow transition-all duration-300 rounded-t-md" id="email" name="email" placeholder="ram@example.com" required="" type="email"/>
+</div>
+<!-- Phone -->
+<div>
+<label class="block font-label-lg text-on-surface mb-2" for="phone">Phone Number</label>
+<input class="w-full bg-surface-container-lowest border-0 border-b-2 border-outline-variant px-4 py-3 font-body-md text-on-surface focus:ring-0 input-focus-glow transition-all duration-300 rounded-t-md" id="phone" name="phone" placeholder="+91 00000 00000" type="tel"/>
+</div>
+</div>
+<!-- Subject -->
+<div>
+<label class="block font-label-lg text-on-surface mb-2" for="subject">Subject</label>
+<select class="w-full bg-surface-container-lowest border-0 border-b-2 border-outline-variant px-4 py-3 font-body-md text-on-surface focus:ring-0 input-focus-glow transition-all duration-300 rounded-t-md appearance-none cursor-pointer" id="subject" name="subject">
+<option disabled="" selected="" value="">Select an inquiry type...</option>
+<option value="donation">Donation Inquiry</option>
+<option value="volunteer">Volunteer Opportunities</option>
+<option value="partnership">Partnership</option>
+<option value="other">Other</option>
+</select>
+</div>
+<!-- Message -->
+<div>
+<label class="block font-label-lg text-on-surface mb-2" for="message">Message</label>
+<textarea class="w-full bg-surface-container-lowest border-0 border-b-2 border-outline-variant px-4 py-3 font-body-md text-on-surface focus:ring-0 input-focus-glow transition-all duration-300 rounded-t-md resize-none" id="message" name="message" placeholder="How can we help you?" required="" rows="4"></textarea>
+</div>
+<!-- Submit Button -->
+<div class="pt-4">
+<button class="w-full md:w-auto px-8 py-3 bg-primary text-on-primary rounded-full font-label-lg hover:bg-primary/90 transition-all duration-300 btn-hover-glow flex items-center justify-center gap-2" type="button">
+                                    Send Message
+                                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer from JSON -->
+<footer class="bg-deep-forest dark:bg-surface-container-lowest w-full font-body-md text-body-md border-t border-outline-variant/20 mt-auto">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-desktop py-section-gap-md max-w-container-max mx-auto">
+<div class="col-span-1 md:col-span-2">
+<a class="font-headline-sm text-headline-sm text-ethereal-white dark:text-deep-forest mb-4 block hover:translate-x-1 transition-transform duration-200" href="#">
+                    Dhara Foundations
+                </a>
+<p class="text-secondary-fixed-dim mt-4 max-w-md">Dedicated to fostering community growth and spiritual well-being through compassionate action and sustainable initiatives.</p>
+</div>
+<div class="col-span-1">
+<h3 class="text-saffron-glow dark:text-primary font-bold mb-4">Quick Links</h3>
+<ul class="flex flex-col gap-2">
+<li><a class="text-secondary-fixed-dim hover:text-ethereal-white transition-colors hover:translate-x-1 transition-transform duration-200 inline-block" href="#">Privacy Policy</a></li>
+<li><a class="text-secondary-fixed-dim hover:text-ethereal-white transition-colors hover:translate-x-1 transition-transform duration-200 inline-block" href="#">CSR Policy</a></li>
+<li><a class="text-secondary-fixed-dim hover:text-ethereal-white transition-colors hover:translate-x-1 transition-transform duration-200 inline-block" href="#">Donation FAQ</a></li>
+<li><a class="text-secondary-fixed-dim hover:text-ethereal-white transition-colors hover:translate-x-1 transition-transform duration-200 inline-block" href="#">Careers</a></li>
+</ul>
+</div>
+<div class="col-span-1 border-t border-outline-variant/20 md:border-0 pt-6 md:pt-0 mt-6 md:mt-0 flex flex-col justify-end md:items-end">
+<p class="text-secondary-fixed-dim text-sm">
+                    © 2024 Dhara Foundations. All rights reserved.
+                </p>
+</div>
+</div>
+</footer>
+<script>
+        // Simple intersection observer for scroll animations
+        document.addEventListener("DOMContentLoaded", () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            document.querySelectorAll('.fade-in-up').forEach((el) => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body></html>
