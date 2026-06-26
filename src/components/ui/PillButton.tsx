@@ -27,7 +27,7 @@ export function PillButton({
 
   const variantClasses = {
     primary:
-      "px-8 py-4 bg-primary text-on-primary hover:bg-[#a66200] hover:scale-105 hover:shadow-[inset_0_0_15px_rgba(255,210,127,0.4),0_10px_25px_-5px_rgba(138,80,0,0.3)] border border-transparent",
+      "px-8 py-4 bg-primary text-on-primary hover:opacity-90 hover:scale-105 hover:shadow-lg border border-transparent",
     secondary:
       "px-8 py-4 bg-transparent text-primary dark:text-saffron-glow border-2 border-primary dark:border-saffron-glow hover:bg-primary hover:text-on-primary dark:hover:bg-saffron-glow dark:hover:text-deep-forest hover:scale-105",
     ghost:

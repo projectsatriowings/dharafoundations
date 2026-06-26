@@ -7,15 +7,14 @@ export function Footer() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop py-section-gap-md max-w-container-max mx-auto relative z-10">
         {/* Brand Column */}
         <div className="col-span-1 md:col-span-1 space-y-4">
-          <Link href="/" className="inline-block mb-4 hover:opacity-90 transition-opacity">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
+          <Link href="/" className="inline-block mb-5 hover:opacity-90 transition-opacity">
             <img
-              src="/logo.png"
+              src="/logo-stacked-dark.png"
               alt="Dhara Foundations"
-              className="h-12 md:h-14 w-auto object-contain"
+              className="h-28 sm:h-32 md:h-36 w-auto object-contain drop-shadow-sm"
             />
           </Link>
-          <p className="text-secondary-fixed-dim text-sm pr-4 opacity-80 leading-relaxed">
+          <p className="text-secondary-fixed-dim text-sm pr-4 opacity-80 leading-relaxed mt-2">
             A non-profit organization dedicated to transforming lives and protecting traditions through compassionate service and cultural revival.
           </p>
           <div className="flex gap-4 pt-2">

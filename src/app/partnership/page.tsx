@@ -10,24 +10,24 @@ export default function PartnershipPage() {
     <div className="flex flex-col relative w-full overflow-hidden bg-surface">
       {/* Hero Section */}
       <ParallaxBg
-        bgUrl="https://lh3.googleusercontent.com/aida-public/AB6AXuACvYdSVuYKS_fLAfxdwUZ-XljlGeM5ncNtyJW2eC7L1vY1B1gsGKJRGRfnywdZ5RsdKY_IhyphSiLs-hycchKME7iSlrIbdoNyNHb-L8WOyBYEFyBGefdk0Wv8sSdpe2HjQBx4Ut2hz9ysLoV5LTv5oyTGA7F4TZPAtLflnvXspIQwOnVmGFWxSrsT8Q2fJ5bhz0JkYjTp8PB_EIlPbXiRLAJHribDdi6B7xGl1pc2MlpmzNFH_TzmjKsPo8D8LV-GJk7NlHZXwfQ"
-        className="min-h-[716px] flex items-center justify-center pt-24 text-on-surface"
-        overlayClassName="bg-gradient-to-b from-surface/50 via-surface/85 to-surface"
+        bgUrl="/images/banner.png"
+        className="min-h-[716px] flex items-center justify-center pt-24 text-ethereal-white"
+        overlayClassName="bg-deep-forest/50 mix-blend-multiply"
       >
         <ScrollReveal className="relative z-10 w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop text-center space-y-6">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-saffron-glow/25 text-primary font-bold text-sm border border-saffron-glow/40 shadow-sm">
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-saffron-glow/25 text-saffron-glow font-bold text-sm border border-saffron-glow/40 shadow-sm">
             <span className="material-symbols-outlined text-base" style={{ fontVariationSettings: "'FILL' 1" }}>
               handshake
             </span>
             <span>Corporate Partnerships</span>
           </span>
 
-          <h1 className="font-display-lg-mobile md:font-display-lg text-deep-forest mb-6 max-w-4xl mx-auto leading-tight font-bold text-4xl md:text-6xl">
+          <h1 className="font-display-lg-mobile md:font-display-lg text-ethereal-white mb-6 max-w-4xl mx-auto leading-tight font-bold text-4xl md:text-6xl drop-shadow-lg">
             Empower Communities. <br className="hidden md:block" />
-            <span className="text-primary italic font-light">Elevate Your Impact.</span>
+            <span className="text-saffron-glow italic font-light">Elevate Your Impact.</span>
           </h1>
 
-          <p className="font-body-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed text-lg">
+          <p className="font-body-lg text-surface-container-low/90 max-w-2xl mx-auto leading-relaxed text-lg">
             Join hands with Dhara Foundations to weave a tapestry of positive change. Our partnership programs are rooted in the ancient wisdom of Dharma, translated into modern, measurable social impact.
           </p>
 
@@ -108,7 +108,7 @@ export default function PartnershipPage() {
               <img
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 alt="Engage Your Team volunteering"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCA08lS6I3AUn9n_oRshQ-A_W3NHLRFX2p7psEm3-h-H3_AK_-OWKYH2WEJZvIEoy3ElPSMFTzRZT0vvSLj8xOC_V37xVKldhbJb6PDBFUT4imKo3PK3Nr0j6721Nfr4Mpten_WxPN82TQvrHk5d0vxPPruXiq-pWl6VA1LS17QkJ5PXagwGz7WxikPHq2IlmOZu_9boi3Qw_WtuzWrFLPfBbc-w2PiNon7tGRZ24-RWdlIDj72oyDOuJbzbZ9Z17KKx92PQJRDUns"
+                src="/images/volunteer.png"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/95 via-deep-forest/40 to-transparent" />
               <div className="relative z-10 text-ethereal-white space-y-2">
@@ -120,6 +120,43 @@ export default function PartnershipPage() {
             </div>
           </RevealItem>
         </ScrollReveal>
+      </section>
+
+      {/* Newsletter Band */}
+      <section className="bg-deep-forest text-ethereal-white py-16 px-margin-mobile md:px-margin-desktop border-t border-outline-variant/20">
+        <div className="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+          <div className="md:col-span-2 space-y-4">
+            <h3 className="font-headline-sm text-2xl font-bold flex items-center gap-2">
+              <span className="material-symbols-outlined text-saffron-glow">spa</span>
+              <span>Dhara Foundations</span>
+            </h3>
+            <p className="font-body-md text-secondary-fixed-dim max-w-sm leading-relaxed">
+              Nurturing communities through the timeless principles of Dharma, compassion, and sustainable action.
+            </p>
+          </div>
+          <div>
+            <h4 className="font-label-lg text-saffron-glow font-bold mb-4 uppercase tracking-wider">Quick Links</h4>
+            <ul className="space-y-3 font-body-md text-secondary-fixed-dim text-sm">
+              <li><a href="/about" className="hover:text-ethereal-white transition-colors inline-block">Privacy Policy</a></li>
+              <li><a href="/about" className="hover:text-ethereal-white transition-colors inline-block">CSR Policy</a></li>
+              <li><a href="/contact" className="hover:text-ethereal-white transition-colors inline-block">Donation FAQ</a></li>
+              <li><a href="/contact" className="hover:text-ethereal-white transition-colors inline-block">Careers</a></li>
+            </ul>
+          </div>
+          <div className="md:col-span-1">
+            <h4 className="font-label-lg text-saffron-glow font-bold mb-4 uppercase tracking-wider">Stay Connected</h4>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="w-full bg-ethereal-white/10 border border-outline-variant/30 text-ethereal-white placeholder:text-surface-variant rounded-full px-5 py-2.5 focus:outline-none focus:border-saffron-glow text-sm"
+              />
+              <button className="bg-saffron-glow text-deep-forest font-bold px-6 py-2.5 rounded-full hover:scale-105 transition-transform text-sm shrink-0 cursor-pointer">
+                Subscribe
+              </button>
+            </div>
+          </div>
+        </div>
       </section>
     </div>
   );

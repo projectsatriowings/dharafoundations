@@ -10,15 +10,15 @@ export default function FounderMessagePage() {
     <div className="flex flex-col relative w-full overflow-hidden">
       {/* Hero Section */}
       <ParallaxBg
-        bgUrl="https://lh3.googleusercontent.com/aida-public/AB6AXuASzxihHtY1bYgcY5WaHi62JJvKx4nLEBSsOBda-AKsG96JxERLFxbwdr7p1I5pEoxoDo29hXek6xlLQ0DPPQ4p9r3_r5aFZhF2ZIObAWjq7RwcQk3kgSl4m4B7H0-qlWTwX2fKfnYDfbw4cPC9E7PMO24XUiumfoUqgi7z5RCgtaQnfe8pKUbYsOitjLqNndg2bHSfCcIWqqqkfG57NyirB3JLD7rj0UZq5dB7ApgNqCRUI1nfXhtTvuQlncx3QWXdlD3wYMu-iUQ"
-        className="min-h-[55vh] flex items-center justify-center bg-surface-container-low"
-        overlayClassName="bg-gradient-to-b from-surface-container-low/90 to-background"
+        bgUrl="/images/banner.png"
+        className="min-h-[55vh] flex items-center justify-center text-ethereal-white"
+        overlayClassName="bg-deep-forest/50 mix-blend-multiply"
       >
         <ScrollReveal className="text-center max-w-4xl px-margin-mobile md:px-margin-desktop mx-auto py-16">
-          <h1 className="font-display-lg-mobile md:font-display-lg text-deep-forest mb-6 font-bold">
+          <h1 className="font-display-lg-mobile md:font-display-lg text-ethereal-white mb-6 font-bold drop-shadow-lg">
             A Message from Our Founders
           </h1>
-          <p className="font-body-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed text-lg">
+          <p className="font-body-lg text-surface-container-low/90 max-w-2xl mx-auto leading-relaxed text-lg">
             Rooted in compassion and guided by the timeless wisdom of Sanatana Dharma, our founders envision a world where every life is transformed and every tradition is protected.
           </p>
           <div className="w-24 h-1 bg-saffron-glow mx-auto mt-8 rounded-full shadow-[0_0_12px_rgba(255,210,127,0.5)]" />
@@ -38,7 +38,7 @@ export default function FounderMessagePage() {
                   <img
                     className="w-full h-full object-cover rounded-full border-4 border-ethereal-white relative z-10 shadow-md group-hover:scale-105 transition-transform duration-500"
                     alt="S. Vinoth Ragavendran"
-                    src="https://lh3.googleusercontent.com/aida/AP1WRLuXTf_4370hxvSZiR4kkSSe-39-pTHtn2lPst6MlvNuhomhD8_k5mAkMCWQJ5IpWx8UAu01qM2EP4W52ZmcJop0JOTZWZhM-ygd3pLBjJVr4Cv5F2wGd-vbdCnd_7uiI0WX-a18KdFzskb7ZVy577JATRLta2vkQvkVNyFrJgAZXDB5TDdVsxIj1_qG72PkvauOkA9NayRSvyMBMsrXDBXIg4DpVm7Lh3zNx0Q4qr36kX7WF-sltHXfqwQ"
+                    src="/images/about.png"
                   />
                 </div>
                 <div className="grow text-center md:text-left space-y-4">
@@ -67,7 +67,7 @@ export default function FounderMessagePage() {
                   <img
                     className="w-full h-full object-cover rounded-full border-4 border-ethereal-white relative z-10 shadow-md group-hover:scale-105 transition-transform duration-500"
                     alt="P. Ezhumalai"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAb2VYeauQMguXBxHZaevKKkYOXO5yJJranUegNW2qtfwsSi-ouLUvk-0fxfdmOkfLEXR2_EImsB29eQ6FDy9OwVnICTLTT7k-z9UZdX7pYF1c8DqS_tkoLgYPe6k2kvMI0mBU8g6VmEbjgRyeQiBbsO7fdACuQKvYXvHDGVSDGKaDeGz9hGSDdcthG4vlD_uieHin5zfOdgMWNnk4S3cd6DjF9cAFPgu9BNbS9UKQdtDkBG11mhxx-ucmcXMuOvQ8jJKTKfim6vjc"
+                    src="/images/event-1.png"
                   />
                 </div>
                 <h2 className="font-headline-sm text-deep-forest font-bold text-2xl">P. Ezhumalai</h2>
@@ -75,6 +75,7 @@ export default function FounderMessagePage() {
                   Agriculturist & Social Worker
                 </p>
                 <blockquote className="font-body-lg text-on-surface italic relative pt-2 font-serif">
+                  <span className="material-symbols-outlined absolute -top-4 -left-4 text-saffron-glow opacity-30 text-4xl">format_quote</span>
                   &ldquo;True service begins when we connect deeply with our roots and uplift those around us with renewed purpose.&rdquo;
                 </blockquote>
                 <p className="font-body-md text-on-surface-variant leading-relaxed pt-2">
@@ -94,7 +95,7 @@ export default function FounderMessagePage() {
                   <img
                     className="w-full h-full object-cover rounded-full border-4 border-ethereal-white relative z-10 shadow-md group-hover:scale-105 transition-transform duration-500"
                     alt="S. Srividhya"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCccWZ7DwNsyb8fXjkNS5fk54IE8B0p-m0LXuiZmOfkDRIJRNMvMPTfhie42DhaYGMvG2vgoYIlTDpbqYJPete3reHtxtR23o68_MZS1mhysLznn_a-HzJ0WxT4ixMTbgQlEVFNgMz48fFonppzpqKiCr8dJGq9Zq6h934ZVcrN6UveTgfryJJm9loqvKwoReTcTNduqXwZMrMMPYo1CdHOWEbxtEa2gJSP2tNmP0t05Bx22PPxCCVQiBdu94IhiFSg5y1-1DaP4E0"
+                    src="/images/news.png"
                   />
                 </div>
                 <h2 className="font-headline-sm text-deep-forest font-bold text-2xl">S. Srividhya</h2>
@@ -102,6 +103,7 @@ export default function FounderMessagePage() {
                   Chartered Accountant & Company Secretary
                 </p>
                 <blockquote className="font-body-lg text-on-surface italic relative pt-2 font-serif">
+                  <span className="material-symbols-outlined absolute -top-4 -left-4 text-saffron-glow opacity-30 text-4xl">format_quote</span>
                   &ldquo;Commitment to ethics and precision is the bedrock of responsible service and lasting community impact.&rdquo;
                 </blockquote>
                 <p className="font-body-md text-on-surface-variant leading-relaxed pt-2">

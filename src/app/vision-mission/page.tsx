@@ -9,9 +9,9 @@ export default function VisionMissionPage() {
     <div className="flex flex-col relative w-full overflow-hidden">
       {/* Hero Section */}
       <ParallaxBg
-        bgUrl="https://lh3.googleusercontent.com/aida-public/AB6AXuDBsN3cx8eSZyGJ8DxG6UipXqmWXbo9HtOdCEdYB-RznCIRmh32vqvoMPQLGPQZjKg51-dIaX7Qth4RQeYECtt9VbIWE4TWEP44-3WR-BANzDLbDes6nUzB2_OVUBMH-B2HDeU4or-sE-trNSXuGLPkMYay19f7JdJT29UHldOY9c2BYTMcw1D96590FZXRGHo2bdljUx52yvumeAJZ8zz5q3nOLA1UjHtst5vyI3vZhZqKQfGidNdQK3_H6s8UyNNLG-jrS63u9A4"
+        bgUrl="/images/banner.png"
         className="w-full h-[716px] min-h-[600px] flex items-center justify-center text-ethereal-white"
-        overlayClassName="bg-gradient-to-b from-deep-forest/65 via-deep-forest/40 to-background"
+        overlayClassName="bg-deep-forest/50 mix-blend-multiply"
       >
         <ScrollReveal className="text-center px-margin-mobile md:px-margin-desktop max-w-4xl mx-auto py-20">
           <h1 className="font-display-lg-mobile md:font-display-lg text-ethereal-white mb-6 font-bold drop-shadow-lg">
@@ -56,7 +56,7 @@ export default function VisionMissionPage() {
               <img
                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
                 alt="Evening arti diya ceremony"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYLQSS1lpIV_SWARiVcoOg2WroRA3D3WJTaN-GMOs3Qs80dkhAXw0lqTgBxiB00BR-Ru-SthFR2w7c0ytgibVbnxqy-dGvXIJiq7t2QpKc9ieRrXbk7GCe5Nx7sy3avWoCkxYqso5iBSMB7RLrF8tBmIJS3nItHi2KxjDQ1Xlf-JdWuQzKbGpw9w5P3gpN7REweJEv3CyFJggoiF10O1llK8xO69dHefFQH9_8KMtXF1eEDDZe9OAgULL06-b2NOG3o8MDIiqSKdc"
+                src="/images/event-3.png"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/30 to-transparent" />
               <div className="absolute bottom-0 left-0 p-8 space-y-2 z-10">
@@ -104,7 +104,7 @@ export default function VisionMissionPage() {
                   <img
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                     alt="Open-air sustainable learning sanctuary"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQLOVQzzwoe4sj5GqINO51tsyBHu7CcxYG9lv7Ccfq_shbWXi3Zvi8WdiTAaS3vu0kCgy5u9_WCdNBTS2kIve9sKMqycGvG3dCPkJV627ZS6k61Dxd-vCX3uomswZHxQhvaWGR0Tcpb-o2o-0WVjn-AxeNXuklXLsHXUN_FPgn7R09Wd2LHYyiSAmO_oEz1Yp7DzeyXp-bwIWnyVEW78_6KLbvOvQtSu6hIm_jPNaPo4j2QHyql0SEJKILc89C6c5fhetaIkfLXmU"
+                    src="/images/event-2.png"
                   />
                 </div>
               </div>

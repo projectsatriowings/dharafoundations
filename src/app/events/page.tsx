@@ -65,7 +65,7 @@ export default function EventsPage() {
     <div className="flex flex-col relative w-full overflow-hidden bg-surface">
       {/* Hero Section */}
       <ParallaxBg
-        bgUrl="https://lh3.googleusercontent.com/aida-public/AB6AXuA9tET3t4BgvkZHqd_lWUbyB3zbQqO07oEKb1hKHOVTWODF8r9h9iNw-6k6h-7Ygv4518BvF4BsM8o26YtKc0tukMsX7ykvkTUorRjqyoxZzPo15KpCRKuHSjBSlha3Ww3EUMHvS9igGcKLF65QzMjZE_wzsc6sw_i7Bd0qkSgXVbxKSazgeZ35sJ48yo6NS5vIFlylpe60hop4qKYoxksCF_sIYx7g6cchCL_5MYGAn3sOSCZSyRTJ6HIaFYKZ7v6pDVgipmMOQ8s"
+        bgUrl="/images/banner.png"
         className="w-full h-[614px] min-h-[500px] flex items-center justify-center text-ethereal-white"
         overlayClassName="bg-deep-forest/55 mix-blend-multiply"
       >
