@@ -121,43 +121,6 @@ export default function PartnershipPage() {
           </RevealItem>
         </ScrollReveal>
       </section>
-
-      {/* Newsletter Band */}
-      <section className="bg-deep-forest text-ethereal-white py-16 px-margin-mobile md:px-margin-desktop border-t border-outline-variant/20">
-        <div className="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
-          <div className="md:col-span-2 space-y-4">
-            <h3 className="font-headline-sm text-2xl font-bold flex items-center gap-2">
-              <span className="material-symbols-outlined text-saffron-glow">spa</span>
-              <span>Dhara Foundations</span>
-            </h3>
-            <p className="font-body-md text-secondary-fixed-dim max-w-sm leading-relaxed">
-              Nurturing communities through the timeless principles of Dharma, compassion, and sustainable action.
-            </p>
-          </div>
-          <div>
-            <h4 className="font-label-lg text-saffron-glow font-bold mb-4 uppercase tracking-wider">Quick Links</h4>
-            <ul className="space-y-3 font-body-md text-secondary-fixed-dim text-sm">
-              <li><a href="/about" className="hover:text-ethereal-white transition-colors inline-block">Privacy Policy</a></li>
-              <li><a href="/about" className="hover:text-ethereal-white transition-colors inline-block">CSR Policy</a></li>
-              <li><a href="/contact" className="hover:text-ethereal-white transition-colors inline-block">Donation FAQ</a></li>
-              <li><a href="/contact" className="hover:text-ethereal-white transition-colors inline-block">Careers</a></li>
-            </ul>
-          </div>
-          <div className="md:col-span-1">
-            <h4 className="font-label-lg text-saffron-glow font-bold mb-4 uppercase tracking-wider">Stay Connected</h4>
-            <div className="flex flex-col sm:flex-row gap-2">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="w-full bg-ethereal-white/10 border border-outline-variant/30 text-ethereal-white placeholder:text-surface-variant rounded-full px-5 py-2.5 focus:outline-none focus:border-saffron-glow text-sm"
-              />
-              <button className="bg-saffron-glow text-deep-forest font-bold px-6 py-2.5 rounded-full hover:scale-105 transition-transform text-sm shrink-0 cursor-pointer">
-                Subscribe
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

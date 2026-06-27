@@ -59,14 +59,16 @@ export function Header() {
 
   return (
     <header
-      className={`sticky top-0 left-0 right-0 w-full font-label-lg text-label-lg z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-ethereal-white/90 dark:bg-deep-forest/90 backdrop-blur-xl shadow-md py-3"
-          : "bg-ethereal-white/75 dark:bg-deep-forest/75 backdrop-blur-md shadow-sm py-4"
-      }`}
+      className="sticky top-4 left-0 right-0 w-full font-label-lg z-50 px-4 sm:px-6 pointer-events-none transition-all duration-300"
       id="main-nav"
     >
-      <div className="flex justify-between items-center w-full px-4 sm:px-6 md:px-8 lg:px-10 max-w-[1440px] mx-auto">
+      <div
+        className={`pointer-events-auto mx-auto max-w-[1380px] rounded-full border border-outline-variant/30 flex justify-between items-center px-6 sm:px-8 py-2.5 transition-all duration-300 ${
+          isScrolled
+            ? "bg-ethereal-white/95 dark:bg-deep-forest/95 backdrop-blur-2xl shadow-xl"
+            : "bg-ethereal-white/85 dark:bg-deep-forest/85 backdrop-blur-md shadow-md"
+        }`}
+      >
         <Link
           href="/"
           className="flex items-center hover:scale-105 transition-transform duration-300 py-1 shrink-0 mr-4"
@@ -75,18 +77,18 @@ export function Header() {
           <img
             src="/logo-horizontal.png"
             alt="Dhara Foundations"
-            className="h-10 sm:h-11 md:h-12 w-auto object-contain block dark:hidden drop-shadow-sm transition-transform"
+            className="h-9 sm:h-10 md:h-11 w-auto object-contain block dark:hidden drop-shadow-sm transition-transform"
           />
           {/* Dark Mode Logo */}
           <img
             src="/logo-horizontal-dark.png"
             alt="Dhara Foundations"
-            className="h-10 sm:h-11 md:h-12 w-auto object-contain hidden dark:block drop-shadow-sm transition-transform"
+            className="h-9 sm:h-10 md:h-11 w-auto object-contain hidden dark:block drop-shadow-sm transition-transform"
           />
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-5 xl:gap-7">
+        <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
           {NAV_LINKS.map((link) => {
             const isTopActive =
               pathname === link.href ||
@@ -96,25 +98,40 @@ export function Header() {
               return (
                 <div
                   key={link.label}
-                  className="relative py-2 group/drop"
+                  className="relative py-1 group/drop"
                   onMouseEnter={() => setHoveredDropdown(link.label)}
                   onMouseLeave={() => setHoveredDropdown(null)}
                 >
                   <Link
                     href={link.href}
-                    className={`inline-flex items-center gap-1 py-1 text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow transition-colors text-sm xl:text-base ${
-                      isTopActive ? "text-primary dark:text-saffron-glow font-bold" : ""
+                    className={`relative inline-flex items-center gap-1 px-4 py-2 rounded-full transition-all text-sm xl:text-base ${
+                      isTopActive
+                        ? "bg-primary/10 dark:bg-saffron-glow/15 text-primary dark:text-saffron-glow font-bold"
+                        : "text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow hover:bg-surface-container/50 font-semibold"
                     }`}
                   >
                     <span>{link.label}</span>
                     <span className="material-symbols-outlined text-base transition-transform duration-300 group-hover/drop:rotate-180">
                       expand_more
                     </span>
-                    <span
-                      className={`absolute bottom-1 left-1/2 -translate-x-1/2 h-[2px] bg-primary dark:bg-saffron-glow transition-all duration-300 ${
-                        isTopActive ? "w-full" : "w-0 group-hover/drop:w-full"
-                      }`}
-                    />
+                    {isTopActive && (
+                      <motion.div
+                        layoutId="lamp-desktop"
+                        className="absolute inset-0 w-full bg-primary/5 dark:bg-saffron-glow/5 rounded-full -z-10"
+                        initial={false}
+                        transition={{
+                          type: "spring",
+                          stiffness: 300,
+                          damping: 30,
+                        }}
+                      >
+                        <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-8 h-1 bg-primary dark:bg-saffron-glow rounded-t-full">
+                          <div className="absolute w-12 h-6 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-md -top-2 -left-2" />
+                          <div className="absolute w-8 h-6 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-md -top-1" />
+                          <div className="absolute w-4 h-4 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-sm top-0 left-2" />
+                        </div>
+                      </motion.div>
+                    )}
                   </Link>
 
                   <AnimatePresence>
@@ -124,7 +141,7 @@ export function Header() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 8, scale: 0.96 }}
                         transition={{ duration: 0.2, ease: "easeOut" }}
-                        className="absolute top-full left-0 w-64 bg-surface-container-lowest/95 dark:bg-deep-forest/95 backdrop-blur-2xl rounded-2xl shadow-xl border border-outline-variant/25 p-2 z-50"
+                        className="absolute top-full left-0 mt-2 w-64 bg-surface-container-lowest/95 dark:bg-deep-forest/95 backdrop-blur-2xl rounded-2xl shadow-xl border border-outline-variant/25 p-2 z-50"
                       >
                         {link.dropdown.map((subItem) => {
                           const isSubActive = pathname === subItem.href;
@@ -134,15 +151,15 @@ export function Header() {
                               href={subItem.href}
                               className={`block p-3 rounded-xl transition-all duration-200 group/sub ${
                                 isSubActive
-                                  ? "bg-primary/15 text-primary dark:text-saffron-glow font-bold"
+                                  ? "bg-primary text-ethereal-white dark:bg-saffron-glow dark:text-deep-forest font-bold shadow-sm"
                                   : "hover:bg-surface-container/60 text-on-surface dark:text-ethereal-white"
                               }`}
                             >
-                              <div className="text-sm font-semibold group-hover/sub:text-primary dark:group-hover/sub:text-saffron-glow transition-colors">
+                              <div className={`text-sm font-semibold transition-colors ${!isSubActive && "group-hover/sub:text-primary dark:group-hover/sub:text-saffron-glow"}`}>
                                 {subItem.label}
                               </div>
                               {subItem.desc && (
-                                <div className="text-[11px] text-on-surface-variant/80 dark:text-surface-variant/80 font-normal mt-0.5 leading-tight">
+                                <div className={`text-[11px] font-normal mt-0.5 leading-tight ${isSubActive ? "text-ethereal-white/90 dark:text-deep-forest/90" : "text-on-surface-variant/80 dark:text-surface-variant/80"}`}>
                                   {subItem.desc}
                                 </div>
                               )}
@@ -160,16 +177,31 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`relative py-1 text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow transition-colors text-sm xl:text-base ${
-                  isTopActive ? "text-primary dark:text-saffron-glow font-bold" : ""
+                className={`relative px-4 py-2 rounded-full transition-all text-sm xl:text-base ${
+                  isTopActive
+                    ? "bg-primary/10 dark:bg-saffron-glow/15 text-primary dark:text-saffron-glow font-bold"
+                    : "text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow hover:bg-surface-container/50 font-semibold"
                 }`}
               >
-                <span>{link.label}</span>
-                <span
-                  className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] bg-primary dark:bg-saffron-glow transition-all duration-300 ${
-                    isTopActive ? "w-full" : "w-0 hover:w-full group-hover:w-full"
-                  }`}
-                />
+                {link.label}
+                {isTopActive && (
+                  <motion.div
+                    layoutId="lamp-desktop"
+                    className="absolute inset-0 w-full bg-primary/5 dark:bg-saffron-glow/5 rounded-full -z-10"
+                    initial={false}
+                    transition={{
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 30,
+                    }}
+                  >
+                    <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-8 h-1 bg-primary dark:bg-saffron-glow rounded-t-full">
+                      <div className="absolute w-12 h-6 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-md -top-2 -left-2" />
+                      <div className="absolute w-8 h-6 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-md -top-1" />
+                      <div className="absolute w-4 h-4 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-sm top-0 left-2" />
+                    </div>
+                  </motion.div>
+                )}
               </Link>
             );
           })}
@@ -179,7 +211,7 @@ export function Header() {
         <div className="hidden sm:flex items-center gap-4 shrink-0">
           <Link
             href="/contact"
-            className="inline-flex items-center justify-center px-6 py-2.5 bg-primary text-on-primary rounded-full hover:scale-105 active:scale-95 hover:shadow-[inset_0_0_10px_rgba(255,210,127,0.3)] transition-all duration-300 font-label-lg font-semibold tracking-wide text-sm md:text-base"
+            className="inline-flex items-center justify-center px-6 py-2.5 bg-gradient-to-r from-primary to-amber-600 dark:from-saffron-glow dark:to-amber-500 text-ethereal-white dark:text-deep-forest rounded-full hover:scale-105 active:scale-95 shadow-md hover:shadow-lg transition-all duration-300 font-label-lg font-bold tracking-wide text-sm md:text-base"
           >
             Donate Now
           </Link>
@@ -188,7 +220,7 @@ export function Header() {
         {/* Mobile menu button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="lg:hidden text-on-surface dark:text-ethereal-white p-2 rounded-lg hover:bg-surface-container transition-colors"
+          className="lg:hidden text-on-surface dark:text-ethereal-white p-2 rounded-full hover:bg-surface-container transition-colors"
           aria-label="Toggle Navigation Menu"
         >
           <span className="material-symbols-outlined text-2xl">
@@ -201,13 +233,13 @@ export function Header() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="lg:hidden bg-ethereal-white dark:bg-deep-forest border-b border-outline-variant/20 overflow-hidden shadow-2xl"
+            className="pointer-events-auto lg:hidden mt-3 mx-auto max-w-[1380px] bg-ethereal-white/95 dark:bg-deep-forest/95 backdrop-blur-2xl rounded-3xl border border-outline-variant/30 overflow-hidden shadow-2xl p-6"
           >
-            <div className="flex flex-col px-margin-mobile py-6 space-y-4 max-h-[80vh] overflow-y-auto">
+            <div className="flex flex-col space-y-3 max-h-[75vh] overflow-y-auto">
               {NAV_LINKS.map((link, i) => {
                 const isTopActive =
                   pathname === link.href ||
@@ -223,26 +255,26 @@ export function Header() {
                   >
                     <Link
                       href={link.href}
-                      className={`flex items-center justify-between text-lg py-1.5 ${
+                      className={`flex items-center justify-between text-base px-4 py-2.5 rounded-full transition-all ${
                         isTopActive
-                          ? "text-primary dark:text-saffron-glow font-bold pl-2 border-l-4 border-primary"
-                          : "text-on-surface dark:text-ethereal-white font-medium"
+                          ? "bg-primary text-ethereal-white dark:bg-saffron-glow dark:text-deep-forest font-bold shadow-sm"
+                          : "text-on-surface dark:text-ethereal-white font-medium hover:bg-surface-container/50"
                       }`}
                     >
                       <span>{link.label}</span>
                     </Link>
 
                     {link.dropdown && (
-                      <div className="pl-4 ml-1 border-l-2 border-outline-variant/30 flex flex-col gap-2.5 pt-1">
+                      <div className="pl-4 ml-3 border-l-2 border-outline-variant/30 flex flex-col gap-2 pt-1">
                         {link.dropdown.map((sub) => {
                           const isSubActive = pathname === sub.href;
                           return (
                             <Link
                               key={sub.href}
                               href={sub.href}
-                              className={`text-sm py-1 transition-colors ${
+                              className={`text-sm px-4 py-2 rounded-full transition-colors ${
                                 isSubActive
-                                  ? "text-primary dark:text-saffron-glow font-bold"
+                                  ? "bg-primary/20 text-primary dark:text-saffron-glow font-bold"
                                   : "text-on-surface-variant dark:text-surface-variant hover:text-primary"
                               }`}
                             >
@@ -259,7 +291,7 @@ export function Header() {
               <div className="pt-4 border-t border-outline-variant/20 flex flex-col gap-3 sm:hidden">
                 <Link
                   href="/contact"
-                  className="w-full text-center px-6 py-3 bg-primary text-on-primary rounded-full font-semibold shadow-md"
+                  className="w-full text-center px-6 py-3 bg-gradient-to-r from-primary to-amber-600 dark:from-saffron-glow dark:to-amber-500 text-ethereal-white dark:text-deep-forest rounded-full font-bold shadow-md"
                 >
                   Donate Now
                 </Link>

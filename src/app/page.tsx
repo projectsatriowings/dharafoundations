@@ -4,8 +4,9 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { ScrollReveal, RevealItem } from "@/components/motion/ScrollReveal";
 import { ParallaxBg } from "@/components/motion/ParallaxBg";
-import { PillButton } from "@/components/ui/PillButton";
 import { LightboxModal } from "@/components/ui/LightboxModal";
+import InteractiveSelector from "@/components/ui/interactive-selector";
+import BorderGlow from "@/components/ui/BorderGlow";
 
 const HOME_GALLERY = [
   {
@@ -26,340 +27,397 @@ const HOME_GALLERY = [
     caption: "Festive temple procession featuring decorated deities and devotees",
     category: "COMMUNITY WELFARE",
   },
+  {
+    src: "/images/about.png",
+    alt: "Devotional offering",
+    caption: "Sacred ash and rudraksha beads offering during temple worship",
+    category: "HERITAGE",
+  },
 ];
 
 export default function HomePage() {
   const [activeModalItem, setActiveModalItem] = useState<(typeof HOME_GALLERY)[0] | null>(null);
 
   return (
-    <div className="relative w-full overflow-hidden">
-      {/* Section 1: Hero */}
-      <ParallaxBg
-        bgUrl="/images/banner.png"
-        className="min-h-[85vh] flex items-center justify-center text-ethereal-white"
-        overlayClassName="bg-deep-forest/70 mix-blend-multiply"
-      >
-        <ScrollReveal className="text-center px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full py-20">
-          <span className="inline-block px-5 py-2 rounded-full bg-saffron-glow/20 text-saffron-glow font-label-lg uppercase tracking-widest mb-6 border border-saffron-glow/40 backdrop-blur-md shadow-[0_0_15px_rgba(255,210,127,0.2)] animate-pulse">
-            Dhara Divine Awards 2025
-          </span>
-          <h1 className="font-display-lg-mobile md:font-display-lg text-ethereal-white mb-8 max-w-4xl mx-auto drop-shadow-lg leading-tight">
-            Transforming Lives, <br />
-            <span className="text-saffron-glow italic font-light">Preserving Traditions.</span>
-          </h1>
-          <p className="font-body-lg text-surface-container-high max-w-2xl mx-auto mb-10 opacity-90 leading-relaxed">
-            A non-profit organization dedicated to cultural revival, compassionate service, and spiritual awareness.
-          </p>
-          <div className="flex justify-center">
-            <PillButton href="/about" showArrow variant="primary">
-              Discover More
-            </PillButton>
-          </div>
-        </ScrollReveal>
-      </ParallaxBg>
+    <div className="relative w-full overflow-hidden bg-background text-on-background">
+      {/* Section 1: Hero Card (Sacred Flow Rebrand) */}
+      <section className="relative pt-8 pb-16 px-4 md:px-8 max-w-[1440px] mx-auto min-h-[85vh] flex items-center justify-center">
+        <div className="w-full h-full min-h-[760px] rounded-[36px] overflow-hidden relative shadow-2xl flex flex-col justify-end pb-12 px-6 sm:px-12 md:px-16 text-ethereal-white border border-outline-variant/20">
+          {/* Background Photo with Multiply Overlay */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/banner.png"
+            alt="Dhara Foundations Hero Banner"
+            className="absolute inset-0 w-full h-full object-cover object-center scale-105 animate-pulse-slow"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-deep-forest via-deep-forest/60 to-transparent mix-blend-multiply" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-      {/* Section 2: About / Welcome */}
-      <section className="py-section-gap-md md:py-section-gap-lg px-margin-mobile md:px-margin-desktop bg-surface relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-secondary-fixed/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-        <div className="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-gutter items-center">
-          <ScrollReveal direction="right" className="relative order-2 lg:order-1">
-            <div className="absolute inset-0 bg-saffron-glow/20 organic-shape translate-x-4 translate-y-4 blur-xl" />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              alt="Welcome Image"
-              className="w-full h-auto organic-shape object-cover shadow-2xl relative z-10 hover:scale-[1.02] transition-transform duration-700"
-              src="/images/about.png"
-            />
+          {/* Giant Background Watermark */}
+          <div className="absolute z-0 font-display-lg text-[18vw] font-bold text-ethereal-white/5 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 leading-none pointer-events-none select-none tracking-widest">
+            DHARMA
+          </div>
+
+          {/* Hero Content */}
+          <div className="relative z-10 w-full flex flex-col lg:flex-row justify-between items-end gap-12">
+            <div className="max-w-3xl space-y-6">
+              <span className="inline-block px-5 py-2 rounded-full bg-saffron-glow/20 text-saffron-glow font-label-lg uppercase tracking-widest border border-saffron-glow/40 backdrop-blur-md shadow-lg">
+                Dhara Divine Trust Portal
+              </span>
+              <h1 className="font-display-lg-mobile md:text-6xl lg:text-7xl font-bold text-ethereal-white leading-tight drop-shadow-md">
+                Transforming Lives, <br />
+                <span className="text-saffron-glow italic font-light">Preserving Traditions.</span>
+              </h1>
+              <p className="font-body-lg text-surface-container-high max-w-2xl opacity-90 leading-relaxed text-lg">
+                Empowering tribal communities through spiritual heritage, education, and sustainable welfare development across generations.
+              </p>
+              <div className="pt-2 flex flex-wrap gap-4">
+                <Link
+                  href="/about"
+                  className="bg-saffron-glow text-deep-forest px-8 py-4 rounded-full font-label-lg font-bold uppercase tracking-wider hover:bg-ethereal-white transition-all shadow-lg flex items-center gap-2 group cursor-pointer"
+                >
+                  Discover Our Mission
+                  <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </Link>
+                <Link
+                  href="/contact"
+                  className="bg-ethereal-white/10 hover:bg-ethereal-white/20 text-ethereal-white border border-ethereal-white/30 px-8 py-4 rounded-full font-label-lg font-semibold backdrop-blur-md transition-all cursor-pointer"
+                >
+                  Get Involved
+                </Link>
+              </div>
+            </div>
+
+            {/* Stats & Latest Initiative Box */}
+            <div className="w-full lg:w-auto flex flex-col sm:flex-row items-end gap-6 shrink-0">
+              <div className="grid grid-cols-3 gap-6 sm:gap-8 bg-black/40 backdrop-blur-xl p-6 rounded-3xl border border-ethereal-white/10 text-center w-full sm:w-auto">
+                <div>
+                  <div className="font-headline-md text-3xl md:text-4xl font-bold text-saffron-glow">25+</div>
+                  <div className="font-caption text-xs uppercase tracking-wider text-surface-container-high mt-1">Years Active</div>
+                </div>
+                <div className="border-x border-ethereal-white/10 px-4">
+                  <div className="font-headline-md text-3xl md:text-4xl font-bold text-saffron-glow">10k</div>
+                  <div className="font-caption text-xs uppercase tracking-wider text-surface-container-high mt-1">Lives Touched</div>
+                </div>
+                <div>
+                  <div className="font-headline-md text-3xl md:text-4xl font-bold text-saffron-glow">50</div>
+                  <div className="font-caption text-xs uppercase tracking-wider text-surface-container-high mt-1">Temples Saved</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 2: Welcome to Dhara Foundations (Asymmetric Signature Layout) */}
+      <section className="py-20 px-4 md:px-8 max-w-[1440px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          {/* Asymmetric Image Left */}
+          <ScrollReveal direction="right" className="lg:col-span-6 relative">
+            <div className="relative mx-auto max-w-lg lg:max-w-none">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/about.png"
+                alt="Devotional ritual offering with sacred ash and rudraksha beads"
+                className="w-full h-[520px] sm:h-[600px] object-cover rounded-[40px] rounded-tl-[120px] rounded-br-[120px] shadow-2xl border border-outline-variant/20"
+                loading="lazy"
+              />
+              <div className="absolute -bottom-6 -left-4 sm:-left-6 bg-surface/90 dark:bg-deep-forest/90 backdrop-blur-xl p-6 rounded-[32px] border border-outline-variant/30 shadow-2xl max-w-[220px] z-20">
+                <div className="font-headline-md text-primary dark:text-saffron-glow font-bold text-3xl">25+</div>
+                <div className="font-label-lg text-on-surface-variant dark:text-surface-variant mt-1 text-xs uppercase tracking-wider font-semibold">
+                  Years of Seva &amp; Trust
+                </div>
+              </div>
+            </div>
           </ScrollReveal>
-          <ScrollReveal direction="left" delay={0.15} className="order-1 lg:order-2 space-y-6">
-            <span className="font-headline-sm text-secondary tracking-wide block font-semibold">
+
+          {/* Text Content Right */}
+          <ScrollReveal direction="left" delay={0.15} className="lg:col-span-6 space-y-6">
+            <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 dark:bg-primary-fixed/10 text-primary dark:text-saffron-glow font-label-lg uppercase tracking-widest font-bold text-xs">
               Welcome to Dhara Foundations
-            </span>
-            <h2 className="font-headline-md md:text-5xl font-bold text-on-surface leading-tight">
+            </div>
+            <h2 className="font-headline-md text-3xl sm:text-4xl md:text-5xl font-bold text-on-surface leading-tight">
               Transforming lives and preserving traditions with compassion
             </h2>
-            <div className="space-y-4 font-body-lg text-on-surface-variant opacity-90 leading-relaxed">
-              <p>
-                Dhara Foundations is a non-profit organization dedicated to transforming lives and protecting traditions. We work for the upliftment of:
-              </p>
-              <ul className="list-none space-y-3 pt-2">
-                {[
-                  "Tribal and rural communities",
-                  "Physically and mentally challenged individuals",
-                  "Economically underprivileged groups",
-                  "Abandoned temples and spiritual centers",
-                ].map((item, i) => (
-                  <li key={i} className="flex items-center gap-3 text-on-surface font-medium">
-                    <span className="material-symbols-outlined text-primary text-xl shrink-0" style={{ fontVariationSettings: "'FILL' 1" }}>
-                      check_circle
-                    </span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <p className="pt-2">
-                Our mission combines compassionate service, cultural revival, and spiritual awareness to build a society rooted in values and dignity.
-              </p>
-            </div>
-            <div className="pt-2">
+            <p className="font-body-lg text-on-surface-variant leading-relaxed text-base sm:text-lg">
+              We are dedicated to uplifting marginalized communities while safeguarding our ancient spiritual heritage. By bridging the gap between traditional wisdom and modern welfare, we create sustainable pathways for dignity and growth.
+            </p>
+            
+            <ul className="space-y-4 pt-2">
+              <li className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-surface-container-high dark:bg-surface-container flex items-center justify-center shrink-0 shadow-sm text-primary dark:text-saffron-glow">
+                  <span className="material-symbols-outlined text-2xl">groups</span>
+                </div>
+                <span className="font-body-md font-semibold text-on-surface text-base">Upliftment of tribal and rural communities</span>
+              </li>
+              <li className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-surface-container-high dark:bg-surface-container flex items-center justify-center shrink-0 shadow-sm text-primary dark:text-saffron-glow">
+                  <span className="material-symbols-outlined text-2xl">accessible_forward</span>
+                </div>
+                <span className="font-body-md font-semibold text-on-surface text-base">Support for physically and mentally challenged individuals</span>
+              </li>
+              <li className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-surface-container-high dark:bg-surface-container flex items-center justify-center shrink-0 shadow-sm text-primary dark:text-saffron-glow">
+                  <span className="material-symbols-outlined text-2xl">temple_hindu</span>
+                </div>
+                <span className="font-body-md font-semibold text-on-surface text-base">Restoration of ancient abandoned temples &amp; spiritual centers</span>
+              </li>
+            </ul>
+
+            <div className="pt-4">
               <Link
                 href="/about"
-                className="inline-flex items-center gap-2 text-primary font-label-lg font-bold hover:text-secondary transition-colors group text-base"
+                className="inline-flex items-center gap-2 font-label-lg font-bold text-primary dark:text-saffron-glow hover:translate-x-1 transition-all group text-base cursor-pointer"
               >
-                <span>Learn more about our trust</span>
-                <span className="material-symbols-outlined group-hover:translate-x-1.5 transition-transform">
-                  arrow_forward
-                </span>
+                <span>Learn more about our foundation history</span>
+                <span className="material-symbols-outlined">arrow_forward</span>
               </Link>
             </div>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* Section 3: Services Bento */}
-      <section className="py-section-gap-md md:py-section-gap-lg px-margin-mobile md:px-margin-desktop bg-surface-container-low relative">
-        <div className="max-w-container-max mx-auto">
-          <ScrollReveal className="text-center mb-16 space-y-2">
-            <span className="font-label-lg text-secondary tracking-widest uppercase block">Our Pillars</span>
-            <h2 className="font-headline-md md:text-4xl font-bold text-on-surface">Foundational Areas of Work</h2>
-          </ScrollReveal>
-
-          <ScrollReveal staggerChildren={0.12} className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Pillar 1 */}
-            <RevealItem className="modern-card bg-surface-container-lowest p-8 rounded-[24px] shadow-[0_10px_40px_-10px_rgba(36,105,92,0.04)] hover:shadow-[0_20px_40px_-10px_rgba(36,105,92,0.08)] hover:-translate-y-2 transition-all duration-300 group border border-outline-variant/30 relative overflow-hidden flex flex-col justify-between">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary-fixed/30 rounded-bl-full -z-10 group-hover:scale-110 transition-transform" />
-              <div>
-                <div className="w-16 h-16 rounded-2xl bg-primary-container text-on-primary-container flex items-center justify-center mb-6">
-                  <span className="material-symbols-outlined text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>
-                    account_balance
-                  </span>
-                </div>
-                <h3 className="font-headline-sm text-on-surface mb-3 group-hover:text-primary transition-colors text-2xl font-bold">
-                  Desiyam <span className="block text-base font-normal text-on-surface-variant pt-1">(National Culture)</span>
-                </h3>
-                <p className="font-body-md text-on-surface-variant mb-6 leading-relaxed">
-                  We promote and preserve India’s rich cultural identity, from temple traditions to heritage arts.
-                </p>
-              </div>
-              <Link
-                href="/programs"
-                className="w-11 h-11 rounded-full bg-surface-container flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-colors self-start"
-                aria-label="Explore Desiyam"
-              >
-                <span className="material-symbols-outlined">arrow_forward</span>
-              </Link>
-            </RevealItem>
-
-            {/* Pillar 2 (Featured Dark Green) */}
-            <RevealItem className="modern-card bg-deep-forest text-ethereal-white p-8 rounded-[24px] shadow-lg hover:shadow-[0_0_35px_rgba(36,105,92,0.35)] hover:-translate-y-2 transition-all duration-300 group relative overflow-hidden flex flex-col justify-between">
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(172,240,223,0.15),transparent_70%)] pointer-events-none" />
-              <div>
-                <div className="w-16 h-16 rounded-2xl bg-secondary-fixed/20 text-secondary-fixed flex items-center justify-center mb-6 relative z-10">
-                  <span className="material-symbols-outlined text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>
-                    self_improvement
-                  </span>
-                </div>
-                <h3 className="font-headline-sm text-ethereal-white mb-3 relative z-10 text-2xl font-bold group-hover:text-saffron-glow transition-colors">
-                  Spiritualism
-                </h3>
-                <p className="font-body-md text-surface-container-high mb-6 relative z-10 leading-relaxed opacity-90">
-                  We support spiritual education, temple renovation, and rituals that connect communities with timeless wisdom.
-                </p>
-              </div>
-              <Link
-                href="/programs"
-                className="w-11 h-11 rounded-full bg-ethereal-white/10 flex items-center justify-center group-hover:bg-saffron-glow group-hover:text-deep-forest transition-colors relative z-10 self-start"
-                aria-label="Explore Spiritualism"
-              >
-                <span className="material-symbols-outlined">arrow_forward</span>
-              </Link>
-            </RevealItem>
-
-            {/* Pillar 3 */}
-            <RevealItem className="modern-card bg-surface-container-lowest p-8 rounded-[24px] shadow-[0_10px_40px_-10px_rgba(36,105,92,0.04)] hover:shadow-[0_20px_40px_-10px_rgba(36,105,92,0.08)] hover:-translate-y-2 transition-all duration-300 group border border-outline-variant/30 relative overflow-hidden flex flex-col justify-between">
-              <div className="absolute bottom-0 left-0 w-32 h-32 bg-secondary-fixed/30 rounded-tr-full -z-10 group-hover:scale-110 transition-transform" />
-              <div>
-                <div className="w-16 h-16 rounded-2xl bg-tertiary-container text-on-tertiary-container flex items-center justify-center mb-6">
-                  <span className="material-symbols-outlined text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>
-                    diversity_1
-                  </span>
-                </div>
-                <h3 className="font-headline-sm text-on-surface mb-3 group-hover:text-secondary transition-colors text-2xl font-bold">
-                  Community Welfare
-                </h3>
-                <p className="font-body-md text-on-surface-variant mb-6 leading-relaxed">
-                  Through rehabilitation, medical care, and social outreach, we empower vulnerable people to live with purpose and pride.
-                </p>
-              </div>
-              <Link
-                href="/programs"
-                className="w-11 h-11 rounded-full bg-surface-container flex items-center justify-center group-hover:bg-secondary group-hover:text-on-secondary transition-colors self-start"
-                aria-label="Explore Community Welfare"
-              >
-                <span className="material-symbols-outlined">arrow_forward</span>
-              </Link>
-            </RevealItem>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* Section 4: CTA Band */}
-      <ParallaxBg
-        bgUrl="/images/volunteer.png"
-        className="py-24 px-margin-mobile md:px-margin-desktop bg-secondary text-ethereal-white"
-        overlayClassName="bg-deep-forest/85 mix-blend-multiply"
-      >
-        <ScrollReveal className="max-w-3xl mx-auto text-center space-y-6">
-          <span className="font-label-lg text-secondary-fixed tracking-widest uppercase block font-semibold">
-            Become a Volunteer
+      {/* Section 3: Foundational Areas of Work (Staggered Asymmetric Pillars) */}
+      <section className="py-24 bg-surface-container-low px-4 sm:px-8 md:px-12 mt-12 rounded-[40px] max-w-[1440px] mx-auto border border-outline-variant/15">
+        <ScrollReveal className="text-center mb-16 space-y-3">
+          <span className="font-label-lg text-primary dark:text-saffron-glow uppercase tracking-widest font-bold block text-xs">
+            Our Pillars
           </span>
-          <h2 className="font-display-lg-mobile md:font-display-lg font-bold leading-tight">
-            Join your hand with us for a better life and future
+          <h2 className="font-headline-md text-3xl sm:text-4xl md:text-5xl font-bold text-on-surface">
+            Foundational Areas of Work
           </h2>
-          <div className="pt-4">
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center px-10 py-5 bg-saffron-glow text-deep-forest rounded-full hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,210,127,0.3)] hover:shadow-[0_0_35px_rgba(255,210,127,0.6)] transition-all duration-300 font-label-lg font-bold tracking-wide text-lg"
-            >
-              Discover More
-            </Link>
-          </div>
         </ScrollReveal>
-      </ParallaxBg>
 
-      {/* Section 5: Events */}
-      <section className="py-section-gap-md md:py-section-gap-lg px-margin-mobile md:px-margin-desktop bg-surface">
-        <div className="max-w-container-max mx-auto">
-          <ScrollReveal className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-            <div className="max-w-2xl space-y-2">
-              <span className="font-label-lg text-secondary tracking-widest uppercase block font-semibold">
-                All Events
-              </span>
-              <h2 className="font-headline-md md:text-4xl font-bold text-on-surface">View Our All Events</h2>
-              <p className="font-body-md text-on-surface-variant leading-relaxed">
-                Stay updated with our latest initiatives, community gatherings, and spiritual events aimed at uplifting society.
+        <ScrollReveal staggerChildren={0.15} className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+          {/* Pillar 1: Desiyam (Glass Card with Dark Hover) */}
+          <RevealItem className="bg-surface/80 dark:bg-surface-container/60 backdrop-blur-md p-8 sm:p-10 rounded-[40px] flex flex-col justify-between border border-outline-variant/30 shadow-sm hover:shadow-2xl hover:bg-deep-forest hover:text-ethereal-white hover:border-ethereal-white/10 hover:-translate-y-2 transition-all duration-500 group relative overflow-hidden cursor-pointer h-full">
+            <div className="absolute -top-12 -right-12 w-48 h-48 bg-saffron-glow/20 rounded-full blur-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="relative z-10">
+              <div className="w-16 h-16 rounded-full bg-primary/10 dark:bg-primary-fixed/20 flex items-center justify-center mb-6 text-primary dark:text-saffron-glow group-hover:bg-ethereal-white/10 group-hover:text-saffron-glow group-hover:scale-110 transition-all duration-500 shadow-sm">
+                <span className="material-symbols-outlined text-3xl">public</span>
+              </div>
+              <h3 className="font-headline-md text-2xl sm:text-3xl font-bold mb-4 text-on-surface group-hover:text-ethereal-white transition-colors duration-500">Desiyam</h3>
+              <p className="font-body-md text-on-surface-variant group-hover:text-ethereal-white/80 mb-8 leading-relaxed transition-colors duration-500">
+                Fostering national integration, traditional heritage preservation, and civic responsibility through grassroots cultural initiatives.
               </p>
             </div>
             <Link
-              href="/events"
-              className="inline-flex items-center justify-center px-8 py-3 border-2 border-secondary text-secondary rounded-full hover:bg-secondary hover:text-on-secondary hover:scale-105 active:scale-95 transition-all duration-300 font-label-lg font-semibold whitespace-nowrap"
+              href="/programs"
+              className="w-12 h-12 rounded-full border border-primary dark:border-saffron-glow text-primary dark:text-saffron-glow flex items-center justify-center group-hover:bg-saffron-glow group-hover:text-deep-forest group-hover:border-saffron-glow transition-all duration-500 self-start relative z-10 shadow-sm"
+              aria-label="Explore Desiyam"
             >
-              View All Events
+              <span className="material-symbols-outlined text-lg">arrow_forward</span>
             </Link>
-          </ScrollReveal>
+          </RevealItem>
 
-          <ScrollReveal staggerChildren={0.12} className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                date: "01 Jan, 2026",
-                time: "01:00 PM",
-                location: "Cuddalore",
-                title: "In Digitisation activities for Women Self Help Group society",
-                img: "/images/event-1.png",
-              },
-              {
-                date: "06 Nov, 2025",
-                time: "02:00 PM",
-                location: "Vellore",
-                title: "In Tribal welfare activities at Javadhu hills",
-                img: "/images/event-2.png",
-              },
-              {
-                date: "14 Jan, 2025",
-                time: "06:00 PM",
-                location: "Cuddalore",
-                title: "Felicitation of Sports children at Cuddalore during Pongal festival",
-                img: "/images/event-3.png",
-              },
-            ].map((ev, idx) => (
-              <RevealItem key={idx} className="h-full">
-                <Link
-                  href="/events"
-                  className="modern-card group block rounded-[24px] overflow-hidden shadow-[0_10px_40px_-10px_rgba(36,105,92,0.04)] hover:shadow-[0_20px_40px_-10px_rgba(36,105,92,0.08)] hover:-translate-y-2 transition-all duration-300 relative h-[420px]"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    alt={ev.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                    src={ev.img}
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/95 via-deep-forest/40 to-transparent" />
-                  <div className="absolute top-5 right-5 bg-ethereal-white text-on-surface px-4 py-1.5 rounded-full font-label-lg text-xs font-bold tracking-wider shadow-md">
-                    {ev.date}
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-8 space-y-2">
-                    <div className="flex items-center gap-4 text-surface-container-high text-xs font-caption tracking-wider uppercase">
-                      <span className="flex items-center gap-1">
-                        <span className="material-symbols-outlined text-base">schedule</span> {ev.time}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <span className="material-symbols-outlined text-base">location_on</span> {ev.location}
-                      </span>
-                    </div>
-                    <h3 className="font-headline-sm text-ethereal-white group-hover:text-saffron-glow transition-colors text-xl font-bold line-clamp-3">
-                      {ev.title}
-                    </h3>
-                  </div>
-                </Link>
-              </RevealItem>
-            ))}
-          </ScrollReveal>
-        </div>
+          {/* Pillar 2: Spiritualism (Glass Card with Dark Hover & Offset) */}
+          <RevealItem className="bg-surface/80 dark:bg-surface-container/60 backdrop-blur-md p-8 sm:p-10 rounded-[40px] flex flex-col justify-between border border-outline-variant/30 shadow-sm hover:shadow-2xl hover:bg-deep-forest hover:text-ethereal-white hover:border-ethereal-white/10 hover:-translate-y-2 transition-all duration-500 group relative overflow-hidden cursor-pointer h-full">
+            <div className="absolute -top-12 -right-12 w-48 h-48 bg-saffron-glow/20 rounded-full blur-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="relative z-10 flex flex-col h-full justify-between">
+              <div>
+                <div className="w-16 h-16 rounded-full bg-primary/10 dark:bg-primary-fixed/20 flex items-center justify-center mb-6 text-primary dark:text-saffron-glow group-hover:bg-ethereal-white/10 group-hover:text-saffron-glow group-hover:scale-110 transition-all duration-500 shadow-sm">
+                  <span className="material-symbols-outlined text-3xl">self_improvement</span>
+                </div>
+                <h3 className="font-headline-md text-2xl sm:text-3xl font-bold mb-4 text-on-surface group-hover:text-ethereal-white transition-colors duration-500">Spiritualism</h3>
+                <p className="font-body-md text-on-surface-variant group-hover:text-ethereal-white/80 mb-8 leading-relaxed transition-colors duration-500">
+                  Reviving ancient Vedic wisdom, supporting religious education, and physically renovating abandoned rural sacred shrines.
+                </p>
+              </div>
+              <Link
+                href="/programs"
+                className="w-12 h-12 rounded-full border border-primary dark:border-saffron-glow text-primary dark:text-saffron-glow flex items-center justify-center group-hover:bg-saffron-glow group-hover:text-deep-forest group-hover:border-saffron-glow transition-all duration-500 self-start relative z-10 shadow-sm"
+                aria-label="Explore Spiritualism"
+              >
+                <span className="material-symbols-outlined text-lg">arrow_forward</span>
+              </Link>
+            </div>
+          </RevealItem>
+
+          {/* Pillar 3: Community Welfare (Glass Card with Dark Hover) */}
+          <RevealItem className="bg-surface/80 dark:bg-surface-container/60 backdrop-blur-md p-8 sm:p-10 rounded-[40px] flex flex-col justify-between border border-outline-variant/30 shadow-sm hover:shadow-2xl hover:bg-deep-forest hover:text-ethereal-white hover:border-ethereal-white/10 hover:-translate-y-2 transition-all duration-500 group relative overflow-hidden cursor-pointer h-full">
+            <div className="absolute -top-12 -right-12 w-48 h-48 bg-saffron-glow/20 rounded-full blur-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="relative z-10">
+              <div className="w-16 h-16 rounded-full bg-primary/10 dark:bg-primary-fixed/20 flex items-center justify-center mb-6 text-primary dark:text-saffron-glow group-hover:bg-ethereal-white/10 group-hover:text-saffron-glow group-hover:scale-110 transition-all duration-500 shadow-sm">
+                <span className="material-symbols-outlined text-3xl">diversity_1</span>
+              </div>
+              <h3 className="font-headline-md text-2xl sm:text-3xl font-bold mb-4 text-on-surface group-hover:text-ethereal-white transition-colors duration-500">Community Welfare</h3>
+              <p className="font-body-md text-on-surface-variant group-hover:text-ethereal-white/80 mb-8 leading-relaxed transition-colors duration-500">
+                Empowering underprivileged tribal families and physically challenged individuals with healthcare, nutrition, and livelihood grants.
+              </p>
+            </div>
+            <Link
+              href="/programs"
+              className="w-12 h-12 rounded-full border border-primary dark:border-saffron-glow text-primary dark:text-saffron-glow flex items-center justify-center group-hover:bg-saffron-glow group-hover:text-deep-forest group-hover:border-saffron-glow transition-all duration-500 self-start relative z-10 shadow-sm"
+              aria-label="Explore Welfare"
+            >
+              <span className="material-symbols-outlined text-lg">arrow_forward</span>
+            </Link>
+          </RevealItem>
+        </ScrollReveal>
       </section>
 
-      {/* Section 6: Photo Gallery Strip */}
-      <section className="py-section-gap-md px-margin-mobile md:px-margin-desktop bg-surface-container-low overflow-hidden">
-        <div className="max-w-container-max mx-auto text-center mb-16">
-          <ScrollReveal>
-            <span className="font-label-lg text-secondary tracking-widest uppercase block mb-2 font-semibold">
-              Visual Journey
+      {/* Section 4: Become a Volunteer CTA Band */}
+      <section className="py-16 px-4 md:px-8 max-w-[1440px] mx-auto">
+        <ParallaxBg
+          bgUrl="/images/volunteer.png"
+          className="rounded-[40px] p-12 sm:p-16 md:p-24 text-center relative overflow-hidden shadow-2xl border border-outline-variant/20 text-ethereal-white"
+          overlayClassName="bg-deep-forest/85 mix-blend-multiply"
+        >
+          <ScrollReveal className="relative z-10 max-w-3xl mx-auto space-y-6">
+            <span className="font-label-lg text-saffron-glow uppercase tracking-widest font-bold block text-xs">
+              Become a Volunteer
             </span>
-            <h2 className="font-headline-md md:text-4xl font-bold text-on-surface">Our Photo Gallery</h2>
-          </ScrollReveal>
-        </div>
-
-        <ScrollReveal staggerChildren={0.12} className="flex gap-8 justify-center flex-wrap lg:flex-nowrap max-w-container-max mx-auto">
-          {HOME_GALLERY.map((img, i) => (
-            <RevealItem
-              key={i}
-              className={`w-full sm:w-1/2 lg:w-1/3 rounded-[24px] overflow-hidden shadow-soft hover:shadow-soft-hover hover:-translate-y-2 transition-all duration-300 relative group h-72 md:h-80 cursor-pointer gallery-tile ${
-                i === 1 ? "lg:-translate-y-8" : ""
-              }`}
-            >
-              <div
-                onClick={() => setActiveModalItem(img)}
-                className="w-full h-full block relative"
+            <h2 className="font-headline-md text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
+              Join your hand with us for a better life and future
+            </h2>
+            <p className="font-body-md text-surface-container-high max-w-xl mx-auto leading-relaxed text-base sm:text-lg">
+              Your contribution, whether time, expertise, or resources, creates a lasting transformation across rural India. Become a divine guardian today.
+            </p>
+            <div className="pt-4">
+              <Link
+                href="/contact"
+                className="bg-saffron-glow text-deep-forest px-10 py-5 rounded-full font-label-lg font-bold uppercase tracking-wider hover:bg-ethereal-white hover:scale-105 transition-all shadow-xl inline-block cursor-pointer"
               >
+                Join Our Mission
+              </Link>
+            </div>
+          </ScrollReveal>
+        </ParallaxBg>
+      </section>
+
+      {/* Section 5: Events Strip */}
+      <section className="py-20 px-4 md:px-8 max-w-[1440px] mx-auto">
+        <ScrollReveal className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+          <div className="max-w-2xl space-y-2">
+            <span className="font-label-lg text-primary dark:text-saffron-glow uppercase tracking-widest font-bold block text-xs">
+              Upcoming &amp; Recent Initiatives
+            </span>
+            <h2 className="font-headline-md text-3xl sm:text-4xl md:text-5xl font-bold text-on-surface">
+              View Our All Events
+            </h2>
+          </div>
+          <Link
+            href="/events"
+            className="bg-surface-container-high dark:bg-surface-container text-on-surface px-6 py-3 rounded-full font-label-lg font-semibold hover:bg-primary hover:text-ethereal-white dark:hover:bg-saffron-glow dark:hover:text-deep-forest transition-all flex items-center gap-2 shrink-0 cursor-pointer"
+          >
+            View All Events <span className="material-symbols-outlined text-sm">arrow_forward</span>
+          </Link>
+        </ScrollReveal>
+
+        <ScrollReveal staggerChildren={0.12} className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            {
+              date: "01 Jan, 2026",
+              time: "01:00 PM",
+              location: "Cuddalore",
+              title: "In Digitisation activities for Women Self Help Group society",
+              img: "/images/event-1.png",
+              tag: "Empowerment",
+            },
+            {
+              date: "06 Nov, 2025",
+              time: "02:00 PM",
+              location: "Javadhu Hills",
+              title: "In Tribal welfare activities at Javadhu hills communities",
+              img: "/images/event-2.png",
+              tag: "Tribal Welfare",
+            },
+            {
+              date: "14 Jan, 2025",
+              time: "06:00 PM",
+              location: "Cuddalore",
+              title: "Felicitation of Sports children during Pongal festival celebration",
+              img: "/images/event-3.png",
+              tag: "Youth Development",
+            },
+          ].map((ev, idx) => (
+            <RevealItem
+              key={idx}
+              className="bg-surface-container-lowest rounded-[24px] shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group flex flex-col justify-between overflow-hidden cursor-pointer h-full border-0 p-0 m-0"
+            >
+              <div className="relative w-full h-[280px] sm:h-[300px] overflow-hidden shrink-0 rounded-t-[24px] m-0 p-0">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  alt={img.alt}
-                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
-                  src={img.src}
+                  src={ev.img}
+                  alt={ev.title}
+                  className="w-full h-full object-cover rounded-t-[24px] group-hover:scale-105 transition-transform duration-700 ease-out block m-0 p-0"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-deep-forest/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-saffron-glow text-deep-forest flex items-center justify-center shadow-lg scale-90 group-hover:scale-100 transition-transform">
-                    <span className="material-symbols-outlined text-3xl">zoom_in</span>
+                {/* Tight 15-20% bottom gradient dissolve ending at exact card background color */}
+                <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/90 to-transparent pointer-events-none z-10" />
+
+                {/* True frosted glass date badge with transparency and blur */}
+                <div className="absolute top-4 left-4 z-20 bg-white/45 dark:bg-black/45 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-bold text-primary dark:text-saffron-glow shadow-sm border border-white/50 tracking-wider">
+                  {ev.date}
+                </div>
+              </div>
+
+              <div className="p-6 pt-0 flex flex-col justify-between flex-grow relative z-20 bg-surface-container-lowest">
+                <div>
+                  <span className="font-label-lg text-secondary text-xs font-bold uppercase tracking-widest mb-2 block">
+                    {ev.tag}
+                  </span>
+                  <h3 className="font-headline-md text-2xl sm:text-3xl font-bold text-on-surface group-hover:text-primary transition-colors mb-3 leading-snug line-clamp-2">
+                    {ev.title}
+                  </h3>
+                  <div className="flex items-center gap-5 text-on-surface-variant/80 text-xs mb-6 font-medium">
+                    <span className="flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-sm">location_on</span> {ev.location}
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-sm">schedule</span> {ev.time}
+                    </span>
                   </div>
+                </div>
+                <div className="mt-auto pt-2">
+                  <Link
+                    href="/events"
+                    className="inline-flex items-center gap-1.5 font-label-lg font-bold text-primary hover:text-primary-container text-sm transition-all group/btn"
+                  >
+                    Read Event Report
+                    <span className="material-symbols-outlined text-base transition-transform duration-300 group-hover:translate-x-1.5">arrow_forward</span>
+                  </Link>
                 </div>
               </div>
             </RevealItem>
           ))}
         </ScrollReveal>
-        <div className="text-center mt-12">
-          <Link
-            href="/gallery"
-            className="inline-flex items-center gap-2 font-label-lg font-bold text-primary hover:text-secondary transition-colors"
-          >
-            <span>Explore All Moments</span>
-            <span className="material-symbols-outlined">arrow_forward</span>
-          </Link>
-        </div>
       </section>
 
-      {/* Modal Dialogue */}
-      <LightboxModal item={activeModalItem} onClose={() => setActiveModalItem(null)} />
+      {/* Section 6: Interactive Photo Gallery with Saffron Border Glow */}
+      <section className="py-20 px-4 md:px-8 max-w-[1440px] mx-auto">
+        <BorderGlow
+          className="w-full"
+          edgeSensitivity={35}
+          glowColor="36 90 55"
+          backgroundColor="transparent"
+          borderRadius={36}
+          glowRadius={40}
+          glowIntensity={1.3}
+          coneSpread={30}
+          animated={true}
+          colors={["#FFD27F", "#f49b33", "#8a5000"]}
+        >
+          <InteractiveSelector
+            onOptionClick={(opt) =>
+              setActiveModalItem({
+                src: opt.image,
+                alt: opt.title,
+                caption: opt.description,
+                category: opt.title,
+              })
+            }
+          />
+        </BorderGlow>
+      </section>
+
+      {/* Lightbox Modal */}
+      {activeModalItem && (
+        <LightboxModal
+          item={activeModalItem}
+          onClose={() => setActiveModalItem(null)}
+        />
+      )}
     </div>
   );
 }

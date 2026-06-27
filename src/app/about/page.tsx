@@ -3,153 +3,193 @@
 import React from "react";
 import Link from "next/link";
 import { ScrollReveal, RevealItem } from "@/components/motion/ScrollReveal";
+import BorderGlow from "@/components/ui/BorderGlow";
 
 const REGISTRATIONS = [
   {
-    title: "Indian Trust Act",
-    desc: "Registered under Indian Trust Act 1882 and Income Tax Act 1961 on 20.11.2024.",
+    title: "Section 8 Company",
+    desc: "Registered under Indian Trust Act 1882 & Companies Act ensuring non-profit operations.",
     icon: "gavel",
-    bg: "bg-secondary-container text-on-secondary-container",
+    isHeavy: true,
   },
   {
-    title: "80G Registration",
-    desc: "Qualify Deduction U/S 80G of I.T Act 1961 Vide AAETD8857AE20241 (11.12.2024).",
-    icon: "account_balance",
-    bg: "bg-primary-container text-on-primary-container",
+    title: "12A Registration",
+    desc: "Income Tax exemption granted under IT Act 1961 for legitimate charitable activities.",
+    icon: "assured_workload",
+    isHeavy: false,
+  },
+  {
+    title: "80G Certificate",
+    desc: "Qualify deduction U/S 80G of I.T Act 1961 Vide AAETD8857AE20241 (11.12.2024).",
+    icon: "receipt_long",
+    isHeavy: false,
   },
   {
     title: "CSR Activities",
     desc: "Registered with Ministry of Corporate Affairs for CSR (CSR00086947 on 20.02.2025).",
     icon: "corporate_fare",
-    bg: "bg-[#9abb4b]/30 text-tertiary",
+    isHeavy: false,
   },
   {
     title: "NGO–DARPAN",
     desc: "Registered with NGO–DARPAN vide Regn No. TN/2024/0473120 dated 06.12.2024.",
     icon: "verified",
-    bg: "bg-surface-variant text-on-surface-variant",
+    isHeavy: false,
   },
 ];
 
 export default function AboutPage() {
   return (
-    <div className="flex flex-col relative w-full overflow-hidden">
-      {/* Header / Breadcrumb Section */}
-      <section className="w-full bg-surface-container-low py-16 md:py-24 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#8a5000_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
-        <ScrollReveal className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10 text-center space-y-4">
-          <h1 className="font-display-lg-mobile md:font-display-lg text-primary font-bold drop-shadow-sm">
-            About Us
-          </h1>
-          <div className="flex items-center justify-center space-x-2 text-on-surface-variant font-body-md">
-            <Link href="/" className="hover:text-primary transition-colors font-medium">
-              Home
-            </Link>
-            <span className="material-symbols-outlined text-sm">chevron_right</span>
-            <span className="text-primary font-bold">About Us</span>
+    <div className="flex flex-col relative w-full overflow-hidden bg-background text-on-background">
+      {/* Header / Banner Section (Sacred Flow Rebrand) */}
+      <header className="mx-4 md:mx-auto max-w-[1440px] w-full pt-8 px-4 md:px-8">
+        <div className="relative rounded-[40px] overflow-hidden bg-gradient-to-br from-surface-container-low to-secondary-container/20 h-[380px] sm:h-[420px] flex flex-col justify-center items-center px-6 text-center border border-outline-variant/30 shadow-lg">
+          {/* Background Texture Overlay */}
+          <div
+            className="absolute inset-0 z-0 opacity-25 mix-blend-overlay bg-cover bg-center pointer-events-none"
+            style={{ backgroundImage: "url('/images/banner.png')" }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/80 via-deep-forest/40 to-transparent mix-blend-multiply" />
+          
+          <div className="relative z-10 space-y-6 max-w-3xl">
+            <div className="inline-flex items-center gap-2 bg-surface/80 dark:bg-deep-forest/80 backdrop-blur-md border border-outline-variant/30 px-5 py-2 rounded-full font-label-lg text-xs font-bold text-on-surface">
+              <Link href="/" className="hover:text-primary dark:hover:text-saffron-glow transition-colors">Home</Link>
+              <span className="material-symbols-outlined text-sm">chevron_right</span>
+              <span className="text-primary dark:text-saffron-glow font-bold">About Us</span>
+            </div>
+            <h1 className="font-display-lg-mobile md:text-5xl lg:text-6xl font-bold text-ethereal-white leading-tight drop-shadow-md">
+              Preserving Heritage, <br />
+              <span className="text-saffron-glow italic font-light">Empowering Future.</span>
+            </h1>
           </div>
-        </ScrollReveal>
-      </section>
+        </div>
+      </header>
 
-      {/* Main Story & Mission Section */}
-      <section className="py-section-gap-lg max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
-          {/* Text Content */}
-          <ScrollReveal direction="right" className="space-y-6">
-            <div className="inline-block px-5 py-1.5 rounded-full bg-[#9abb4b]/20 text-tertiary font-label-lg uppercase tracking-widest font-bold">
-              Our Mission
-            </div>
-            <h2 className="font-headline-md md:text-4xl text-deep-forest font-bold leading-tight">
-              Transforming lives and preserving traditions with compassion
-            </h2>
-            <div className="text-on-surface-variant font-body-lg space-y-4 leading-relaxed opacity-90">
-              <p>
-                Dhara Foundations is a non-profit organization dedicated to transforming lives and protecting traditions. We work for the upliftment of tribal and rural communities, physically and mentally challenged individuals, economically underprivileged groups, and abandoned temples and spiritual centers.
-              </p>
-              <p>
-                Our mission combines compassionate service, cultural revival, and spiritual awareness to build a society rooted in values and dignity.
-              </p>
-            </div>
-
-            {/* Icons Row */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8 border-t border-outline-variant/30">
-              <div className="flex flex-col group hover:translate-x-1 transition-transform">
-                <span className="material-symbols-outlined text-primary text-4xl mb-2 group-hover:scale-110 transition-transform origin-left">
-                  temple_hindu
-                </span>
-                <h3 className="font-label-lg text-deep-forest font-bold text-lg">Desiyam</h3>
-                <p className="font-caption text-on-surface-variant mt-1 text-sm leading-snug">
-                  Promoting and preserving India’s rich cultural identity.
-                </p>
+      {/* Mission & Rooted Philosophy Section */}
+      <section className="max-w-[1440px] mx-auto px-4 sm:px-8 md:px-12 py-24 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          {/* Asymmetric Image Card Left */}
+          <ScrollReveal direction="right" className="lg:col-span-6 relative">
+            <div className="relative mx-auto max-w-lg lg:max-w-none">
+              <div className="rounded-t-[100px] rounded-b-2xl overflow-hidden relative shadow-2xl h-[480px] sm:h-[580px] border border-outline-variant/20">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/about.png"
+                  alt="Devotional wooden artifact carving and ritual offering"
+                  className="object-cover w-full h-full hover:scale-105 transition-transform duration-700 ease-out"
+                />
               </div>
-              <div className="flex flex-col group hover:translate-x-1 transition-transform">
-                <span className="material-symbols-outlined text-primary text-4xl mb-2 group-hover:scale-110 transition-transform origin-left">
-                  self_improvement
-                </span>
-                <h3 className="font-label-lg text-deep-forest font-bold text-lg">Spiritualism</h3>
-                <p className="font-caption text-on-surface-variant mt-1 text-sm leading-snug">
-                  Supporting spiritual education and temple rituals.
-                </p>
-              </div>
-              <div className="flex flex-col group hover:translate-x-1 transition-transform">
-                <span className="material-symbols-outlined text-primary text-4xl mb-2 group-hover:scale-110 transition-transform origin-left">
-                  diversity_1
-                </span>
-                <h3 className="font-label-lg text-deep-forest font-bold text-lg">Welfare</h3>
-                <p className="font-caption text-on-surface-variant mt-1 text-sm leading-snug">
-                  Rehabilitation and social outreach for the vulnerable.
+              <div className="absolute -bottom-6 -right-4 sm:-right-8 bg-surface/90 dark:bg-deep-forest/90 backdrop-blur-xl p-6 sm:p-8 rounded-3xl border border-outline-variant/30 shadow-2xl max-w-[240px] sm:max-w-xs z-10">
+                <p className="font-headline-md text-primary dark:text-saffron-glow font-bold text-2xl sm:text-3xl mb-1">25+ Years</p>
+                <p className="font-body-md text-on-surface-variant dark:text-surface-variant text-xs sm:text-sm leading-relaxed">
+                  Dedicated to cultural preservation and rural community welfare.
                 </p>
               </div>
             </div>
           </ScrollReveal>
 
-          {/* Devotional Image */}
-          <ScrollReveal direction="left" delay={0.2} className="relative group">
-            <div className="absolute inset-0 bg-saffron-glow/25 rounded-[24px] translate-x-4 translate-y-4 transition-transform duration-300 group-hover:translate-x-6 group-hover:translate-y-6 blur-md" />
-            <div className="relative bg-ethereal-white rounded-[24px] overflow-hidden shadow-2xl border border-outline-variant/10 z-10 aspect-[4/5]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                alt="Ritual hands of devotion"
-                src="/images/about.png"
-              />
+          {/* Philosophy Text Right */}
+          <ScrollReveal direction="left" delay={0.15} className="lg:col-span-6 space-y-8 mt-8 lg:mt-0">
+            <div className="space-y-4">
+              <span className="font-label-lg text-primary dark:text-saffron-glow uppercase tracking-widest font-bold block text-xs">
+                Our Rooted Philosophy
+              </span>
+              <h2 className="font-headline-md text-3xl sm:text-4xl md:text-5xl font-bold text-on-surface leading-tight">
+                Where timeless Vedic wisdom meets modern compassionate action
+              </h2>
+              <p className="font-body-lg text-on-surface-variant leading-relaxed text-base sm:text-lg">
+                Dhara Foundations exists at the intersection of spiritual heritage and socio-economic necessity. We believe that true, lasting national progress must be firmly anchored in cultural dignity and universal compassion.
+              </p>
             </div>
+
+            <ul className="space-y-6 pt-4 border-t border-outline-variant/20">
+              <li className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-full bg-secondary/10 dark:bg-secondary-fixed/20 flex items-center justify-center shrink-0 text-secondary dark:text-saffron-glow shadow-sm mt-1">
+                  <span className="material-symbols-outlined text-2xl">temple_hindu</span>
+                </div>
+                <div>
+                  <h3 className="font-headline-sm text-lg font-bold text-on-surface mb-1">Desiyam (National Culture)</h3>
+                  <p className="font-body-md text-on-surface-variant text-sm leading-relaxed">Fostering a deep sense of national pride, civic unity, and heritage preservation.</p>
+                </div>
+              </li>
+              <li className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-full bg-primary/10 dark:bg-primary-fixed/20 flex items-center justify-center shrink-0 text-primary dark:text-saffron-glow shadow-sm mt-1">
+                  <span className="material-symbols-outlined text-2xl">self_improvement</span>
+                </div>
+                <div>
+                  <h3 className="font-headline-sm text-lg font-bold text-on-surface mb-1">Spiritualism &amp; Renovation</h3>
+                  <p className="font-body-md text-on-surface-variant text-sm leading-relaxed">Nurturing inner spiritual awareness and physically renovating forgotten ancient temples.</p>
+                </div>
+              </li>
+              <li className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-full bg-tertiary/10 dark:bg-tertiary-fixed/20 flex items-center justify-center shrink-0 text-tertiary dark:text-saffron-glow shadow-sm mt-1">
+                  <span className="material-symbols-outlined text-2xl">volunteer_activism</span>
+                </div>
+                <div>
+                  <h3 className="font-headline-sm text-lg font-bold text-on-surface mb-1">Community Welfare</h3>
+                  <p className="font-body-md text-on-surface-variant text-sm leading-relaxed">Tangible, direct support for rural education, healthcare, and tribal livelihood grants.</p>
+                </div>
+              </li>
+            </ul>
           </ScrollReveal>
         </div>
       </section>
 
       {/* Official Registrations Bento Grid */}
-      <section className="py-section-gap-lg bg-surface-container-low relative w-full overflow-hidden">
-        <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#24695c_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
-        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
-          <ScrollReveal className="text-center mb-16 space-y-4">
-            <h2 className="font-headline-md md:text-4xl text-deep-forest font-bold">Official Registrations</h2>
-            <p className="text-on-surface-variant font-body-lg max-w-2xl mx-auto leading-relaxed">
-              Committed to transparency and administrative excellence, Dhara Foundations is formally recognized by key national institutions.
+      <section className="bg-surface-container-low py-24 px-4 sm:px-8 md:px-12 border-y border-outline-variant/15">
+        <div className="max-w-[1440px] mx-auto">
+          <ScrollReveal className="mb-16 space-y-3 text-center max-w-3xl mx-auto">
+            <span className="font-label-lg text-primary dark:text-saffron-glow uppercase tracking-widest font-bold block text-xs">
+              Accountability &amp; Trust
+            </span>
+            <h2 className="font-headline-md text-3xl sm:text-4xl md:text-5xl font-bold text-on-surface">
+              Official Registrations
+            </h2>
+            <p className="font-body-lg text-on-surface-variant leading-relaxed text-base">
+              Transparency and administrative excellence are the bedrock of our foundation. Formally recognized across key institutional authorities.
             </p>
           </ScrollReveal>
 
-          <ScrollReveal staggerChildren={0.12} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {REGISTRATIONS.map((reg, i) => (
-              <RevealItem
-                key={i}
-                className="modern-card bg-surface-container-lowest p-8 rounded-[24px] shadow-[0_8px_30px_rgba(36,105,92,0.04)] hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(36,105,92,0.1)] transition-all duration-300 border border-outline-variant/15 flex flex-col items-center text-center group"
-              >
-                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform ${reg.bg}`}>
-                  <span className="material-symbols-outlined text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>
-                    {reg.icon}
-                  </span>
-                </div>
-                <h3 className="font-headline-sm text-deep-forest font-bold text-xl mb-2 group-hover:text-primary transition-colors">
-                  {reg.title}
-                </h3>
-                <p className="font-caption text-on-surface-variant text-sm leading-relaxed opacity-90">
-                  {reg.desc}
-                </p>
-              </RevealItem>
-            ))}
+          <ScrollReveal staggerChildren={0.12} className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            {REGISTRATIONS.map((reg, i) => {
+              const colSpan = i >= 3 ? "md:col-span-3 lg:col-span-3" : "md:col-span-1 lg:col-span-2";
+              return (
+                <RevealItem
+                  key={i}
+                  className={`bg-surface/80 dark:bg-surface-container/50 backdrop-blur-md border border-outline-variant/30 p-8 rounded-[32px] flex flex-col justify-between h-[300px] sm:h-[320px] shadow-sm hover:shadow-2xl hover:bg-deep-forest hover:text-ethereal-white hover:border-ethereal-white/10 hover:-translate-y-2 transition-all duration-500 group relative overflow-hidden cursor-pointer ${colSpan}`}
+                >
+                  <div className="absolute -top-12 -right-12 w-48 h-48 bg-saffron-glow/20 rounded-full blur-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="relative z-10">
+                    <div className="w-14 h-14 rounded-2xl bg-primary/10 dark:bg-primary-fixed/20 flex items-center justify-center mb-6 text-primary dark:text-saffron-glow group-hover:bg-ethereal-white/10 group-hover:text-saffron-glow group-hover:scale-110 transition-all duration-500 shadow-sm">
+                      <span className="material-symbols-outlined text-3xl">{reg.icon}</span>
+                    </div>
+                    <h3 className="font-headline-md text-xl sm:text-2xl font-bold mb-2 text-on-surface group-hover:text-ethereal-white transition-colors duration-500">
+                      {reg.title}
+                    </h3>
+                  </div>
+                  <p className="font-body-md text-on-surface-variant group-hover:text-ethereal-white/80 text-sm leading-relaxed transition-colors duration-500 relative z-10">{reg.desc}</p>
+                </RevealItem>
+              );
+            })}
           </ScrollReveal>
         </div>
+      </section>
+
+      {/* CTA Strip */}
+      <section className="max-w-5xl mx-auto px-4 py-20 w-full">
+        <ScrollReveal className="bg-deep-forest text-ethereal-white rounded-[40px] py-12 px-8 sm:px-12 md:px-16 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl border border-ethereal-white/10 relative overflow-hidden">
+          <div className="absolute -left-12 -bottom-12 w-48 h-48 bg-saffron-glow/15 rounded-full blur-3xl pointer-events-none" />
+          <div className="text-center md:text-left space-y-2 relative z-10">
+            <h2 className="font-headline-md text-3xl sm:text-4xl font-bold text-ethereal-white">Ready to make a divine impact?</h2>
+            <p className="font-body-md text-surface-container-high text-base sm:text-lg">Join hands with us in preserving our sacred heritage and lifting communities.</p>
+          </div>
+          <Link
+            href="/contact"
+            className="bg-saffron-glow text-deep-forest font-label-lg font-bold px-8 py-4 rounded-full hover:bg-ethereal-white hover:scale-105 transition-all shrink-0 shadow-lg uppercase tracking-wider relative z-10 cursor-pointer"
+          >
+            Get Involved Now
+          </Link>
+        </ScrollReveal>
       </section>
     </div>
   );
