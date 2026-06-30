@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { 
   Calendar, 
   Clock, 
@@ -15,118 +16,23 @@ import {
   Quote
 } from "lucide-react";
 import { motion, AnimatePresence, useReducedMotion, type Variants } from "framer-motion";
+import { EVENTS_DATA } from "@/data/events";
 
 // ==========================================
 // DATA DEFINITIONS
 // ==========================================
 
-const EVENT_CATEGORIES = [
-  {
-    title: "Temple & Heritage Events",
-    desc: "Bhoomi Pooja, Kumbabhishekam ceremonies, and sacred temple restoration milestones preserving our architectural legacy.",
-    img: "/images/event-1.png",
-    filterTag: "Temple & Heritage"
-  },
-  {
-    title: "Cultural & Spiritual Programs",
-    desc: "Girivalam processions, Kodai offerings, and traditional Adheenam engagements celebrating timeless Vedic wisdom.",
-    img: "/images/event-2.png",
-    filterTag: "Cultural & Spiritual"
-  },
-  {
-    title: "Community Welfare Drives",
-    desc: "Tribal welfare outreach in Javadhu Hills, nourishing Anna Daanam drives, and essential clothing distributions.",
-    img: "/images/event-3.png",
-    filterTag: "Welfare Drives"
-  },
-  {
-    title: "Awards & Recognition Events",
-    desc: "Dhara Divine Awards and state-level honoring ceremonies celebrating selfless achievers in cultural revival.",
-    img: "/images/gallery-1.png",
-    filterTag: "Awards & Recognition"
-  },
-  {
-    title: "Children & Education Initiatives",
-    desc: "School supplies, footwear distribution, nutritious meals, and festival celebrations for underprivileged youth.",
-    img: "/images/gallery-2.png",
-    filterTag: "Children & Education"
-  },
-  {
-    title: "Women's Empowerment Programs",
-    desc: "Self Help Group digitisation, vocational skill workshops, and sustainable livelihood support activities.",
-    img: "/images/gallery-3.png",
-    filterTag: "Women's Empowerment"
-  }
-];
-
-const FULL_EVENTS_LIST = [
-  {
-    id: "dhara-divine-awards",
-    title: "DHARA Divine Awards 2025 Ceremony",
-    category: "Awards & Recognition",
-    date: "January 19, 2025",
-    time: "5:00 PM - 9:00 PM",
-    location: "Sardar Patel Auditorium, Chennai",
-    mapsUrl: "https://maps.google.com/?q=Sardar+Patel+Auditorium+Chennai",
-    img: "/images/event-2.png",
-    desc: "A state-level gathering honoring extraordinary unsung heroes who have dedicated their lives to Vedic scholarship, temple arts, and rural welfare."
-  },
-  {
-    id: "anna-daanam-drive",
-    title: "Mega Anna Daanam & Festive Food Distribution",
-    category: "Welfare Drives",
-    date: "November 14, 2024",
-    time: "11:30 AM - 3:00 PM",
-    location: "Tambaram Sanatorium Community Center, Chennai",
-    mapsUrl: "https://maps.google.com/?q=Tambaram+Sanatorium+Chennai",
-    img: "/images/event-1.png",
-    desc: "Serving freshly prepared, nutritious traditional meals to over 3,000 underprivileged families and elderly citizens during the sacred festive season."
-  },
-  {
-    id: "javadhu-hills-outreach",
-    title: "Tribal Welfare & Footwear Drive at Javadhu Hills",
-    category: "Children & Education",
-    date: "October 08, 2024",
-    time: "9:00 AM - 4:00 PM",
-    location: "Government Tribal Middle School, Javadhu Hills",
-    mapsUrl: "https://maps.google.com/?q=Javadhu+Hills+Tamil+Nadu",
-    img: "/images/gallery-2.png",
-    desc: "Distributing durable footwear, warm winter sweaters, and educational study kits to tribal children living in remote mountain hamlets."
-  },
-  {
-    id: "kumbabhishekam-support",
-    title: "Heritage Village Temple Restoration & Pooja",
-    category: "Temple & Heritage",
-    date: "December 02, 2024",
-    time: "6:00 AM - 12:00 PM",
-    location: "Sri Chola Heritage Temple, Kanchipuram District",
-    mapsUrl: "https://maps.google.com/?q=Kanchipuram+Tamil+Nadu",
-    img: "/images/event-3.png",
-    desc: "Supporting the traditional Kumbabhishekam consecration and architectural preservation of an ancient 9th-century village shrine."
-  },
-  {
-    id: "shg-skill-workshop",
-    title: "Women's Self Help Group Financial Literacy Camp",
-    category: "Women's Empowerment",
-    date: "September 25, 2024",
-    time: "10:00 AM - 1:30 PM",
-    location: "Dhara Foundation Hall, Tambaram",
-    mapsUrl: "https://maps.google.com/?q=Tambaram+Chennai",
-    img: "/images/gallery-3.png",
-    desc: "Empowering 150+ rural women with digital banking skills, micro-entrepreneurship mentoring, and sustainable handicraft marketing tools."
-  },
-  {
-    id: "girivalam-seva",
-    title: "Pournami Girivalam Devotee Seva Camp",
-    category: "Cultural & Spiritual",
-    date: "August 19, 2024",
-    time: "4:00 PM - 11:00 PM",
-    location: "Annamalaiyar Circumambulation Path, Thiruvannamalai",
-    mapsUrl: "https://maps.google.com/?q=Thiruvannamalai+Temple",
-    img: "/images/gallery-1.png",
-    desc: "Providing clean drinking water, herbal refreshments, and first-aid medical support to thousands of spiritual pilgrims walking the sacred path."
-  }
-];
+const FULL_EVENTS_LIST = EVENTS_DATA.map((ev) => ({
+  id: ev.id,
+  title: ev.title,
+  category: ev.category,
+  date: ev.date,
+  time: ev.time,
+  location: ev.location,
+  mapsUrl: `https://www.google.com/maps?q=${ev.coordinates.lat},${ev.coordinates.lng}`,
+  img: ev.coverImage,
+  desc: ev.description[0],
+}));
 
 const NEWS_ARTICLES = [
   {
@@ -195,7 +101,95 @@ function CounterItem({ target, staticText, shouldReduceMotion }: { target: numbe
   );
 }
 
+function EventCard({ 
+  ev, 
+  idx, 
+  shouldReduceMotion, 
+  router 
+}: { 
+  ev: typeof FULL_EVENTS_LIST[0]; 
+  idx: number; 
+  shouldReduceMotion: boolean | null; 
+  router: any;
+}) {
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      whileHover={shouldReduceMotion ? {} : { scale: 1.02, y: -6 }}
+      transition={{ duration: 0.5, delay: idx * 0.1, ease: "easeOut" }}
+      onClick={(e) => {
+        if (!(e.target as HTMLElement).closest("a")) {
+          router.push(`/events/${ev.id}`);
+        }
+      }}
+      className="bg-white rounded-3xl border border-[#D9CBB0]/60 overflow-hidden shadow-md hover:shadow-2xl transition-shadow group cursor-pointer flex flex-col sm:flex-row h-full"
+    >
+      <div className="sm:w-2/5 h-56 sm:h-auto relative overflow-hidden bg-surface-container shrink-0">
+        <motion.img 
+          variants={{ hover: { scale: shouldReduceMotion ? 1 : 1.08 } }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          src={ev.img} 
+          alt={ev.title} 
+          className="w-full h-full object-cover" 
+        />
+        <motion.div 
+          whileHover={{ scale: 1.08 }}
+          className="absolute top-3 left-3 bg-deep-forest text-saffron-glow px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider shadow"
+        >
+          {ev.category}
+        </motion.div>
+      </div>
+
+      <div className="p-6 flex flex-col justify-between flex-1 space-y-6">
+        <div className="space-y-3">
+          <div className="space-y-1 text-xs font-mono text-primary">
+            <div className="flex items-center gap-1.5 font-bold">
+              <Calendar size={14} />
+              <span>{ev.date}</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-on-surface-variant">
+              <Clock size={14} />
+              <span>{ev.time}</span>
+            </div>
+          </div>
+
+          <h3 className="font-headline-sm text-lg font-bold text-deep-forest leading-snug group-hover:text-primary transition-colors">
+            <Link href={`/events/${ev.id}`} className="hover:underline">
+              {ev.title}
+            </Link>
+          </h3>
+
+          <p className="font-body-sm text-xs text-on-surface-variant leading-relaxed line-clamp-3">
+            {ev.desc}
+          </p>
+
+          <div className="pt-2 flex items-center justify-between">
+            <a 
+              href={ev.mapsUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="inline-flex items-center gap-1 text-xs font-medium text-deep-forest hover:text-primary transition-colors z-10"
+            >
+              <MapPin size={13} className="text-primary" />
+              <span className="line-clamp-1 underline">{ev.location}</span>
+              <ExternalLink size={11} />
+            </a>
+
+            <span className="text-xs font-bold text-primary flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+              View Details <ArrowRight size={13} />
+            </span>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function EventsPage() {
+  const router = useRouter();
   const rawReducedMotion = useReducedMotion();
   const [isMounted, setIsMounted] = useState(false);
   
@@ -215,9 +209,12 @@ export default function EventsPage() {
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
-  const filteredEvents = activeCategoryFilter === "All" 
-    ? FULL_EVENTS_LIST 
-    : FULL_EVENTS_LIST.filter(ev => ev.category === activeCategoryFilter || ev.category.includes(activeCategoryFilter));
+  const upcomingEvents = FULL_EVENTS_LIST.filter(ev => ev.date.includes("2026"));
+  const recentEvents = FULL_EVENTS_LIST.filter(ev => !ev.date.includes("2026"));
+
+  const filteredRecentEvents = activeCategoryFilter === "All" 
+    ? recentEvents 
+    : recentEvents.filter(ev => ev.category === activeCategoryFilter || ev.category.includes(activeCategoryFilter));
 
   // Animation Helper Variants reflecting prefers-reduced-motion
   const fadeUpVariant: Variants = {
@@ -575,89 +572,94 @@ export default function EventsPage() {
       </section>
 
       {/* ==========================================
-          SECTION 4 — EVENT CATEGORIES GRID (6 cards, 2x3)
+          SECTION 4 — UPCOMING & RECENT EVENTS
          ========================================== */}
-      <section className="py-24 px-6 md:px-12 max-w-7xl mx-auto w-full space-y-12">
-        <motion.div 
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={fadeUpVariant}
-          className="text-center max-w-2xl mx-auto space-y-3"
-        >
-          <h2 className="font-headline-md text-3xl sm:text-4xl font-bold text-deep-forest">
-            Our Key Event Categories
-          </h2>
-          <p className="font-body-md text-on-surface-variant text-sm sm:text-base">
-            Every gathering we organize is dedicated to upholding Dharma and uplifting underprivileged lives across rural and urban landscapes.
-          </p>
-        </motion.div>
+      <section id="full-events-list" className="py-24 px-6 md:px-12 max-w-7xl mx-auto w-full space-y-20 scroll-mt-24">
+        {/* Upcoming Events Block */}
+        <div className="space-y-8">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={fadeUpVariant}
+            className="border-b border-[#D9CBB0]/60 pb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4"
+          >
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary font-mono text-xs font-bold uppercase tracking-widest mb-2">
+                <Sparkles size={13} />
+                <span>Mark Your Calendar</span>
+              </div>
+              <h2 className="font-headline-md text-3xl sm:text-4xl font-bold text-deep-forest">
+                Upcoming Gatherings
+              </h2>
+            </div>
+            <p className="text-xs sm:text-sm text-on-surface-variant max-w-md">
+              Join us in our upcoming ceremonies and welfare drives across Tamil Nadu. Click any event to view the complete schedule, GPS venue map, and registration.
+            </p>
+          </motion.div>
 
-        <motion.div 
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.15 }}
-          variants={{
-            visible: { transition: { staggerChildren: 0.1 } }
-          }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
-          {EVENT_CATEGORIES.map((cat, idx) => (
-            <motion.div 
-              key={idx}
-              variants={cardFadeUpVariant}
-              whileHover={shouldReduceMotion ? {} : "hover"}
-              className="bg-white rounded-3xl overflow-hidden border border-[#D9CBB0]/50 shadow-sm hover:shadow-2xl transition-shadow flex flex-col group cursor-pointer"
-              onClick={() => scrollToSectionAndFilter(cat.filterTag)}
-            >
-              <motion.div 
-                variants={{ hover: { y: shouldReduceMotion ? 0 : -8 } }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="flex flex-col h-full bg-white rounded-3xl overflow-hidden"
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {upcomingEvents.map((ev, idx) => (
+              <EventCard key={ev.id} ev={ev} idx={idx} shouldReduceMotion={shouldReduceMotion} router={router} />
+            ))}
+          </div>
+        </div>
+
+        {/* Recent Events Block with Filter */}
+        <div className="space-y-8 pt-8">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={fadeUpVariant}
+            className="border-b border-[#D9CBB0]/60 pb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4"
+          >
+            <div>
+              <div className="text-xs font-mono font-bold text-primary uppercase tracking-widest mb-1">Impact Archive</div>
+              <h2 className="font-headline-md text-3xl sm:text-4xl font-bold text-deep-forest">
+                Recent Events & Welfare Drives
+              </h2>
+            </div>
+            <p className="text-xs sm:text-sm text-on-surface-variant max-w-md">
+              Explore our completed milestones in cultural restoration, tribal outreach, and student support across rural districts.
+            </p>
+          </motion.div>
+
+          {/* Filter Bar */}
+          <div className="flex flex-wrap items-center gap-2 pb-2">
+            {["All", "Temple & Heritage", "Cultural & Spiritual", "Welfare Drives", "Awards & Recognition", "Children & Education", "Women's Empowerment"].map((tag) => (
+              <motion.button
+                key={tag}
+                whileHover={shouldReduceMotion ? {} : { scale: 1.05 }}
+                whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400 }}
+                onClick={() => setActiveCategoryFilter(tag)}
+                className={`px-4 py-1.5 rounded-full text-xs font-label-md font-semibold transition-colors cursor-pointer ${
+                  activeCategoryFilter === tag 
+                    ? "bg-primary text-white shadow-md" 
+                    : "bg-white border border-[#D9CBB0]/80 text-on-surface-variant hover:border-primary hover:text-primary hover:shadow-sm"
+                }`}
               >
-                <div className="relative h-56 overflow-hidden bg-surface-container shrink-0">
-                  <motion.img 
-                    variants={{ hover: { scale: shouldReduceMotion ? 1 : 1.08 } }}
-                    transition={{ duration: 0.4, ease: "easeOut" }}
-                    src={cat.img} 
-                    alt={cat.title} 
-                    className="w-full h-full object-cover"
-                  />
-                  <motion.div 
-                    variants={{ hover: { scale: shouldReduceMotion ? 1 : 1.08, y: -2 } }}
-                    transition={{ type: "spring", stiffness: 400 }}
-                    className="absolute top-4 left-4 bg-deep-forest/95 text-saffron-glow px-3.5 py-1.5 rounded-full text-xs font-label-md font-bold tracking-wider uppercase shadow-md"
-                  >
-                    {cat.filterTag}
-                  </motion.div>
-                </div>
+                {tag === "All" ? "All Categories" : tag}
+              </motion.button>
+            ))}
+          </div>
 
-                <div className="p-6 sm:p-8 flex flex-col flex-1 justify-between space-y-6">
-                  <div className="space-y-3">
-                    <h3 className="font-heading text-lg sm:text-xl font-bold text-deep-forest group-hover:text-primary transition-colors">
-                      {cat.title}
-                    </h3>
-                    <p className="font-body text-on-surface-variant text-sm leading-relaxed">
-                      {cat.desc}
-                    </p>
-                  </div>
-
-                  {/* Consistent Outline Button -> Solid on Hover with Icon Shift */}
-                  <motion.button 
-                    whileHover="btnHover"
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full py-3 rounded-full border-[1.5px] border-primary text-primary group-hover:bg-primary group-hover:text-white font-label-lg font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-sm group-hover:shadow"
-                  >
-                    <span>View Events</span>
-                    <motion.span variants={{ btnHover: { x: shouldReduceMotion ? 0 : 6 }, hover: { x: shouldReduceMotion ? 0 : 6 } }} transition={{ type: "spring", stiffness: 400 }}>
-                      <ArrowRight size={16} />
-                    </motion.span>
-                  </motion.button>
-                </div>
-              </motion.div>
+          <AnimatePresence mode="popLayout">
+            <motion.div 
+              key={activeCategoryFilter}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, transition: { duration: 0.15 } }}
+              transition={{ duration: 0.3 }}
+              className="grid grid-cols-1 md:grid-cols-2 gap-8"
+            >
+              {filteredRecentEvents.map((ev, idx) => (
+                <EventCard key={ev.id} ev={ev} idx={idx} shouldReduceMotion={shouldReduceMotion} router={router} />
+              ))}
             </motion.div>
-          ))}
-        </motion.div>
+          </AnimatePresence>
+        </div>
       </section>
 
       {/* ==========================================
@@ -1062,124 +1064,6 @@ export default function EventsPage() {
 
           </div>
         </div>
-      </section>
-
-      {/* ==========================================
-          SECTION 8 — FULL EVENTS LISTING
-         ========================================== */}
-      <section id="full-events-list" className="py-24 px-6 md:px-12 max-w-7xl mx-auto w-full space-y-12 scroll-mt-24">
-        <motion.div 
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={fadeUpVariant}
-          className="border-b border-[#D9CBB0]/60 pb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4"
-        >
-          <div>
-            <div className="text-xs font-mono font-bold text-primary uppercase tracking-widest mb-1">Complete Schedule</div>
-            <h2 className="font-headline-md text-3xl sm:text-4xl font-bold text-deep-forest">
-              All Upcoming & Recent Events
-            </h2>
-          </div>
-          <p className="text-xs text-on-surface-variant max-w-sm">
-            Explore our verified schedule of gatherings across Tamil Nadu. Click any venue location to view direct routes on Google Maps.
-          </p>
-        </motion.div>
-
-        {/* Filter Bar */}
-        <div className="flex flex-wrap items-center gap-2 pb-4">
-          {["All", "Temple & Heritage", "Cultural & Spiritual", "Welfare Drives", "Awards & Recognition", "Children & Education", "Women's Empowerment"].map((tag) => (
-            <motion.button
-              key={tag}
-              whileHover={shouldReduceMotion ? {} : { scale: 1.05 }}
-              whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 400 }}
-              onClick={() => setActiveCategoryFilter(tag)}
-              className={`px-4 py-1.5 rounded-full text-xs font-label-md font-semibold transition-colors cursor-pointer ${
-                activeCategoryFilter === tag 
-                  ? "bg-primary text-white shadow-md" 
-                  : "bg-white border border-[#D9CBB0]/80 text-on-surface-variant hover:border-primary hover:text-primary hover:shadow-sm"
-              }`}
-            >
-              {tag === "All" ? "All Categories" : tag}
-            </motion.button>
-          ))}
-        </div>
-
-        <AnimatePresence mode="popLayout">
-          <motion.div 
-            key={activeCategoryFilter}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.15 } }}
-            transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-8"
-          >
-            {filteredEvents.map((ev, idx) => (
-              <motion.div 
-                key={ev.id} 
-                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.15 }}
-                whileHover={shouldReduceMotion ? {} : { scale: 1.02, y: -6 }}
-                transition={{ duration: 0.5, delay: idx * 0.1, ease: "easeOut" }}
-                className="bg-white rounded-3xl border border-[#D9CBB0]/60 overflow-hidden shadow-md hover:shadow-2xl transition-shadow flex flex-col sm:flex-row group cursor-pointer"
-              >
-                <div className="sm:w-2/5 h-56 sm:h-auto relative overflow-hidden bg-surface-container shrink-0">
-                  <motion.img 
-                    variants={{ hover: { scale: shouldReduceMotion ? 1 : 1.08 } }}
-                    transition={{ duration: 0.4, ease: "easeOut" }}
-                    src={ev.img} 
-                    alt={ev.title} 
-                    className="w-full h-full object-cover" 
-                  />
-                  <motion.div 
-                    whileHover={{ scale: 1.08 }}
-                    className="absolute top-3 left-3 bg-deep-forest text-saffron-glow px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider shadow"
-                  >
-                    {ev.category}
-                  </motion.div>
-                </div>
-
-                <div className="p-6 flex flex-col justify-between flex-1 space-y-6">
-                  <div className="space-y-3">
-                    <div className="space-y-1 text-xs font-mono text-primary">
-                      <div className="flex items-center gap-1.5 font-bold">
-                        <Calendar size={14} />
-                        <span>{ev.date}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-on-surface-variant">
-                        <Clock size={14} />
-                        <span>{ev.time}</span>
-                      </div>
-                    </div>
-
-                    <h3 className="font-headline-sm text-lg font-bold text-deep-forest leading-snug group-hover:text-primary transition-colors">
-                      {ev.title}
-                    </h3>
-
-                    <p className="font-body-sm text-xs text-on-surface-variant leading-relaxed">
-                      {ev.desc}
-                    </p>
-
-                    <div className="pt-2">
-                      <a 
-                        href={ev.mapsUrl} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-xs font-medium text-deep-forest hover:text-primary transition-colors"
-                      >
-                        <MapPin size={13} className="text-primary" />
-                        <span className="line-clamp-1 underline">{ev.location}</span>
-                        <ExternalLink size={11} />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
       </section>
 
     </div>
