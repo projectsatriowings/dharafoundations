@@ -5,6 +5,9 @@
 :root {
   --background: #fbf9f4;
   --foreground: #1b1c19;
+  --font-heading: 'Roboto Slab', serif;
+  --font-title: 'Montserrat', sans-serif;
+  --font-body: 'Montserrat', sans-serif;
 }
 
 @theme {
@@ -60,14 +63,18 @@
   --color-ethereal-white: #FFFFFF;
   --color-saffron-glow: #FFD27F;
 
-  --font-display-lg: var(--font-playfair), serif;
-  --font-display-lg-mobile: var(--font-playfair), serif;
-  --font-headline-md: var(--font-playfair), serif;
-  --font-headline-sm: var(--font-playfair), serif;
-  --font-body-lg: var(--font-jakarta), sans-serif;
-  --font-body-md: var(--font-jakarta), sans-serif;
-  --font-label-lg: var(--font-jakarta), sans-serif;
-  --font-caption: var(--font-jakarta), sans-serif;
+  --font-heading: var(--font-heading), serif;
+  --font-title: var(--font-title), sans-serif;
+  --font-body: var(--font-body), sans-serif;
+
+  --font-display-lg: var(--font-heading), serif;
+  --font-display-lg-mobile: var(--font-heading), serif;
+  --font-headline-md: var(--font-heading), serif;
+  --font-headline-sm: var(--font-heading), serif;
+  --font-body-lg: var(--font-body), sans-serif;
+  --font-body-md: var(--font-body), sans-serif;
+  --font-label-lg: var(--font-title), sans-serif;
+  --font-caption: var(--font-title), sans-serif;
 
   --radius-card: 24px;
   --spacing-gutter: 24px;
@@ -86,6 +93,35 @@ body {
   background: var(--background);
   color: var(--foreground);
   overflow-x: hidden;
+  font-family: var(--font-body);
+  font-weight: 400;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+}
+
+h3 {
+  font-weight: 600;
+}
+
+nav a, button, .card-title, .form-label, .eyebrow-label, footer h4 {
+  font-family: var(--font-title);
+  font-weight: 500;
+}
+
+.eyebrow-label {
+  font-family: var(--font-title);
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+p, li, input, textarea {
+  font-family: var(--font-body);
+  font-weight: 400;
 }
 
 .parallax-bg {

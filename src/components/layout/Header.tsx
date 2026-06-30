@@ -11,14 +11,24 @@ type DropdownItem = {
   desc?: string;
 };
 
+type PopupInfo = {
+  badge: string;
+  desc: string;
+};
+
 type NavLink = {
   href: string;
   label: string;
   dropdown?: DropdownItem[];
+  popup?: PopupInfo;
 };
 
 const NAV_LINKS: NavLink[] = [
-  { href: "/", label: "Home" },
+  { 
+    href: "/", 
+    label: "Home",
+    popup: { badge: "Sanatana Dharma", desc: "Reviving heritage & elevating communities across Tamil Nadu." }
+  },
   {
     label: "About Us",
     href: "/about",
@@ -28,12 +38,36 @@ const NAV_LINKS: NavLink[] = [
       { href: "/founder-message", label: "Founder's Message", desc: "Words of leadership & wisdom" },
     ],
   },
-  { href: "/programs", label: "Programs" },
-  { href: "/events", label: "Events" },
-  { href: "/news", label: "News & Media" },
-  { href: "/gallery", label: "Gallery" },
-  { href: "/partnership", label: "Partnership" },
-  { href: "/contact", label: "Contact Us" },
+  { 
+    href: "/programs", 
+    label: "Programs",
+    popup: { badge: "6 Core Pillars", desc: "Temple Restoration, Annadanam, Education & Spiritual Welfare." }
+  },
+  { 
+    href: "/events", 
+    label: "Events",
+    popup: { badge: "Complete Schedule", desc: "Discover upcoming heritage discourses & community gatherings." }
+  },
+  { 
+    href: "/news", 
+    label: "News & Media",
+    popup: { badge: "Press & Impact", desc: "Read recent announcements, articles, and field reports." }
+  },
+  { 
+    href: "/gallery", 
+    label: "Gallery",
+    popup: { badge: "Visual Chronicles", desc: "Witness ancient architectural revival & volunteer service." }
+  },
+  { 
+    href: "/partnership", 
+    label: "Partnership",
+    popup: { badge: "Collaborate", desc: "CSR alliances, temple patronage, and institutional support." }
+  },
+  { 
+    href: "/contact", 
+    label: "Contact Us",
+    popup: { badge: "Get In Touch", desc: "Reach our offices in Chennai & Tiruvannamalai or inquire online." }
+  },
 ];
 
 export function Header() {
@@ -188,39 +222,72 @@ export function Header() {
             }
 
             return (
-              <Link
+              <div
                 key={link.href}
-                href={link.href}
-                className={`relative px-4 py-2 rounded-full transition-all text-sm xl:text-base ${
-                  isTopActive
-                    ? isTransparentHero
-                      ? "bg-white/20 text-saffron-glow font-bold"
-                      : "bg-primary/10 dark:bg-saffron-glow/15 text-primary dark:text-saffron-glow font-bold"
-                    : isTransparentHero
-                    ? "text-white/90 hover:text-saffron-glow hover:bg-white/10 font-semibold"
-                    : "text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow hover:bg-surface-container/50 font-semibold"
-                }`}
+                className="relative py-1 group/item"
+                onMouseEnter={() => setHoveredDropdown(link.label)}
+                onMouseLeave={() => setHoveredDropdown(null)}
               >
-                {link.label}
-                {isTopActive && (
-                  <motion.div
-                    layoutId="lamp-desktop"
-                    className="absolute inset-0 w-full bg-primary/5 dark:bg-saffron-glow/5 rounded-full -z-10"
-                    initial={false}
-                    transition={{
-                      type: "spring",
-                      stiffness: 300,
-                      damping: 30,
-                    }}
-                  >
-                    <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-8 h-1 bg-primary dark:bg-saffron-glow rounded-t-full">
-                      <div className="absolute w-12 h-6 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-md -top-2 -left-2" />
-                      <div className="absolute w-8 h-6 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-md -top-1" />
-                      <div className="absolute w-4 h-4 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-sm top-0 left-2" />
-                    </div>
-                  </motion.div>
-                )}
-              </Link>
+                <Link
+                  href={link.href}
+                  className={`relative inline-block px-4 py-2 rounded-full transition-all text-sm xl:text-base hover:-translate-y-0.5 ${
+                    isTopActive
+                      ? isTransparentHero
+                        ? "bg-white/20 text-saffron-glow font-bold"
+                        : "bg-primary/10 dark:bg-saffron-glow/15 text-primary dark:text-saffron-glow font-bold"
+                      : isTransparentHero
+                      ? "text-white/90 hover:text-saffron-glow hover:bg-white/10 font-semibold"
+                      : "text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow hover:bg-surface-container/50 font-semibold"
+                  }`}
+                >
+                  {link.label}
+                  {isTopActive && (
+                    <motion.div
+                      layoutId="lamp-desktop"
+                      className="absolute inset-0 w-full bg-primary/5 dark:bg-saffron-glow/5 rounded-full -z-10"
+                      initial={false}
+                      transition={{
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 30,
+                      }}
+                    >
+                      <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-8 h-1 bg-primary dark:bg-saffron-glow rounded-t-full">
+                        <div className="absolute w-12 h-6 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-md -top-2 -left-2" />
+                        <div className="absolute w-8 h-6 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-md -top-1" />
+                        <div className="absolute w-4 h-4 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-sm top-0 left-2" />
+                      </div>
+                    </motion.div>
+                  )}
+                </Link>
+
+                <AnimatePresence>
+                  {hoveredDropdown === link.label && link.popup && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 12, scale: 0.94 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 8, scale: 0.94 }}
+                      transition={{ type: "spring", stiffness: 380, damping: 25 }}
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-60 bg-surface-container-lowest/95 dark:bg-deep-forest/95 backdrop-blur-2xl rounded-2xl shadow-xl border border-outline-variant/30 p-3.5 z-50 pointer-events-none"
+                    >
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-primary/10 text-primary dark:bg-saffron-glow/15 dark:text-saffron-glow">
+                          {link.popup.badge}
+                        </span>
+                        <span className="material-symbols-outlined text-sm text-primary dark:text-saffron-glow">
+                          arrow_forward
+                        </span>
+                      </div>
+                      <div className="text-xs font-bold text-on-surface dark:text-ethereal-white mb-1">
+                        {link.label}
+                      </div>
+                      <div className="text-[11px] leading-relaxed text-on-surface-variant/90 dark:text-surface-variant/90 font-normal">
+                        {link.popup.desc}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             );
           })}
         </nav>

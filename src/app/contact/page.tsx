@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { ScrollReveal, RevealItem } from "@/components/motion/ScrollReveal";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 const contactSchema = z.object({
   firstName: z.string().min(1, "First Name is required"),
@@ -55,286 +55,296 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="flex flex-col relative w-full overflow-hidden bg-background">
-      {/* Hero Section */}
-      <section className="relative pt-24 pb-16 px-margin-mobile md:px-margin-desktop overflow-hidden flex items-center justify-center min-h-[380px]">
-        <div className="absolute inset-0 z-0 bg-gradient-to-b from-surface-container-high/40 via-surface-container-low/20 to-background" />
-        <ScrollReveal className="relative z-10 text-center max-w-3xl mx-auto space-y-4">
-          <h1 className="font-display-lg-mobile md:font-display-lg text-primary font-bold">
-            Get in Touch
-          </h1>
-          <p className="font-body-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed text-lg">
-            We welcome your inquiries, partnerships, and support. Reach out to us to learn more about our initiatives and how you can contribute to a better tomorrow.
-          </p>
-        </ScrollReveal>
-      </section>
+    <div className="min-h-screen bg-background pt-32 pb-24 px-4 sm:px-8 lg:px-16 overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        
+        {/* ROW 1: "Contact us" & Form on Left | Tall Editorial Photo Collage on Right */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start mb-24">
+          
+          {/* LEFT COLUMN: Heading & Clean Form (lg:col-span-6) */}
+          <ScrollReveal className="lg:col-span-6 space-y-8 pt-2">
+            <div>
+              <div className="eyebrow-label text-primary font-bold mb-3">ONLINE INQUIRY</div>
+              <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold text-deep-forest dark:text-ethereal-white">
+                Contact us
+              </h1>
+            </div>
 
-      {/* Main Content Area */}
-      <section className="py-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 mb-20">
-        {/* Contact Info & Map (Left Column) */}
-        <ScrollReveal staggerChildren={0.15} className="lg:col-span-5 flex flex-col gap-8">
-          {/* Info Card */}
-          <RevealItem>
-            <div className="modern-card bg-surface-container-lowest rounded-[24px] p-8 shadow-soft hover:shadow-soft-hover border border-outline-variant/20 transition-all duration-300">
-              <h2 className="font-headline-md text-deep-forest font-bold text-2xl mb-6">
-                Contact Information
-              </h2>
-              <div className="flex flex-col gap-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-saffron-glow/25 flex items-center justify-center text-primary shrink-0 shadow-sm">
-                    <span className="material-symbols-outlined text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>
-                      location_on
-                    </span>
-                  </div>
-                  <div>
-                    <h3 className="font-label-lg font-bold text-on-surface mb-1 text-base">Our Office</h3>
-                    <p className="font-body-md text-on-surface-variant leading-relaxed text-sm">
-                      No 44A, 3rd Street, Judge Colony, <br />
-                      Tambaram Sanatorium, Chennai, <br />
-                      Tamil Nadu - 600047 India
-                    </p>
-                  </div>
+            {isSubmitted ? (
+              <div className="py-12 space-y-6 animate-fade-in bg-surface-container-low p-8 rounded-3xl border border-outline-variant/30">
+                <div className="w-16 h-16 bg-primary/20 text-primary rounded-full flex items-center justify-center shadow-sm">
+                  <span className="material-symbols-outlined text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>
+                    check_circle
+                  </span>
                 </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-saffron-glow/25 flex items-center justify-center text-primary shrink-0 shadow-sm">
-                    <span className="material-symbols-outlined text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>
-                      mail
-                    </span>
-                  </div>
-                  <div>
-                    <h3 className="font-label-lg font-bold text-on-surface mb-1 text-base">Email Us</h3>
-                    <a href="mailto:info@dharafoundations.in" className="font-body-md text-primary hover:text-deep-forest transition-colors font-medium text-sm">
-                      info@dharafoundations.in
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-saffron-glow/25 flex items-center justify-center text-primary shrink-0 shadow-sm">
-                    <span className="material-symbols-outlined text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>
-                      call
-                    </span>
-                  </div>
-                  <div>
-                    <h3 className="font-label-lg font-bold text-on-surface mb-1 text-base">Call Us</h3>
-                    <a href="tel:04422236641" className="font-body-md text-on-surface-variant hover:text-primary transition-colors font-medium text-sm">
-                      044-22236641
-                    </a>
-                  </div>
-                </div>
+                <h3 className="font-heading text-2xl sm:text-3xl font-bold text-deep-forest dark:text-ethereal-white">
+                  Message Sent Successfully!
+                </h3>
+                <p className="font-body text-on-surface-variant leading-relaxed">
+                  Thank you for reaching out. Our team will review your inquiry and connect with you promptly.
+                </p>
+                <button
+                  onClick={() => setIsSubmitted(false)}
+                  className="px-8 py-3.5 bg-deep-forest text-white rounded-full font-title font-medium shadow hover:bg-primary transition-all cursor-pointer"
+                >
+                  Send Another Message
+                </button>
               </div>
+            ) : (
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 pt-2" noValidate>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {/* First Name */}
+                  <div className="space-y-2">
+                    <label htmlFor="firstName" className="block font-title font-medium text-on-surface text-sm">
+                      First Name*
+                    </label>
+                    <input
+                      id="firstName"
+                      type="text"
+                      placeholder="Ram"
+                      {...register("firstName")}
+                      className={`w-full bg-white dark:bg-surface-container border px-4 py-3.5 font-body text-on-surface rounded-xl focus:outline-none transition-all duration-200 ${
+                        errors.firstName
+                          ? "border-red-500 bg-red-500/5"
+                          : "border-outline-variant/60 focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-sm"
+                      }`}
+                    />
+                    {errors.firstName && (
+                      <p className="text-red-600 text-xs font-semibold">{errors.firstName.message}</p>
+                    )}
+                  </div>
 
-              <hr className="my-8 border-outline-variant/20" />
-
-              <div>
-                <h3 className="font-label-lg font-bold text-on-surface mb-4 text-base">Follow Our Journey</h3>
-                <div className="flex gap-3">
-                  {["public", "share", "groups"].map((icon, i) => (
-                    <a
-                      key={i}
-                      href="#"
-                      className="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-deep-forest hover:bg-primary hover:text-ethereal-white hover:border-primary transition-all duration-300 shadow-sm"
-                    >
-                      <span className="material-symbols-outlined text-xl">{icon}</span>
-                    </a>
-                  ))}
+                  {/* Last Name */}
+                  <div className="space-y-2">
+                    <label htmlFor="lastName" className="block font-title font-medium text-on-surface text-sm">
+                      Last Name*
+                    </label>
+                    <input
+                      id="lastName"
+                      type="text"
+                      placeholder="Kumar"
+                      {...register("lastName")}
+                      className={`w-full bg-white dark:bg-surface-container border px-4 py-3.5 font-body text-on-surface rounded-xl focus:outline-none transition-all duration-200 ${
+                        errors.lastName
+                          ? "border-red-500 bg-red-500/5"
+                          : "border-outline-variant/60 focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-sm"
+                      }`}
+                    />
+                    {errors.lastName && (
+                      <p className="text-red-600 text-xs font-semibold">{errors.lastName.message}</p>
+                    )}
+                  </div>
                 </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {/* Email */}
+                  <div className="space-y-2">
+                    <label htmlFor="email" className="block font-title font-medium text-on-surface text-sm">
+                      Email Address*
+                    </label>
+                    <input
+                      id="email"
+                      type="email"
+                      placeholder="email@example.com"
+                      {...register("email")}
+                      className={`w-full bg-white dark:bg-surface-container border px-4 py-3.5 font-body text-on-surface rounded-xl focus:outline-none transition-all duration-200 ${
+                        errors.email
+                          ? "border-red-500 bg-red-500/5"
+                          : "border-outline-variant/60 focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-sm"
+                      }`}
+                    />
+                    {errors.email && (
+                      <p className="text-red-600 text-xs font-semibold">{errors.email.message}</p>
+                    )}
+                  </div>
+
+                  {/* Phone */}
+                  <div className="space-y-2">
+                    <label htmlFor="phone" className="block font-title font-medium text-on-surface text-sm">
+                      Mobile Number*
+                    </label>
+                    <input
+                      id="phone"
+                      type="tel"
+                      placeholder="+91 98765 43210"
+                      {...register("phone")}
+                      className="w-full bg-white dark:bg-surface-container border border-outline-variant/60 px-4 py-3.5 font-body text-on-surface rounded-xl focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 shadow-sm"
+                    />
+                  </div>
+                </div>
+
+                {/* Subject Dropdown */}
+                <div className="space-y-2">
+                  <label htmlFor="subject" className="block font-title font-medium text-on-surface text-sm">
+                    Inquiry Subject*
+                  </label>
+                  <select
+                    id="subject"
+                    {...register("subject")}
+                    defaultValue=""
+                    className={`w-full bg-white dark:bg-surface-container border px-4 py-3.5 font-body text-on-surface rounded-xl focus:outline-none transition-all duration-200 cursor-pointer ${
+                      errors.subject
+                        ? "border-red-500 bg-red-500/5"
+                        : "border-outline-variant/60 focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-sm"
+                    }`}
+                  >
+                    <option value="" disabled>
+                      Select an inquiry type...
+                    </option>
+                    <option value="donation">Donation Inquiry</option>
+                    <option value="volunteer">Volunteer Opportunities</option>
+                    <option value="partnership">Partnership</option>
+                    <option value="other">Other</option>
+                  </select>
+                  {errors.subject && (
+                    <p className="text-red-600 text-xs font-semibold">{errors.subject.message}</p>
+                  )}
+                </div>
+
+                {/* Message Textarea */}
+                <div className="space-y-2">
+                  <label htmlFor="message" className="block font-title font-medium text-on-surface text-sm">
+                    Message
+                  </label>
+                  <textarea
+                    id="message"
+                    rows={4}
+                    placeholder="Write your message here..."
+                    {...register("message")}
+                    className={`w-full bg-white dark:bg-surface-container border px-4 py-3.5 font-body text-on-surface rounded-xl focus:outline-none transition-all duration-200 resize-none ${
+                      errors.message
+                        ? "border-red-500 bg-red-500/5"
+                        : "border-outline-variant/60 focus:border-primary focus:shadow-[0_4px_12px_rgba(138,80,0,0.1)]"
+                    }`}
+                  />
+                  {errors.message && (
+                    <p className="text-red-600 text-xs font-semibold">{errors.message.message}</p>
+                  )}
+                </div>
+
+                {/* Submit Button aligned clean */}
+                <div className="pt-4 flex justify-end sm:justify-start">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="px-10 py-4 bg-deep-forest dark:bg-primary text-white rounded-xl font-title font-medium shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-70 disabled:pointer-events-none cursor-pointer text-base select-none min-w-[180px]"
+                  >
+                    <span>{isSubmitting ? "Submitting..." : "Submit"}</span>
+                    <span className={`material-symbols-outlined text-xl ${isSubmitting ? "animate-spin" : ""}`} style={{ fontVariationSettings: "'FILL' 1" }}>
+                      {isSubmitting ? "sync" : "arrow_forward"}
+                    </span>
+                  </button>
+                </div>
+              </form>
+            )}
+          </ScrollReveal>
+
+          {/* RIGHT COLUMN: Layered Editorial Photo Collage (lg:col-span-6) */}
+          <ScrollReveal direction="left" className="lg:col-span-6 relative flex justify-end">
+            {/* Dark background panel breaking out behind top-right of photo matching reference */}
+            <div className="absolute -top-8 -right-4 sm:-right-8 lg:-right-12 w-4/5 h-2/3 bg-deep-forest dark:bg-deep-forest/80 rounded-3xl -z-10 shadow-lg" />
+            
+            {/* Main architectural/heritage photo */}
+            <div className="relative w-full lg:w-[92%] h-[460px] sm:h-[580px] rounded-3xl overflow-hidden shadow-2xl border border-outline-variant/30 bg-surface-container group">
+              {/* [CLIENT TO SUPPLY OFFICE PHOTO] */}
+              <img
+                src="/images/about.png"
+                alt="Dhara Foundations Headquarters & Heritage"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute bottom-6 left-6 right-6 bg-deep-forest/90 backdrop-blur-md text-ethereal-white p-4 rounded-2xl border border-white/10 shadow-lg flex items-center justify-between">
+                <div>
+                  <p className="text-xs font-title font-medium text-saffron-glow uppercase tracking-wider">Central Office</p>
+                  <p className="text-sm font-body font-medium">Tambaram Sanatorium, Chennai</p>
+                </div>
+                <span className="material-symbols-outlined text-saffron-glow text-2xl">verified</span>
               </div>
             </div>
-          </RevealItem>
+          </ScrollReveal>
+        </div>
 
-          {/* Map Container */}
-          <RevealItem>
-            <div className="modern-card bg-surface-container-low rounded-[24px] overflow-hidden h-[300px] border border-outline-variant/20 relative shadow-soft group">
+        {/* ROW 2: Map on Left | Editorial Address Typography Block on Right */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center pt-16 border-t border-outline-variant/30">
+          
+          {/* LEFT COLUMN: Map Embed (lg:col-span-6) */}
+          <ScrollReveal className="lg:col-span-6">
+            <div className="w-full h-[360px] sm:h-[420px] rounded-3xl overflow-hidden shadow-xl border border-outline-variant/30 relative group bg-surface-container-low">
               <iframe
                 title="Dhara Foundations Location"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.756285497424!2d80.1260!3d12.9249!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a525f168019a845%3A0x1b41c0a0c648780!2sTambaram%20Sanatorium%2C%20Chennai%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
-                className="w-full h-full border-0 grayscale-30 contrast-125 group-hover:grayscale-0 transition-all duration-700"
+                className="w-full h-full border-0 grayscale contrast-125 group-hover:grayscale-0 transition-all duration-700"
                 allowFullScreen={false}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />
+              <div className="absolute top-4 right-4 bg-white/95 dark:bg-deep-forest/95 backdrop-blur-md px-4 py-2 rounded-xl border border-outline-variant/30 shadow-md flex items-center gap-2.5">
+                <div className="w-2.5 h-2.5 rounded-full bg-primary animate-ping" />
+                <span className="text-xs font-title font-medium text-deep-forest dark:text-saffron-glow">
+                  Tambaram Sanatorium Office
+                </span>
+              </div>
             </div>
-          </RevealItem>
-        </ScrollReveal>
+          </ScrollReveal>
 
-        {/* Contact Form (Right Column) */}
-        <ScrollReveal direction="left" className="lg:col-span-7">
-          <div className="modern-card bg-surface-container-lowest rounded-[24px] p-8 md:p-12 shadow-soft hover:shadow-soft-hover border border-outline-variant/20 relative overflow-hidden h-full flex flex-col justify-center">
-            {/* Decorative subtle blobs */}
-            <div className="absolute -top-24 -right-24 w-64 h-64 bg-saffron-glow/15 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-secondary-container/30 rounded-full blur-3xl pointer-events-none" />
+          {/* RIGHT COLUMN: Editorial Address Block matching Reference Image 1 (lg:col-span-6) */}
+          <ScrollReveal direction="up" className="lg:col-span-6 space-y-6 lg:pl-6">
+            <div className="eyebrow-label text-primary font-bold">
+              ADDRESS
+            </div>
 
-            <div className="relative z-10">
-              {isSubmitted ? (
-                <div className="text-center py-16 space-y-6 animate-fade-in">
-                  <div className="w-20 h-20 bg-saffron-glow/30 text-primary rounded-full flex items-center justify-center mx-auto shadow-md">
-                    <span className="material-symbols-outlined text-4xl" style={{ fontVariationSettings: "'FILL' 1" }}>
-                      check_circle
-                    </span>
-                  </div>
-                  <h3 className="font-headline-md text-3xl font-bold text-deep-forest">
-                    Message Sent Successfully!
-                  </h3>
-                  <p className="font-body-lg text-on-surface-variant max-w-md mx-auto">
-                    Thank you for reaching out. Our team will review your message and connect with you promptly.
-                  </p>
-                  <button
-                    onClick={() => setIsSubmitted(false)}
-                    className="px-8 py-3.5 bg-primary text-on-primary rounded-full font-bold shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer"
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-deep-forest dark:text-ethereal-white leading-tight">
+              Dhara Foundations Trust Office
+            </h2>
+
+            <div className="space-y-1.5 font-body text-on-surface-variant text-base sm:text-lg leading-relaxed">
+              <p className="font-title font-medium text-on-surface dark:text-ethereal-white">
+                No 44A, 3rd Street, Judge Colony
+              </p>
+              <p>Tambaram Sanatorium, Chennai</p>
+              <p>Tamil Nadu - 600047, India</p>
+            </div>
+
+            <hr className="border-outline-variant/30 my-6 max-w-sm" />
+
+            <div className="space-y-3 font-title text-base sm:text-lg">
+              <div className="flex items-center gap-3">
+                <span className="text-on-surface-variant w-16">Email —</span>
+                <a
+                  href="mailto:info@dharafoundations.in"
+                  className="font-medium text-primary hover:underline"
+                >
+                  info@dharafoundations.in
+                </a>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-on-surface-variant w-16">Phone —</span>
+                <a
+                  href="tel:04422236641"
+                  className="font-medium text-on-surface dark:text-ethereal-white hover:text-primary transition-colors"
+                >
+                  044-22236641
+                </a>
+              </div>
+            </div>
+
+            <div className="pt-4 flex items-center gap-4">
+              <span className="font-title text-sm font-medium text-on-surface-variant">Connect with us:</span>
+              <div className="flex gap-2.5">
+                {["public", "share", "groups"].map((icon, i) => (
+                  <a
+                    key={i}
+                    href="#"
+                    className="w-10 h-10 rounded-full border border-outline-variant/60 flex items-center justify-center text-deep-forest dark:text-ethereal-white hover:bg-primary hover:text-white transition-all duration-300 shadow-sm"
                   >
-                    Send Another Message
-                  </button>
-                </div>
-              ) : (
-                <>
-                  <h2 className="font-headline-md text-3xl font-bold text-deep-forest mb-2">Send a Message</h2>
-                  <p className="font-body-md text-on-surface-variant mb-8 text-base">
-                    Fill out the form below and our team will get back to you promptly.
-                  </p>
-
-                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" noValidate>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {/* First Name */}
-                      <div className="space-y-1.5">
-                        <label htmlFor="firstName" className="block font-bold text-on-surface text-sm">
-                          First Name <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          id="firstName"
-                          type="text"
-                          placeholder="Ram"
-                          {...register("firstName")}
-                          className={`w-full bg-surface-container-low border-0 border-b-2 px-4 py-3 font-body-md text-on-surface focus:outline-none transition-all duration-300 rounded-t-lg ${
-                            errors.firstName ? "border-red-500 bg-red-500/5" : "border-outline-variant focus:border-primary focus:shadow-[0_4px_12px_rgba(138,80,0,0.1)]"
-                          }`}
-                        />
-                        {errors.firstName && (
-                          <p className="text-red-600 text-xs font-semibold">{errors.firstName.message}</p>
-                        )}
-                      </div>
-
-                      {/* Last Name */}
-                      <div className="space-y-1.5">
-                        <label htmlFor="lastName" className="block font-bold text-on-surface text-sm">
-                          Last Name <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          id="lastName"
-                          type="text"
-                          placeholder="Kumar"
-                          {...register("lastName")}
-                          className={`w-full bg-surface-container-low border-0 border-b-2 px-4 py-3 font-body-md text-on-surface focus:outline-none transition-all duration-300 rounded-t-lg ${
-                            errors.lastName ? "border-red-500 bg-red-500/5" : "border-outline-variant focus:border-primary focus:shadow-[0_4px_12px_rgba(138,80,0,0.1)]"
-                          }`}
-                        />
-                        {errors.lastName && (
-                          <p className="text-red-600 text-xs font-semibold">{errors.lastName.message}</p>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {/* Email */}
-                      <div className="space-y-1.5">
-                        <label htmlFor="email" className="block font-bold text-on-surface text-sm">
-                          Email Address <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          id="email"
-                          type="email"
-                          placeholder="ram@example.com"
-                          {...register("email")}
-                          className={`w-full bg-surface-container-low border-0 border-b-2 px-4 py-3 font-body-md text-on-surface focus:outline-none transition-all duration-300 rounded-t-lg ${
-                            errors.email ? "border-red-500 bg-red-500/5" : "border-outline-variant focus:border-primary focus:shadow-[0_4px_12px_rgba(138,80,0,0.1)]"
-                          }`}
-                        />
-                        {errors.email && (
-                          <p className="text-red-600 text-xs font-semibold">{errors.email.message}</p>
-                        )}
-                      </div>
-
-                      {/* Phone */}
-                      <div className="space-y-1.5">
-                        <label htmlFor="phone" className="block font-bold text-on-surface text-sm">
-                          Phone Number (Optional)
-                        </label>
-                        <input
-                          id="phone"
-                          type="tel"
-                          placeholder="+91 98765 43210"
-                          {...register("phone")}
-                          className="w-full bg-surface-container-low border-0 border-b-2 border-outline-variant px-4 py-3 font-body-md text-on-surface focus:outline-none focus:border-primary focus:shadow-[0_4px_12px_rgba(138,80,0,0.1)] transition-all duration-300 rounded-t-lg"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Subject Dropdown */}
-                    <div className="space-y-1.5">
-                      <label htmlFor="subject" className="block font-bold text-on-surface text-sm">
-                        Subject <span className="text-red-500">*</span>
-                      </label>
-                      <select
-                        id="subject"
-                        {...register("subject")}
-                        defaultValue=""
-                        className={`w-full bg-surface-container-low border-0 border-b-2 px-4 py-3 font-body-md text-on-surface focus:outline-none transition-all duration-300 rounded-t-lg cursor-pointer ${
-                          errors.subject ? "border-red-500 bg-red-500/5" : "border-outline-variant focus:border-primary focus:shadow-[0_4px_12px_rgba(138,80,0,0.1)]"
-                        }`}
-                      >
-                        <option value="" disabled>
-                          Select an inquiry type...
-                        </option>
-                        <option value="donation">Donation Inquiry</option>
-                        <option value="volunteer">Volunteer Opportunities</option>
-                        <option value="partnership">Partnership</option>
-                        <option value="other">Other</option>
-                      </select>
-                      {errors.subject && (
-                        <p className="text-red-600 text-xs font-semibold">{errors.subject.message}</p>
-                      )}
-                    </div>
-
-                    {/* Message Textarea */}
-                    <div className="space-y-1.5">
-                      <label htmlFor="message" className="block font-bold text-on-surface text-sm">
-                        Message <span className="text-red-500">*</span>
-                      </label>
-                      <textarea
-                        id="message"
-                        rows={4}
-                        placeholder="How can we help you?"
-                        {...register("message")}
-                        className={`w-full bg-surface-container-low border-0 border-b-2 px-4 py-3 font-body-md text-on-surface focus:outline-none transition-all duration-300 rounded-t-lg resize-none ${
-                          errors.message ? "border-red-500 bg-red-500/5" : "border-outline-variant focus:border-primary focus:shadow-[0_4px_12px_rgba(138,80,0,0.1)]"
-                        }`}
-                      />
-                      {errors.message && (
-                        <p className="text-red-600 text-xs font-semibold">{errors.message.message}</p>
-                      )}
-                    </div>
-
-                    {/* Submit Button */}
-                    <div className="pt-4">
-                      <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="w-full sm:w-auto px-10 py-4 bg-primary text-on-primary rounded-full font-bold shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2.5 disabled:opacity-70 disabled:pointer-events-none cursor-pointer text-base select-none"
-                      >
-                        <span>{isSubmitting ? "Sending..." : "Send Message"}</span>
-                        <span className={`material-symbols-outlined text-xl ${isSubmitting ? "animate-spin" : ""}`} style={{ fontVariationSettings: "'FILL' 1" }}>
-                          {isSubmitting ? "sync" : "send"}
-                        </span>
-                      </button>
-                    </div>
-                  </form>
-                </>
-              )}
+                    <span className="material-symbols-outlined text-lg">{icon}</span>
+                  </a>
+                ))}
+              </div>
             </div>
-          </div>
-        </ScrollReveal>
-      </section>
+          </ScrollReveal>
+        </div>
+
+      </div>
     </div>
   );
 }

@@ -294,8 +294,8 @@ export default function HomePage() {
               <div className="w-16 h-16 rounded-full bg-primary/10 dark:bg-primary-fixed/20 flex items-center justify-center mb-6 text-primary dark:text-saffron-glow group-hover:bg-ethereal-white/10 group-hover:text-saffron-glow group-hover:scale-110 transition-all duration-500 shadow-sm">
                 <span className="material-symbols-outlined text-3xl">public</span>
               </div>
-              <h3 className="font-headline-md text-2xl sm:text-3xl font-bold mb-4 text-on-surface group-hover:text-ethereal-white transition-colors duration-500">Desiyam</h3>
-              <p className="font-body-md text-on-surface-variant group-hover:text-ethereal-white/80 mb-8 leading-relaxed transition-colors duration-500">
+              <h3 className="font-heading text-xl sm:text-2xl font-bold mb-3 text-on-surface group-hover:text-ethereal-white transition-colors duration-500">Desiyam</h3>
+              <p className="font-body text-on-surface-variant group-hover:text-ethereal-white/80 mb-8 leading-relaxed transition-colors duration-500 text-sm sm:text-base">
                 Fostering national integration, traditional heritage preservation, and civic responsibility through grassroots cultural initiatives.
               </p>
             </div>
@@ -316,8 +316,8 @@ export default function HomePage() {
                 <div className="w-16 h-16 rounded-full bg-primary/10 dark:bg-primary-fixed/20 flex items-center justify-center mb-6 text-primary dark:text-saffron-glow group-hover:bg-ethereal-white/10 group-hover:text-saffron-glow group-hover:scale-110 transition-all duration-500 shadow-sm">
                   <span className="material-symbols-outlined text-3xl">self_improvement</span>
                 </div>
-                <h3 className="font-headline-md text-2xl sm:text-3xl font-bold mb-4 text-on-surface group-hover:text-ethereal-white transition-colors duration-500">Spiritualism</h3>
-                <p className="font-body-md text-on-surface-variant group-hover:text-ethereal-white/80 mb-8 leading-relaxed transition-colors duration-500">
+                <h3 className="font-heading text-xl sm:text-2xl font-bold mb-3 text-on-surface group-hover:text-ethereal-white transition-colors duration-500">Spiritualism</h3>
+                <p className="font-body text-on-surface-variant group-hover:text-ethereal-white/80 mb-8 leading-relaxed transition-colors duration-500 text-sm sm:text-base">
                   Reviving ancient Vedic wisdom, supporting religious education, and physically renovating abandoned rural sacred shrines.
                 </p>
               </div>
@@ -338,8 +338,8 @@ export default function HomePage() {
               <div className="w-16 h-16 rounded-full bg-primary/10 dark:bg-primary-fixed/20 flex items-center justify-center mb-6 text-primary dark:text-saffron-glow group-hover:bg-ethereal-white/10 group-hover:text-saffron-glow group-hover:scale-110 transition-all duration-500 shadow-sm">
                 <span className="material-symbols-outlined text-3xl">diversity_1</span>
               </div>
-              <h3 className="font-headline-md text-2xl sm:text-3xl font-bold mb-4 text-on-surface group-hover:text-ethereal-white transition-colors duration-500">Community Welfare</h3>
-              <p className="font-body-md text-on-surface-variant group-hover:text-ethereal-white/80 mb-8 leading-relaxed transition-colors duration-500">
+              <h3 className="font-heading text-xl sm:text-2xl font-bold mb-3 text-on-surface group-hover:text-ethereal-white transition-colors duration-500">Community Welfare</h3>
+              <p className="font-body text-on-surface-variant group-hover:text-ethereal-white/80 mb-8 leading-relaxed transition-colors duration-500 text-sm sm:text-base">
                 Empowering underprivileged tribal families and physically challenged individuals with healthcare, nutrition, and livelihood grants.
               </p>
             </div>
@@ -358,25 +358,30 @@ export default function HomePage() {
       <section className="py-16 px-4 md:px-8 max-w-[1440px] mx-auto">
         <ParallaxBg
           bgUrl="/images/volunteer.png"
-          className="rounded-[40px] p-12 sm:p-16 md:p-24 text-center relative overflow-hidden shadow-2xl border border-outline-variant/20 text-ethereal-white"
-          overlayClassName="bg-deep-forest/85 mix-blend-multiply"
+          className="rounded-[40px] overflow-hidden relative shadow-2xl border border-outline-variant/30 min-h-[480px] flex items-center justify-center"
         >
-          <ScrollReveal className="relative z-10 max-w-3xl mx-auto space-y-6">
-            <span className="font-label-lg text-saffron-glow uppercase tracking-widest font-bold block text-xs">
-              Become a Volunteer
+          <ScrollReveal className="relative z-10 max-w-2xl text-center px-4 py-12 space-y-6">
+            <span className="font-label-lg text-saffron-glow uppercase tracking-widest text-xs font-bold block">
+              Join Our Divine Mission
             </span>
-            <h2 className="font-headline-md text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
-              Join your hand with us for a better life and future
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-ethereal-white leading-tight">
+              Become a Volunteer for Sacred Seva &amp; Community Transformation
             </h2>
-            <p className="font-body-md text-surface-container-high max-w-xl mx-auto leading-relaxed text-base sm:text-lg">
-              Your contribution, whether time, expertise, or resources, creates a lasting transformation across rural India. Become a divine guardian today.
+            <p className="font-body text-ethereal-white/90 text-base leading-relaxed max-w-xl mx-auto">
+              Your time, skills, and devotion can transform entire communities. Stand with us in reviving temples, educating rural children, and protecting our heritage.
             </p>
-            <div className="pt-4">
+            <div className="pt-4 flex flex-wrap justify-center gap-4">
+              <Link
+                href="/partnership"
+                className="bg-primary text-ethereal-white px-8 py-3.5 rounded-full font-label-lg font-bold hover:bg-saffron-glow hover:text-deep-forest transition-all shadow-lg hover:scale-105 active:scale-95 cursor-pointer"
+              >
+                Apply as Volunteer
+              </Link>
               <Link
                 href="/contact"
-                className="bg-saffron-glow text-deep-forest px-10 py-5 rounded-full font-label-lg font-bold uppercase tracking-wider hover:bg-ethereal-white hover:scale-105 transition-all shadow-xl inline-block cursor-pointer"
+                className="bg-white/10 backdrop-blur-md text-ethereal-white border border-white/30 px-8 py-3.5 rounded-full font-label-lg font-bold hover:bg-white/20 transition-all cursor-pointer"
               >
-                Join Our Mission
+                Inquire About Seva
               </Link>
             </div>
           </ScrollReveal>
@@ -390,7 +395,7 @@ export default function HomePage() {
             <span className="font-label-lg text-primary dark:text-saffron-glow uppercase tracking-widest font-bold block text-xs">
               Upcoming &amp; Recent Initiatives
             </span>
-            <h2 className="font-headline-md text-3xl sm:text-4xl md:text-5xl font-bold text-on-surface">
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-on-surface">
               View Our All Events
             </h2>
           </div>
@@ -455,7 +460,7 @@ export default function HomePage() {
                   <span className="font-label-lg text-secondary text-xs font-bold uppercase tracking-widest mb-2 block">
                     {ev.tag}
                   </span>
-                  <h3 className="font-headline-md text-2xl sm:text-3xl font-bold text-on-surface group-hover:text-primary transition-colors mb-3 leading-snug line-clamp-2">
+                  <h3 className="font-heading text-lg sm:text-xl font-bold text-on-surface group-hover:text-primary transition-colors mb-3 leading-snug line-clamp-2">
                     {ev.title}
                   </h3>
                   <div className="flex items-center gap-5 text-on-surface-variant/80 text-xs mb-6 font-medium">

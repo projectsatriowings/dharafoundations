@@ -634,10 +634,10 @@ export default function EventsPage() {
 
                 <div className="p-6 sm:p-8 flex flex-col flex-1 justify-between space-y-6">
                   <div className="space-y-3">
-                    <h3 className="font-headline-sm text-xl sm:text-2xl font-bold text-deep-forest group-hover:text-primary transition-colors">
+                    <h3 className="font-heading text-lg sm:text-xl font-bold text-deep-forest group-hover:text-primary transition-colors">
                       {cat.title}
                     </h3>
-                    <p className="font-body-md text-on-surface-variant text-sm leading-relaxed">
+                    <p className="font-body text-on-surface-variant text-sm leading-relaxed">
                       {cat.desc}
                     </p>
                   </div>

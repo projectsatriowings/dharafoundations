@@ -92,14 +92,17 @@ const config: Config = {
         "section-gap-lg": "120px"
       },
       fontFamily: {
-        "display-lg": ["var(--font-playfair)", "serif"],
-        "body-md": ["var(--font-jakarta)", "sans-serif"],
-        "label-lg": ["var(--font-jakarta)", "sans-serif"],
-        "display-lg-mobile": ["var(--font-playfair)", "serif"],
-        "body-lg": ["var(--font-jakarta)", "sans-serif"],
-        "caption": ["var(--font-jakarta)", "sans-serif"],
-        "headline-sm": ["var(--font-playfair)", "serif"],
-        "headline-md": ["var(--font-playfair)", "serif"]
+        heading: ["var(--font-heading)", "serif"],
+        title: ["var(--font-title)", "sans-serif"],
+        body: ["var(--font-body)", "sans-serif"],
+        "display-lg": ["var(--font-heading)", "serif"],
+        "body-md": ["var(--font-body)", "sans-serif"],
+        "label-lg": ["var(--font-title)", "sans-serif"],
+        "display-lg-mobile": ["var(--font-heading)", "serif"],
+        "body-lg": ["var(--font-body)", "sans-serif"],
+        "caption": ["var(--font-title)", "sans-serif"],
+        "headline-sm": ["var(--font-heading)", "serif"],
+        "headline-md": ["var(--font-heading)", "serif"]
       },
       fontSize: {
         "display-lg": ["56px", { lineHeight: "64px", letterSpacing: "-0.02em", fontWeight: "700" }],
