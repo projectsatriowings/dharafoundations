@@ -10,7 +10,7 @@ export default function ProgramsPage() {
   return (
     <div className="flex flex-col relative w-full overflow-hidden bg-surface">
       {/* Hero Section */}
-      <section className="relative pt-20 pb-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col items-center text-center">
+      <section className="relative pt-28 sm:pt-32 pb-16 px-4 sm:px-8 max-w-[1440px] mx-auto flex flex-col items-center text-center">
         <ScrollReveal className="max-w-4xl space-y-6">
           <h1 className="font-display-lg-mobile md:font-display-lg text-deep-forest font-bold leading-tight">
             Transforming lives and preserving traditions with compassion

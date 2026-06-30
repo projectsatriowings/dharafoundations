@@ -236,7 +236,7 @@ export default function EventsPage() {
       {/* ==========================================
           SECTION 1 — HERO (Photo + Stat Badge)
          ========================================== */}
-      <section className="relative pt-12 pb-20 px-6 md:px-12 max-w-7xl mx-auto w-full">
+      <section className="relative pt-28 sm:pt-32 pb-20 px-4 sm:px-8 max-w-7xl mx-auto w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           {/* Left Column: Copy */}

@@ -11,7 +11,7 @@ export default function PartnershipPage() {
       {/* Hero Section */}
       <ParallaxBg
         bgUrl="/images/banner.png"
-        className="min-h-[716px] flex items-center justify-center pt-24 text-ethereal-white"
+        className="min-h-[716px] flex items-center justify-center pt-28 sm:pt-32 text-ethereal-white"
         overlayClassName="bg-deep-forest/50 mix-blend-multiply"
       >
         <ScrollReveal className="relative z-10 w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop text-center space-y-6">

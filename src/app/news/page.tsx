@@ -55,7 +55,7 @@ export default function NewsPage() {
   return (
     <div className="flex flex-col relative w-full overflow-hidden bg-surface">
       {/* Hero Section */}
-      <section className="relative pt-24 pb-16 md:pt-32 md:pb-24 px-margin-mobile md:px-margin-desktop w-full max-w-container-max mx-auto flex flex-col items-center text-center">
+      <section className="relative pt-28 sm:pt-32 pb-16 px-4 sm:px-8 w-full max-w-[1440px] mx-auto flex flex-col items-center text-center">
         <ScrollReveal className="max-w-4xl space-y-6 w-full flex flex-col items-center">
           <h1 className="font-display-lg-mobile md:font-display-lg text-primary font-bold">
             Voices of Compassion & News

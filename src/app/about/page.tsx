@@ -42,8 +42,8 @@ export default function AboutPage() {
   return (
     <div className="flex flex-col relative w-full overflow-hidden bg-background text-on-background">
       {/* Header / Banner Section (Sacred Flow Rebrand) */}
-      <header className="mx-4 md:mx-auto max-w-[1440px] w-full pt-8 px-4 md:px-8">
-        <div className="relative rounded-[40px] overflow-hidden bg-gradient-to-br from-surface-container-low to-secondary-container/20 h-[380px] sm:h-[420px] flex flex-col justify-center items-center px-6 text-center border border-outline-variant/30 shadow-lg">
+      <header className="max-w-[1440px] mx-auto w-full pt-28 sm:pt-32 px-4 sm:px-8">
+        <div className="relative rounded-[40px] overflow-hidden bg-gradient-to-br from-surface-container-low to-secondary-container/20 h-[380px] sm:h-[420px] flex flex-col justify-center items-center px-4 sm:px-6 text-center border border-outline-variant/30 shadow-lg">
           {/* Background Texture Overlay */}
           <div
             className="absolute inset-0 z-0 opacity-25 mix-blend-overlay bg-cover bg-center pointer-events-none"

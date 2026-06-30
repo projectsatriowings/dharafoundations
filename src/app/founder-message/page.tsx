@@ -11,7 +11,7 @@ export default function FounderMessagePage() {
       {/* Hero Section */}
       <ParallaxBg
         bgUrl="/images/banner.png"
-        className="min-h-[55vh] flex items-center justify-center text-ethereal-white"
+        className="min-h-[55vh] flex items-center justify-center pt-28 sm:pt-32 text-ethereal-white"
         overlayClassName="bg-deep-forest/50 mix-blend-multiply"
       >
         <ScrollReveal className="text-center max-w-4xl px-margin-mobile md:px-margin-desktop mx-auto py-16">

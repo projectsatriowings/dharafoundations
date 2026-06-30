@@ -14,11 +14,11 @@ export function NeoMinimalFooter() {
       {/* Subtle Saffron Ambient Glow */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-saffron-glow/10 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 w-full">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 mb-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 relative z-10 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-10 md:gap-8 mb-16">
           
           {/* Brand Column (Span 5) */}
-          <div className="col-span-1 md:col-span-5 flex flex-col gap-6">
+          <div className="col-span-1 sm:col-span-2 md:col-span-5 flex flex-col gap-6">
             <Link href="/" className="inline-block hover:opacity-90 transition-opacity w-fit">
               <img
                 src="/logo-stacked-dark.png"
@@ -26,21 +26,21 @@ export function NeoMinimalFooter() {
                 className="h-16 sm:h-20 md:h-24 w-auto object-contain drop-shadow-sm"
               />
             </Link>
-            <p className="text-sm text-secondary-fixed-dim leading-relaxed max-w-sm font-body-md opacity-90">
+            <p className="text-sm text-secondary-fixed-dim leading-relaxed max-w-md font-body opacity-90">
               A non-profit organization dedicated to transforming lives and protecting traditions through compassionate service and cultural revival.
             </p>
             
             {/* Minimal Signal/Newsletter Input */}
-            <div className="flex items-center gap-2 mt-2 group max-w-sm">
+            <div className="flex items-center gap-2 mt-2 group w-full max-w-md">
               <div className="relative flex-1">
                 <input 
                   type="email" 
                   placeholder="Enter email to join newsletter..." 
-                  className="w-full bg-white/5 border border-ethereal-white/20 rounded-lg px-4 py-2.5 text-sm text-ethereal-white placeholder:text-ethereal-white/40 focus:outline-none focus:border-saffron-glow transition-all font-body-md"
+                  className="w-full bg-white/5 border border-ethereal-white/20 rounded-lg px-4 py-2.5 text-sm text-ethereal-white placeholder:text-ethereal-white/40 focus:outline-none focus:border-saffron-glow transition-all font-body"
                 />
               </div>
               <button 
-                className="p-2.5 bg-saffron-glow rounded-lg text-deep-forest hover:bg-white transition-colors cursor-pointer font-bold shadow-md active:scale-95 flex items-center justify-center shrink-0"
+                className="p-2.5 px-4 bg-saffron-glow rounded-lg text-deep-forest hover:bg-white transition-colors cursor-pointer font-bold shadow-md active:scale-95 flex items-center justify-center shrink-0"
                 aria-label="Subscribe"
               >
                 <ArrowRight size={18} />
@@ -48,10 +48,10 @@ export function NeoMinimalFooter() {
             </div>
 
             {/* Quick Contact Info */}
-            <div className="pt-2 space-y-2.5 text-sm text-secondary-fixed-dim font-body-md">
+            <div className="pt-2 space-y-2.5 text-sm text-secondary-fixed-dim font-body">
               <div className="flex items-center gap-2.5">
                 <Mail size={16} className="text-saffron-glow shrink-0" />
-                <a href="mailto:info@dharafoundations.in" className="hover:text-ethereal-white transition-colors">info@dharafoundations.in</a>
+                <a href="mailto:info@dharafoundations.in" className="hover:text-ethereal-white transition-colors break-all sm:break-normal">info@dharafoundations.in</a>
               </div>
               <div className="flex items-center gap-2.5">
                 <Phone size={16} className="text-saffron-glow shrink-0" />
@@ -94,14 +94,14 @@ export function NeoMinimalFooter() {
               ] 
             }
           ].map((section, idx) => (
-             <div key={idx} className={`col-span-6 md:col-span-${idx === 2 ? '3' : '2'} flex flex-col gap-4`}>
-                <h4 className="font-label-lg text-saffron-glow uppercase tracking-wider">
+             <div key={idx} className={`col-span-1 sm:col-span-1 md:col-span-${idx === 2 ? '3' : '2'} flex flex-col gap-3 sm:gap-4`}>
+                <h4 className="font-label-lg text-saffron-glow uppercase tracking-wider text-xs sm:text-sm font-bold">
                   {section.title}
                 </h4>
-                <ul className="flex flex-col gap-3">
+                <ul className="flex flex-col gap-2.5 sm:gap-3">
                   {section.links.map((link) => (
                     <li key={link.name}>
-                      <Link href={link.href} className="text-sm font-body-md text-secondary-fixed-dim hover:text-saffron-glow transition-colors flex items-center gap-2.5 group w-fit">
+                      <Link href={link.href} className="text-sm font-body text-secondary-fixed-dim hover:text-saffron-glow transition-colors flex items-center gap-2.5 group w-fit">
                         <span className="w-1.5 h-1.5 rounded-full bg-ethereal-white/40 group-hover:bg-saffron-glow transition-all group-hover:w-3.5 duration-300" />
                         {link.name}
                       </Link>
