@@ -11,7 +11,7 @@ export default function PartnershipPage() {
       {/* Hero Section */}
       <ParallaxBg
         bgUrl="/images/banner.png"
-        className="min-h-[716px] flex items-center justify-center pt-28 sm:pt-32 text-ethereal-white"
+        className="min-h-[620px] flex items-center justify-center pt-28 sm:pt-32 text-ethereal-white"
         overlayClassName="bg-deep-forest/50 mix-blend-multiply"
       >
         <ScrollReveal className="relative z-10 w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop text-center space-y-6">
@@ -22,12 +22,12 @@ export default function PartnershipPage() {
             <span>Corporate Partnerships</span>
           </span>
 
-          <h1 className="font-display-lg-mobile md:font-display-lg text-ethereal-white mb-6 max-w-4xl mx-auto leading-tight font-bold text-4xl md:text-6xl drop-shadow-lg">
+          <h1 className="font-heading text-ethereal-white mb-6 max-w-4xl mx-auto leading-tight font-bold text-3xl sm:text-4xl lg:text-5xl drop-shadow-lg">
             Empower Communities. <br className="hidden md:block" />
             <span className="text-saffron-glow italic font-light">Elevate Your Impact.</span>
           </h1>
 
-          <p className="font-body-lg text-surface-container-low/90 max-w-2xl mx-auto leading-relaxed text-lg">
+          <p className="font-body text-surface-container-low/90 max-w-2xl mx-auto leading-relaxed text-base sm:text-lg">
             Join hands with Dhara Foundations to weave a tapestry of positive change. Our partnership programs are rooted in the ancient wisdom of Dharma, translated into modern, measurable social impact.
           </p>
 
@@ -103,7 +103,7 @@ export default function PartnershipPage() {
 
           {/* Feature 4 with Image */}
           <RevealItem className="md:col-span-2">
-            <div className="modern-card rounded-3xl overflow-hidden relative shadow-lg group min-h-[340px] h-full flex flex-col justify-end p-8 md:p-10">
+            <div className="modern-card rounded-3xl overflow-hidden relative shadow-lg group min-h-[300px] h-full flex flex-col justify-end p-8 md:p-10">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"

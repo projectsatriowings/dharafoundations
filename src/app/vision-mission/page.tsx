@@ -10,14 +10,14 @@ export default function VisionMissionPage() {
       {/* Hero Section */}
       <ParallaxBg
         bgUrl="/images/banner.png"
-        className="w-full h-[716px] min-h-[600px] flex items-center justify-center pt-28 sm:pt-32 text-ethereal-white"
+        className="w-full h-[620px] min-h-[520px] flex items-center justify-center pt-28 sm:pt-32 text-ethereal-white"
         overlayClassName="bg-deep-forest/50 mix-blend-multiply"
       >
         <ScrollReveal className="text-center px-margin-mobile md:px-margin-desktop max-w-4xl mx-auto py-20">
-          <h1 className="font-display-lg-mobile md:font-display-lg text-ethereal-white mb-6 font-bold drop-shadow-lg">
+          <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl text-ethereal-white mb-6 font-bold drop-shadow-lg">
             Guided by Light, Rooted in Dharma
           </h1>
-          <p className="font-body-lg text-surface-container-low/90 max-w-2xl mx-auto leading-relaxed text-lg">
+          <p className="font-body text-surface-container-low/90 max-w-2xl mx-auto leading-relaxed text-base sm:text-lg">
             Our vision and mission embody the divine vitality of Sanatana Dharma, dedicated to nurturing compassion, wisdom, and sustainable growth in our communities.
           </p>
         </ScrollReveal>
@@ -51,7 +51,7 @@ export default function VisionMissionPage() {
 
           {/* Practical Devotion Image Card */}
           <RevealItem className="lg:col-span-5">
-            <div className="modern-card rounded-[24px] overflow-hidden h-full min-h-[320px] relative group shadow-lg">
+            <div className="modern-card rounded-[24px] overflow-hidden h-full min-h-[280px] relative group shadow-lg">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
@@ -99,7 +99,7 @@ export default function VisionMissionPage() {
                   </ul>
                 </div>
 
-                <div className="h-full min-h-[380px] rounded-[20px] overflow-hidden relative shadow-md">
+                <div className="h-full min-h-[330px] rounded-[20px] overflow-hidden relative shadow-md">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"

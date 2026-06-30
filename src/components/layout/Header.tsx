@@ -101,7 +101,7 @@ export function Header() {
       id="main-nav"
     >
       <div
-        className={`pointer-events-auto mx-auto max-w-[1380px] rounded-full border flex justify-between items-center px-6 sm:px-8 py-2.5 transition-all duration-300 ${
+        className={`pointer-events-auto mx-auto max-w-[1300px] rounded-full border flex justify-between items-center px-5 sm:px-6 py-2 transition-all duration-300 ${
           isTransparentHero
             ? "bg-black/25 hover:bg-black/40 backdrop-blur-md shadow-lg border-white/20 text-white"
             : isScrolled
@@ -117,7 +117,7 @@ export function Header() {
           <img
             src="/logo-horizontal.png"
             alt="Dhara Foundations"
-            className={`h-9 sm:h-10 md:h-11 w-auto object-contain transition-transform ${
+            className={`h-7 sm:h-8 md:h-9 w-auto object-contain transition-transform ${
               isTransparentHero ? "hidden" : "block dark:hidden drop-shadow-sm"
             }`}
           />
@@ -125,14 +125,14 @@ export function Header() {
           <img
             src="/logo-horizontal-dark.png"
             alt="Dhara Foundations"
-            className={`h-9 sm:h-10 md:h-11 w-auto object-contain transition-transform ${
+            className={`h-7 sm:h-8 md:h-9 w-auto object-contain transition-transform ${
               isTransparentHero ? "block drop-shadow-md" : "hidden dark:block drop-shadow-sm"
             }`}
           />
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
+        <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1.5">
           {NAV_LINKS.map((link) => {
             const isTopActive =
               pathname === link.href ||
@@ -148,7 +148,7 @@ export function Header() {
                 >
                   <Link
                     href={link.href}
-                    className={`relative inline-flex items-center gap-1 px-4 py-2 rounded-full transition-all text-sm xl:text-base ${
+                    className={`relative inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full transition-all text-xs lg:text-sm ${
                       isTopActive
                         ? isTransparentHero
                           ? "bg-white/20 text-saffron-glow font-bold"
@@ -159,7 +159,7 @@ export function Header() {
                     }`}
                   >
                     <span>{link.label}</span>
-                    <span className="material-symbols-outlined text-base transition-transform duration-300 group-hover/drop:rotate-180">
+                    <span className="material-symbols-outlined text-sm transition-transform duration-300 group-hover/drop:rotate-180">
                       expand_more
                     </span>
                     {isTopActive && (
@@ -230,7 +230,7 @@ export function Header() {
               >
                 <Link
                   href={link.href}
-                  className={`relative inline-block px-4 py-2 rounded-full transition-all text-sm xl:text-base hover:-translate-y-0.5 ${
+                  className={`relative inline-block px-3.5 py-1.5 rounded-full transition-all text-xs lg:text-sm hover:-translate-y-0.5 ${
                     isTopActive
                       ? isTransparentHero
                         ? "bg-white/20 text-saffron-glow font-bold"
@@ -296,7 +296,7 @@ export function Header() {
         <div className="hidden sm:flex items-center gap-4 shrink-0">
           <Link
             href="/contact"
-            className="inline-flex items-center justify-center px-6 py-2.5 bg-gradient-to-r from-primary to-amber-600 dark:from-saffron-glow dark:to-amber-500 text-ethereal-white dark:text-deep-forest rounded-full hover:scale-105 active:scale-95 shadow-md hover:shadow-lg transition-all duration-300 font-label-lg font-bold tracking-wide text-sm md:text-base"
+            className="inline-flex items-center justify-center px-5 py-2 bg-gradient-to-r from-primary to-amber-600 dark:from-saffron-glow dark:to-amber-500 text-ethereal-white dark:text-deep-forest rounded-full hover:scale-105 active:scale-95 shadow-md hover:shadow-lg transition-all duration-300 font-label-lg font-bold tracking-wide text-xs md:text-sm"
           >
             Donate Now
           </Link>

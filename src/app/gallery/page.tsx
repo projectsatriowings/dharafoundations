@@ -70,7 +70,7 @@ export default function GalleryPage() {
   return (
     <div className="flex flex-col relative w-full overflow-hidden bg-surface">
       {/* Hero Section */}
-      <section className="relative pt-28 sm:pt-32 pb-16 px-4 sm:px-8 overflow-hidden flex flex-col items-center text-center min-h-[480px] justify-center">
+      <section className="relative pt-28 sm:pt-32 pb-16 px-4 sm:px-8 overflow-hidden flex flex-col items-center text-center min-h-[420px] justify-center">
         {/* Abstract Lotus Graphic Behind Title */}
         <div className="absolute inset-0 z-0 opacity-10 flex items-center justify-center pointer-events-none -translate-y-1/4 scale-150">
           <svg fill="none" height="600" viewBox="0 0 200 200" width="600" xmlns="http://www.w3.org/2000/svg">
@@ -83,10 +83,10 @@ export default function GalleryPage() {
           <span className="font-label-lg text-tertiary uppercase tracking-widest block font-bold text-sm">
             Visual Journey
           </span>
-          <h1 className="font-display-lg-mobile md:font-display-lg text-deep-forest font-bold">
+          <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl text-deep-forest font-bold">
             Sacred Moments
           </h1>
-          <p className="font-body-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed text-lg">
+          <p className="font-body text-on-surface-variant max-w-2xl mx-auto leading-relaxed text-base sm:text-lg">
             Witness the impact of our collective efforts. Through community service, temple restoration, and cultural events, we strive to bring divine vitality to everyday life.
           </p>
         </ScrollReveal>

@@ -12,10 +12,10 @@ export default function ProgramsPage() {
       {/* Hero Section */}
       <section className="relative pt-28 sm:pt-32 pb-16 px-4 sm:px-8 max-w-[1440px] mx-auto flex flex-col items-center text-center">
         <ScrollReveal className="max-w-4xl space-y-6">
-          <h1 className="font-display-lg-mobile md:font-display-lg text-deep-forest font-bold leading-tight">
+          <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl text-deep-forest font-bold leading-tight">
             Transforming lives and preserving traditions with compassion
           </h1>
-          <p className="font-body-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed text-lg">
+          <p className="font-body text-on-surface-variant max-w-2xl mx-auto leading-relaxed text-base sm:text-lg">
             Our mission combines compassionate service, cultural revival, and spiritual awareness to build a society rooted in values and dignity. Explore our core initiatives below.
           </p>
         </ScrollReveal>
@@ -25,7 +25,7 @@ export default function ProgramsPage() {
       <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col gap-24 pb-24 w-full">
         {/* Category 1: Tribal & Rural Welfare */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <ScrollReveal direction="right" className="lg:col-span-6 order-2 lg:order-1 rounded-3xl overflow-hidden shadow-xl bg-surface-container-lowest h-[400px] md:h-[500px] relative group">
+          <ScrollReveal direction="right" className="lg:col-span-6 order-2 lg:order-1 rounded-3xl overflow-hidden shadow-xl bg-surface-container-lowest h-[350px] md:h-[440px] relative group">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               className="w-full h-full object-cover rounded-3xl group-hover:scale-108 transition-transform duration-700 ease-out"
@@ -103,7 +103,7 @@ export default function ProgramsPage() {
             </PillButton>
           </ScrollReveal>
 
-          <ScrollReveal direction="left" className="lg:col-span-6 lg:col-start-7 order-2 rounded-3xl overflow-hidden shadow-xl bg-surface-container-lowest h-[400px] md:h-[500px] relative group">
+          <ScrollReveal direction="left" className="lg:col-span-6 lg:col-start-7 order-2 rounded-3xl overflow-hidden shadow-xl bg-surface-container-lowest h-[350px] md:h-[440px] relative group">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               className="w-full h-full object-cover rounded-3xl group-hover:scale-108 transition-transform duration-700 ease-out"
@@ -115,7 +115,7 @@ export default function ProgramsPage() {
 
         {/* Category 3: Community Outreach & Care */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <ScrollReveal direction="right" className="lg:col-span-6 order-2 lg:order-1 rounded-3xl overflow-hidden shadow-xl bg-surface-container-lowest h-[400px] md:h-[500px] relative group">
+          <ScrollReveal direction="right" className="lg:col-span-6 order-2 lg:order-1 rounded-3xl overflow-hidden shadow-xl bg-surface-container-lowest h-[350px] md:h-[440px] relative group">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               className="w-full h-full object-cover rounded-3xl group-hover:scale-108 transition-transform duration-700 ease-out"
@@ -162,7 +162,7 @@ export default function ProgramsPage() {
       {/* Call to Action (Parallax Band) */}
       <ParallaxBg
         bgUrl="/images/volunteer.png"
-        className="w-full h-[60vh] min-h-[420px] flex items-center justify-center bg-deep-forest text-ethereal-white"
+        className="w-full h-[60vh] min-h-[380px] flex items-center justify-center bg-deep-forest text-ethereal-white"
         overlayClassName="bg-deep-forest/75 mix-blend-multiply"
       >
         <ScrollReveal className="text-center px-margin-mobile space-y-8">

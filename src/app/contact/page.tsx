@@ -245,7 +245,7 @@ export default function ContactPage() {
             <div className="absolute -top-8 -right-4 sm:-right-8 lg:-right-12 w-4/5 h-2/3 bg-deep-forest dark:bg-deep-forest/80 rounded-3xl -z-10 shadow-lg" />
             
             {/* Main architectural/heritage photo */}
-            <div className="relative w-full lg:w-[92%] h-[460px] sm:h-[580px] rounded-3xl overflow-hidden shadow-2xl border border-outline-variant/30 bg-surface-container group">
+            <div className="relative w-full lg:w-[92%] h-[400px] sm:h-[500px] rounded-3xl overflow-hidden shadow-2xl border border-outline-variant/30 bg-surface-container group">
               {/* [CLIENT TO SUPPLY OFFICE PHOTO] */}
               <img
                 src="/images/about.png"
@@ -268,7 +268,7 @@ export default function ContactPage() {
           
           {/* LEFT COLUMN: Map Embed (lg:col-span-6) */}
           <ScrollReveal className="lg:col-span-6">
-            <div className="w-full h-[360px] sm:h-[420px] rounded-3xl overflow-hidden shadow-xl border border-outline-variant/30 relative group bg-surface-container-low">
+            <div className="w-full h-[310px] sm:h-[370px] rounded-3xl overflow-hidden shadow-xl border border-outline-variant/30 relative group bg-surface-container-low">
               <iframe
                 title="Dhara Foundations Location"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.756285497424!2d80.1260!3d12.9249!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a525f168019a845%3A0x1b41c0a0c648780!2sTambaram%20Sanatorium%2C%20Chennai%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"

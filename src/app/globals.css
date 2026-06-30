@@ -76,17 +76,22 @@
   --font-label-lg: var(--font-title), sans-serif;
   --font-caption: var(--font-title), sans-serif;
 
-  --radius-card: 24px;
-  --spacing-gutter: 24px;
+  --radius-card: 20px;
+  --spacing-gutter: 20px;
   --spacing-margin-mobile: 16px;
-  --spacing-container-max: 1280px;
-  --spacing-margin-desktop: 48px;
-  --spacing-section-gap-md: 80px;
+  --spacing-container-max: 1220px;
+  --spacing-margin-desktop: 40px;
+  --spacing-section-gap-md: 64px;
   --spacing-unit: 8px;
-  --spacing-section-gap-lg: 120px;
+  --spacing-section-gap-lg: 100px;
 
   --shadow-soft: 0 10px 40px -10px rgba(36, 105, 92, 0.04);
   --shadow-soft-hover: 0 20px 40px -10px rgba(36, 105, 92, 0.08);
+}
+
+html {
+  font-size: 92%; /* Automatically scales down all rem-based typography, cards, margins, paddings, and images across every page by ~8% */
+  scroll-behavior: smooth;
 }
 
 body {

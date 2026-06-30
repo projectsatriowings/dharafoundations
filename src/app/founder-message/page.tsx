@@ -15,10 +15,10 @@ export default function FounderMessagePage() {
         overlayClassName="bg-deep-forest/50 mix-blend-multiply"
       >
         <ScrollReveal className="text-center max-w-4xl px-margin-mobile md:px-margin-desktop mx-auto py-16">
-          <h1 className="font-display-lg-mobile md:font-display-lg text-ethereal-white mb-6 font-bold drop-shadow-lg">
+          <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl text-ethereal-white mb-6 font-bold drop-shadow-lg">
             A Message from Our Founders
           </h1>
-          <p className="font-body-lg text-surface-container-low/90 max-w-2xl mx-auto leading-relaxed text-lg">
+          <p className="font-body text-surface-container-low/90 max-w-2xl mx-auto leading-relaxed text-base sm:text-lg">
             Rooted in compassion and guided by the timeless wisdom of Sanatana Dharma, our founders envision a world where every life is transformed and every tradition is protected.
           </p>
           <div className="w-24 h-1 bg-saffron-glow mx-auto mt-8 rounded-full shadow-[0_0_12px_rgba(255,210,127,0.5)]" />

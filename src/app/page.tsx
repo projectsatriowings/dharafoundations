@@ -96,7 +96,7 @@ export default function HomePage() {
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-saffron-glow text-xs font-label-lg uppercase tracking-widest shadow-sm">
               <span>Dhara Divine Trust Portal</span>
             </div>
-            <h1 className="font-headline-md text-4xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.1] drop-shadow-md">
+            <h1 className="font-headline-md text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.1] drop-shadow-md">
               Transforming Lives, <br />
               <span className="text-saffron-glow font-light italic">Preserving Traditions.</span>
             </h1>
@@ -217,7 +217,7 @@ export default function HomePage() {
               <img
                 src="/images/about.png"
                 alt="Devotional ritual offering with sacred ash and rudraksha beads"
-                className="w-full h-[520px] sm:h-[600px] object-cover rounded-[40px] rounded-tl-[120px] rounded-br-[120px] shadow-2xl border border-outline-variant/20"
+                className="w-full h-[460px] sm:h-[540px] object-cover rounded-[40px] rounded-tl-[120px] rounded-br-[120px] shadow-2xl border border-outline-variant/20"
                 loading="lazy"
               />
               <div className="absolute -bottom-6 -left-4 sm:-left-6 bg-surface/90 dark:bg-deep-forest/90 backdrop-blur-xl p-6 rounded-[32px] border border-outline-variant/30 shadow-2xl max-w-[220px] z-20">
@@ -358,7 +358,7 @@ export default function HomePage() {
       <section className="py-16 px-4 md:px-8 max-w-[1440px] mx-auto">
         <ParallaxBg
           bgUrl="/images/volunteer.png"
-          className="rounded-[40px] overflow-hidden relative shadow-2xl border border-outline-variant/30 min-h-[480px] flex items-center justify-center"
+          className="rounded-[40px] overflow-hidden relative shadow-2xl border border-outline-variant/30 min-h-[430px] flex items-center justify-center"
         >
           <ScrollReveal className="relative z-10 max-w-2xl text-center px-4 py-12 space-y-6">
             <span className="font-label-lg text-saffron-glow uppercase tracking-widest text-xs font-bold block">
@@ -438,7 +438,7 @@ export default function HomePage() {
               key={idx}
               className="bg-surface-container-lowest rounded-[24px] shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group flex flex-col justify-between overflow-hidden cursor-pointer h-full border-0 p-0 m-0"
             >
-              <div className="relative w-full h-[280px] sm:h-[300px] overflow-hidden shrink-0 rounded-t-[24px] m-0 p-0">
+              <div className="relative w-full h-[240px] sm:h-[260px] overflow-hidden shrink-0 rounded-t-[24px] m-0 p-0">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={ev.img}

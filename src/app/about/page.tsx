@@ -43,7 +43,7 @@ export default function AboutPage() {
     <div className="flex flex-col relative w-full overflow-hidden bg-background text-on-background">
       {/* Header / Banner Section (Sacred Flow Rebrand) */}
       <header className="max-w-[1440px] mx-auto w-full pt-28 sm:pt-32 px-4 sm:px-8">
-        <div className="relative rounded-[40px] overflow-hidden bg-gradient-to-br from-surface-container-low to-secondary-container/20 h-[380px] sm:h-[420px] flex flex-col justify-center items-center px-4 sm:px-6 text-center border border-outline-variant/30 shadow-lg">
+        <div className="relative rounded-[40px] overflow-hidden bg-gradient-to-br from-surface-container-low to-secondary-container/20 h-[340px] sm:h-[380px] flex flex-col justify-center items-center px-4 sm:px-6 text-center border border-outline-variant/30 shadow-lg">
           {/* Background Texture Overlay */}
           <div
             className="absolute inset-0 z-0 opacity-25 mix-blend-overlay bg-cover bg-center pointer-events-none"
@@ -57,7 +57,7 @@ export default function AboutPage() {
               <span className="material-symbols-outlined text-sm">chevron_right</span>
               <span className="text-primary dark:text-saffron-glow font-bold">About Us</span>
             </div>
-            <h1 className="font-display-lg-mobile md:text-5xl lg:text-6xl font-bold text-ethereal-white leading-tight drop-shadow-md">
+            <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-ethereal-white leading-tight drop-shadow-md">
               Preserving Heritage, <br />
               <span className="text-saffron-glow italic font-light">Empowering Future.</span>
             </h1>
@@ -71,7 +71,7 @@ export default function AboutPage() {
           {/* Asymmetric Image Card Left */}
           <ScrollReveal direction="right" className="lg:col-span-6 relative">
             <div className="relative mx-auto max-w-lg lg:max-w-none">
-              <div className="rounded-t-[100px] rounded-b-2xl overflow-hidden relative shadow-2xl h-[480px] sm:h-[580px] border border-outline-variant/20">
+              <div className="rounded-t-[100px] rounded-b-2xl overflow-hidden relative shadow-2xl h-[420px] sm:h-[520px] border border-outline-variant/20">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/images/about.png"
@@ -156,7 +156,7 @@ export default function AboutPage() {
               return (
                 <RevealItem
                   key={i}
-                  className={`bg-surface/80 dark:bg-surface-container/50 backdrop-blur-md border border-outline-variant/30 p-8 rounded-[32px] flex flex-col justify-between h-[300px] sm:h-[320px] shadow-sm hover:shadow-2xl hover:bg-deep-forest hover:text-ethereal-white hover:border-ethereal-white/10 hover:-translate-y-2 transition-all duration-500 group relative overflow-hidden cursor-pointer ${colSpan}`}
+                  className={`bg-surface/80 dark:bg-surface-container/50 backdrop-blur-md border border-outline-variant/30 p-8 rounded-[32px] flex flex-col justify-between h-[270px] sm:h-[290px] shadow-sm hover:shadow-2xl hover:bg-deep-forest hover:text-ethereal-white hover:border-ethereal-white/10 hover:-translate-y-2 transition-all duration-500 group relative overflow-hidden cursor-pointer ${colSpan}`}
                 >
                   <div className="absolute -top-12 -right-12 w-48 h-48 bg-saffron-glow/20 rounded-full blur-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <div className="relative z-10">

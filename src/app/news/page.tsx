@@ -57,10 +57,10 @@ export default function NewsPage() {
       {/* Hero Section */}
       <section className="relative pt-28 sm:pt-32 pb-16 px-4 sm:px-8 w-full max-w-[1440px] mx-auto flex flex-col items-center text-center">
         <ScrollReveal className="max-w-4xl space-y-6 w-full flex flex-col items-center">
-          <h1 className="font-display-lg-mobile md:font-display-lg text-primary font-bold">
+          <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl text-primary font-bold">
             Voices of Compassion & News
           </h1>
-          <p className="font-body-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed text-lg">
+          <p className="font-body text-on-surface-variant max-w-2xl mx-auto leading-relaxed text-base sm:text-lg">
             Stay updated with our latest initiatives, press releases, and inspiring stories of change rooted in Sanatana Dharma principles.
           </p>
           <div className="w-full max-w-md relative pt-4">
@@ -86,7 +86,7 @@ export default function NewsPage() {
 
         <ScrollReveal>
           <article className="modern-card grid grid-cols-1 lg:grid-cols-12 gap-0 bg-surface-container-lowest rounded-[24px] shadow-soft hover:shadow-soft-hover transition-all duration-300 group cursor-pointer border border-outline-variant/20 overflow-hidden">
-            <div className="lg:col-span-7 h-[300px] lg:h-[480px] relative overflow-hidden shrink-0">
+            <div className="lg:col-span-7 h-[260px] lg:h-[420px] relative overflow-hidden shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
@@ -214,7 +214,7 @@ export default function NewsPage() {
       {/* Newsletter CTA (Parallax Background) */}
       <ParallaxBg
         bgUrl="/images/banner.png"
-        className="w-full min-h-[550px] flex items-center justify-center text-center px-margin-mobile"
+        className="w-full min-h-[480px] flex items-center justify-center text-center px-margin-mobile"
         overlayClassName="bg-deep-forest/80"
       >
         <ScrollReveal className="relative z-10 max-w-2xl mx-auto bg-surface-container-lowest/15 backdrop-blur-xl p-10 md:p-16 rounded-[32px] border border-ethereal-white/20 shadow-2xl space-y-6 text-ethereal-white">
