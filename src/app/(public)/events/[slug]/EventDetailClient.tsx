@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { 
   Calendar, 
@@ -32,9 +32,14 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
 
   const [isRegistered, setIsRegistered] = useState(false);
 
-  // Generate share URLs dynamically
-  const pageUrl = typeof window !== "undefined" ? window.location.href : `https://dharafoundations.in/events/${event.id}`;
-  
+  const [pageUrl, setPageUrl] = useState(`https://dharafoundations.in/events/${event.id}`);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setPageUrl(window.location.href);
+    }
+  }, []);
+
   const twitterShare = `https://twitter.com/intent/tweet?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(event.title)}`;
   const facebookShare = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
   const pinterestShare = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(pageUrl)}&description=${encodeURIComponent(event.title)}`;

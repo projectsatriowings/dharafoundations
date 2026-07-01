@@ -2,9 +2,10 @@ import React from "react";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { EVENTS_DATA } from "@/data/events";
+import { getPublicEventBySlug } from "@/lib/public-events";
 import { EventDetailClient } from "./EventDetailClient";
 
-// Generate static params for both slug id (e.g. "dhara-divine-awards") and numericId (e.g. "41")
+// Generate static params for existing seeded/static events
 export async function generateStaticParams() {
   const params: { slug: string }[] = [];
   
@@ -24,9 +25,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }> 
 }): Promise<Metadata> {
   const resolvedParams = await params;
-  const event = EVENTS_DATA.find(
-    (e) => e.id === resolvedParams.slug || e.numericId === resolvedParams.slug
-  );
+  const event = await getPublicEventBySlug(resolvedParams.slug);
 
   if (!event) {
     return {
@@ -51,9 +50,7 @@ export default async function EventDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const resolvedParams = await params;
-  const event = EVENTS_DATA.find(
-    (e) => e.id === resolvedParams.slug || e.numericId === resolvedParams.slug
-  );
+  const event = await getPublicEventBySlug(resolvedParams.slug);
 
   if (!event) {
     notFound();

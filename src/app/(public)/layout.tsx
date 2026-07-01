@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Roboto_Slab, Montserrat } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import { LenisProvider } from "@/components/motion/LenisProvider";
 import { CustomCursor } from "@/components/motion/CustomCursor";
 import { Header } from "@/components/layout/Header";
@@ -21,6 +21,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://dharafoundations.in"),
   title: "Dhara Foundations - Transforming Lives, Preserving Traditions",
   description: "A non-profit organization dedicated to cultural revival, compassionate service, and spiritual awareness.",
 };
@@ -31,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${robotoSlab.variable} ${montserrat.variable} scroll-smooth`}>
+    <html lang="en" suppressHydrationWarning className={`${robotoSlab.variable} ${montserrat.variable} scroll-smooth`}>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
