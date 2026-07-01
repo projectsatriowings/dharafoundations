@@ -23,8 +23,12 @@ export function DeleteConfirmDialog({
 
   if (!isOpen) return null;
 
+  const normalizedConfirm = confirmText.trim().toLowerCase();
+  const normalizedTitle = (title || "").trim().toLowerCase();
+  const isMatch = normalizedConfirm === normalizedTitle || normalizedConfirm === "delete";
+
   const handleConfirm = async () => {
-    if (confirmText !== title) return;
+    if (!isMatch) return;
     setDeleting(true);
     try {
       await onConfirm();
@@ -58,14 +62,14 @@ export function DeleteConfirmDialog({
 
         <div className="space-y-1.5 pt-2">
           <label className="block text-xs font-medium text-gray-700">
-            Please type <span className="font-mono font-bold text-red-600">{title}</span> to confirm:
+            Please type <span className="font-mono font-bold text-red-600">{(title || "").trim()}</span> or <span className="font-mono font-bold text-red-600">DELETE</span> to confirm:
           </label>
           <input
             type="text"
             value={confirmText}
             onChange={(e) => setConfirmText(e.target.value)}
             disabled={deleting}
-            placeholder={title}
+            placeholder={(title || "").trim() || "DELETE"}
             className="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
           />
         </div>
@@ -82,7 +86,7 @@ export function DeleteConfirmDialog({
           <button
             type="button"
             onClick={handleConfirm}
-            disabled={confirmText !== title || deleting}
+            disabled={!isMatch || deleting}
             className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-red-600 hover:bg-red-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
           >
             {deleting ? (

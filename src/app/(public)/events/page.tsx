@@ -192,9 +192,35 @@ export default function EventsPage() {
   const router = useRouter();
   const rawReducedMotion = useReducedMotion();
   const [isMounted, setIsMounted] = useState(false);
+  const [eventsList, setEventsList] = useState<any[]>(FULL_EVENTS_LIST);
   
   useEffect(() => {
     setIsMounted(true);
+    fetch("/api/public/events")
+      .then(res => res.json())
+      .then(data => {
+        if (data && Array.isArray(data.events)) {
+          const dbEvents = data.events.map((ev: any) => ({
+            id: ev.slug || String(ev.id),
+            title: ev.title,
+            category: ev.category || "Events",
+            date: ev.event_date ? new Date(ev.event_date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "Upcoming",
+            time: ev.event_time || "10:00 AM",
+            location: ev.location_name || "Tamil Nadu",
+            mapsUrl: "https://maps.google.com",
+            img: ev.cover_image_url || "/images/event-1.png",
+            desc: ev.title,
+          }));
+          const combined = [...dbEvents];
+          for (const item of FULL_EVENTS_LIST) {
+            if (!combined.some(e => String(e.id) === String(item.id) || e.title === item.title)) {
+              combined.push(item);
+            }
+          }
+          setEventsList(combined);
+        }
+      })
+      .catch(err => console.error("Error fetching public events:", err));
   }, []);
 
   const shouldReduceMotion = isMounted ? rawReducedMotion : false;
@@ -209,8 +235,8 @@ export default function EventsPage() {
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
-  const upcomingEvents = FULL_EVENTS_LIST.filter(ev => ev.date.includes("2026"));
-  const recentEvents = FULL_EVENTS_LIST.filter(ev => !ev.date.includes("2026"));
+  const upcomingEvents = eventsList.filter(ev => ev.date.includes("2026") || ev.date.includes("Upcoming"));
+  const recentEvents = eventsList.filter(ev => !ev.date.includes("2026") && !ev.date.includes("Upcoming"));
 
   const filteredRecentEvents = activeCategoryFilter === "All" 
     ? recentEvents 
@@ -600,7 +626,7 @@ export default function EventsPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {upcomingEvents.map((ev, idx) => (
-              <EventCard key={ev.id} ev={ev} idx={idx} shouldReduceMotion={shouldReduceMotion} router={router} />
+              <EventCard key={`${ev.id}-up-${idx}`} ev={ev} idx={idx} shouldReduceMotion={shouldReduceMotion} router={router} />
             ))}
           </div>
         </div>
@@ -655,7 +681,7 @@ export default function EventsPage() {
               className="grid grid-cols-1 md:grid-cols-2 gap-8"
             >
               {filteredRecentEvents.map((ev, idx) => (
-                <EventCard key={ev.id} ev={ev} idx={idx} shouldReduceMotion={shouldReduceMotion} router={router} />
+                <EventCard key={`${ev.id}-rec-${idx}`} ev={ev} idx={idx} shouldReduceMotion={shouldReduceMotion} router={router} />
               ))}
             </motion.div>
           </AnimatePresence>

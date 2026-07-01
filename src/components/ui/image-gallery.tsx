@@ -64,6 +64,16 @@ export default function ImageGallery({
   className,
   showHeader = false,
 }: ImageGalleryProps) {
+  // Chunk items into rows of at most 4 so images are wide, visible, and never squeezed into thin slivers
+  const CHUNK_SIZE = 4;
+  const chunkedRows: { items: GalleryItem[]; startIndex: number }[] = [];
+  for (let i = 0; i < items.length; i += CHUNK_SIZE) {
+    chunkedRows.push({
+      items: items.slice(i, i + CHUNK_SIZE),
+      startIndex: i,
+    });
+  }
+
   return (
     <div className={cn("w-full flex flex-col items-center justify-start", className)}>
       {showHeader && (
@@ -75,39 +85,56 @@ export default function ImageGallery({
         </div>
       )}
 
-      {/* Expandable Accordion Gallery */}
-      <div className="flex flex-col sm:flex-row gap-3 h-[680px] sm:h-[480px] lg:h-[520px] w-full max-w-7xl px-4">
-        {items.map((item, idx) => (
+      {/* Multi-Row Expandable Accordion Gallery */}
+      <div className="flex flex-col gap-6 w-full max-w-7xl px-4">
+        {chunkedRows.map((row, rowIdx) => (
           <div
-            key={idx}
-            onClick={() => onSelect?.(idx)}
-            className="relative group flex-1 hover:flex-[3] sm:hover:flex-[3.5] transition-all duration-500 ease-out rounded-2xl overflow-hidden cursor-pointer shadow-md hover:shadow-2xl border border-outline-variant/20 min-h-[60px] sm:min-w-[70px] isolate transform-gpu [mask-image:radial-gradient(white,black)] bg-surface-container-lowest"
+            key={rowIdx}
+            className="flex flex-col sm:flex-row gap-4 h-[580px] sm:h-[420px] lg:h-[460px] w-full"
           >
-            <img
-              className="h-full w-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700 ease-out"
-              src={item.src}
-              alt={item.alt || item.title || `image-${idx}`}
-            />
-            {/* Hover overlay with title & category */}
-            <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/95 via-deep-forest/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 group-hover:duration-500 group-hover:delay-100 flex flex-col justify-end p-6 z-10 pointer-events-none">
-              <div className="space-y-1.5 min-w-[240px] sm:min-w-[300px] transform translate-y-3 group-hover:translate-y-0 transition-transform duration-500 ease-out">
-                {item.category && (
-                  <span className="inline-block px-3 py-1 rounded-full text-xs font-bold w-max bg-saffron-glow text-deep-forest shadow-sm tracking-wider uppercase">
-                    {item.category}
-                  </span>
-                )}
-                {item.title && (
-                  <h3 className="font-headline-sm text-ethereal-white font-bold text-xl sm:text-2xl line-clamp-1">
-                    {item.title}
-                  </h3>
-                )}
-                {item.desc && (
-                  <p className="font-body-sm text-ethereal-white/80 text-xs sm:text-sm line-clamp-2 hidden md:block">
-                    {item.desc}
-                  </p>
-                )}
-              </div>
-            </div>
+            {row.items.map((item, idx) => {
+              const globalIdx = row.startIndex + idx;
+              return (
+                <div
+                  key={globalIdx}
+                  onClick={() => onSelect?.(globalIdx)}
+                  className="relative group flex-1 hover:flex-[2.8] sm:hover:flex-[3.2] transition-all duration-500 ease-out rounded-2xl overflow-hidden cursor-pointer shadow-md hover:shadow-2xl border border-outline-variant/20 min-h-[90px] sm:min-w-[160px] isolate transform-gpu [mask-image:radial-gradient(white,black)] bg-surface-container-lowest"
+                >
+                  <img
+                    className="h-full w-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700 ease-out"
+                    src={item.src}
+                    alt={item.alt || item.title || `image-${globalIdx}`}
+                  />
+                  {/* Subtle always-visible title bar at bottom when unhovered */}
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-4 transition-opacity duration-300 group-hover:opacity-0 flex items-end z-0">
+                    <span className="text-ethereal-white font-semibold text-sm line-clamp-1 drop-shadow-md">
+                      {item.title}
+                    </span>
+                  </div>
+
+                  {/* Hover overlay with title, category & description */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/95 via-deep-forest/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6 z-10 pointer-events-none">
+                    <div className="space-y-2 min-w-[220px] sm:min-w-[280px] transform translate-y-3 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+                      {item.category && (
+                        <span className="inline-block px-3 py-1 rounded-full text-xs font-bold w-max bg-saffron-glow text-deep-forest shadow-sm tracking-wider uppercase">
+                          {item.category}
+                        </span>
+                      )}
+                      {item.title && (
+                        <h3 className="font-headline-sm text-ethereal-white font-bold text-xl sm:text-2xl line-clamp-1">
+                          {item.title}
+                        </h3>
+                      )}
+                      {item.desc && (
+                        <p className="font-body-sm text-ethereal-white/90 text-xs sm:text-sm line-clamp-2 hidden sm:block">
+                          {item.desc}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         ))}
       </div>

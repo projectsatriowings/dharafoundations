@@ -1,12 +1,25 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ScrollReveal, RevealItem } from "@/components/motion/ScrollReveal";
 import { ParallaxBg } from "@/components/motion/ParallaxBg";
 import { PillButton } from "@/components/ui/PillButton";
 
 export default function ProgramsPage() {
+  const [dbPrograms, setDbPrograms] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch("/api/public/programs")
+      .then(res => res.json())
+      .then(data => {
+        if (data && Array.isArray(data.programs)) {
+          setDbPrograms(data.programs);
+        }
+      })
+      .catch(err => console.error("Error fetching public programs:", err));
+  }, []);
+
   return (
     <div className="flex flex-col relative w-full overflow-hidden bg-surface">
       {/* Hero Section */}
@@ -23,6 +36,31 @@ export default function ProgramsPage() {
 
       {/* Programs Container */}
       <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col gap-24 pb-24 w-full">
+        {/* Dynamic Database Programs */}
+        {dbPrograms.map((prog, idx) => (
+          <section key={`${prog.id || 'prog'}-${idx}`} className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <ScrollReveal direction={idx % 2 === 0 ? "right" : "left"} className={`lg:col-span-6 ${idx % 2 === 0 ? "order-2 lg:order-1" : "order-2 lg:order-2 lg:col-start-7"} rounded-3xl overflow-hidden shadow-xl bg-surface-container-lowest h-[350px] md:h-[440px] relative group`}>
+              <img
+                className="w-full h-full object-cover rounded-3xl group-hover:scale-108 transition-transform duration-700 ease-out"
+                alt={prog.title}
+                src={prog.cover_image_url || "/images/gallery-1.png"}
+              />
+            </ScrollReveal>
+            <ScrollReveal direction={idx % 2 === 0 ? "left" : "right"} className={`lg:col-span-5 ${idx % 2 === 0 ? "order-1 lg:order-2 lg:col-start-8" : "order-1 lg:order-1"} space-y-6`}>
+              <div className="inline-block bg-[#9abb4b]/20 text-tertiary font-bold px-4 py-1.5 rounded-full text-xs tracking-wider uppercase">
+                {prog.category || "Community Welfare"}
+              </div>
+              <h2 className="font-headline-md md:text-4xl text-deep-forest font-bold">{prog.title}</h2>
+              <p className="font-body-md text-on-surface-variant leading-relaxed">
+                {prog.short_description || prog.full_description}
+              </p>
+              <PillButton href="/contact" variant="primary">
+                Support this Program
+              </PillButton>
+            </ScrollReveal>
+          </section>
+        ))}
+
         {/* Category 1: Tribal & Rural Welfare */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <ScrollReveal direction="right" className="lg:col-span-6 order-2 lg:order-1 rounded-3xl overflow-hidden shadow-xl bg-surface-container-lowest h-[350px] md:h-[440px] relative group">

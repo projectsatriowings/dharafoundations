@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ScrollReveal, RevealItem } from "@/components/motion/ScrollReveal";
 import { LightboxModal } from "@/components/ui/LightboxModal";
 import { PillButton } from "@/components/ui/PillButton";
@@ -55,17 +55,92 @@ const GALLERY_ITEMS = [
     src: "/images/event-3.png",
     pillBg: "bg-primary-container text-on-primary-container",
   },
+  {
+    id: "temple-mandapam",
+    title: "Chola Mandapam Conservation",
+    category: "Temple Restoration",
+    desc: "Carefully cleaning and reinforcing structural stone pillars in rural sanctuaries.",
+    src: "/Event images/05.jpg",
+    pillBg: "bg-saffron-glow/90 text-deep-forest",
+  },
+  {
+    id: "goshala-welfare",
+    title: "Goshala Seva & Care",
+    category: "Community Service",
+    desc: "Daily fodder, medical support, and shelter maintenance for indigenous cattle.",
+    src: "/Event images/18.jpg",
+    pillBg: "bg-tertiary-container text-on-tertiary-container",
+  },
+  {
+    id: "vedic-chanting",
+    title: "Vedic Chanting Mahotsav",
+    category: "Events",
+    desc: "Young scholars leading traditional Vedic recitals for global peace.",
+    src: "/Event images/22.jpg",
+    pillBg: "bg-primary-container text-on-primary-container",
+  },
+  {
+    id: "rural-women-empowerment",
+    title: "Women Craftsmanship Drive",
+    category: "Community Service",
+    desc: "Skill training in traditional palm-leaf and textile handicrafts for rural self-help groups.",
+    src: "/Event images/52.jpg",
+    pillBg: "bg-tertiary-container text-on-tertiary-container",
+  },
+  {
+    id: "youth-heritage",
+    title: "Youth Heritage Walk",
+    category: "Events",
+    desc: "Guiding the next generation through sacred historical sites across Tamil Nadu.",
+    src: "/images/volunteer.png",
+    pillBg: "bg-primary-container text-on-primary-container",
+  },
+  {
+    id: "scripture-digitization",
+    title: "Palm-Leaf Scripture Preservation",
+    category: "Temple Restoration",
+    desc: "Digitizing ancient manuscripts to preserve centuries of spiritual wisdom.",
+    src: "/images/about.png",
+    pillBg: "bg-saffron-glow/90 text-deep-forest",
+  },
 ];
 
 const FILTERS = ["All", "Temple Restoration", "Community Service", "Events"];
 
 export default function GalleryPage() {
+  const [items, setItems] = useState<any[]>(GALLERY_ITEMS);
   const [activeTab, setActiveTab] = useState("All");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [visibleCount, setVisibleCount] = useState(6);
 
-  const filteredItems = GALLERY_ITEMS.filter(
-    (item) => activeTab === "All" || item.category === activeTab
+  useEffect(() => {
+    fetch("/api/public/gallery")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && Array.isArray(data.photos) && data.photos.length > 0) {
+          const dbItems = data.photos.map((p: any) => ({
+            id: String(p.id),
+            title: p.caption || "Sacred Moment",
+            category: p.category || "Events",
+            desc: p.caption || "",
+            src: p.image_url,
+            pillBg: "bg-saffron-glow/90 text-deep-forest",
+          }));
+          setItems(dbItems);
+        }
+      })
+      .catch((err) => console.error("Error fetching gallery:", err));
+  }, []);
+
+  const filteredItems = items.filter(
+    (item) =>
+      activeTab === "All" ||
+      item.category === activeTab ||
+      (activeTab === "Events" && item.category?.toLowerCase() === "events") ||
+      (activeTab === "Temple Restoration" && item.category?.toLowerCase().includes("temple")) ||
+      (activeTab === "Community Service" && item.category?.toLowerCase().includes("welfare"))
   );
+  const displayedItems = filteredItems.slice(0, visibleCount);
 
   return (
     <div className="flex flex-col relative w-full overflow-hidden bg-surface">
@@ -96,7 +171,10 @@ export default function GalleryPage() {
           {FILTERS.map((f) => (
             <button
               key={f}
-              onClick={() => setActiveTab(f)}
+              onClick={() => {
+                setActiveTab(f);
+                setVisibleCount(6);
+              }}
               className={`px-6 py-2.5 rounded-full font-label-lg transition-all duration-300 cursor-pointer select-none active:scale-95 text-sm ${
                 activeTab === f
                   ? "border border-primary bg-primary text-ethereal-white shadow-md font-bold scale-105"
@@ -112,33 +190,44 @@ export default function GalleryPage() {
       {/* Gallery Expandable Accordion */}
       <section className="px-4 md:px-8 max-w-7xl mx-auto pb-24 w-full">
         <ImageGallery
-          items={filteredItems}
+          items={displayedItems}
           onSelect={(idx) => {
-            const selectedItem = filteredItems[idx];
+            const selectedItem = displayedItems[idx];
             if (selectedItem) {
-              const originalIdx = GALLERY_ITEMS.findIndex((x) => x.id === selectedItem.id);
+              const originalIdx = items.findIndex((x) => x.id === selectedItem.id);
               if (originalIdx !== -1) setLightboxIndex(originalIdx);
             }
           }}
         />
 
         <div className="mt-16 text-center">
-          <PillButton variant="secondary" className="!inline-flex gap-2 items-center">
-            <span>Load More Moments</span>
-            <span className="material-symbols-outlined text-lg">expand_more</span>
-          </PillButton>
+          {visibleCount < filteredItems.length ? (
+            <div onClick={() => setVisibleCount((prev) => prev + 6)} className="inline-block">
+              <PillButton variant="secondary" className="!inline-flex gap-2 items-center cursor-pointer hover:scale-105 transition-transform shadow-md">
+                <span>Load More Moments ({filteredItems.length - visibleCount} remaining)</span>
+                <span className="material-symbols-outlined text-lg">expand_more</span>
+              </PillButton>
+            </div>
+          ) : filteredItems.length > 6 ? (
+            <div onClick={() => setVisibleCount(6)} className="inline-block">
+              <PillButton variant="secondary" className="!inline-flex gap-2 items-center cursor-pointer hover:scale-105 transition-transform opacity-80">
+                <span>Show Less Moments</span>
+                <span className="material-symbols-outlined text-lg">expand_less</span>
+              </PillButton>
+            </div>
+          ) : null}
         </div>
       </section>
 
       {/* Lightbox Modal */}
       <LightboxModal
         item={
-          lightboxIndex !== null
+          lightboxIndex !== null && items[lightboxIndex]
             ? {
-                src: GALLERY_ITEMS[lightboxIndex].src,
-                alt: GALLERY_ITEMS[lightboxIndex].title,
-                caption: GALLERY_ITEMS[lightboxIndex].desc,
-                category: GALLERY_ITEMS[lightboxIndex].category,
+                src: items[lightboxIndex].src,
+                alt: items[lightboxIndex].title,
+                caption: items[lightboxIndex].desc,
+                category: items[lightboxIndex].category,
               }
             : null
         }

@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import sql from "@/lib/db";
-import { getSession } from "@/lib/session";
 
 const DEFAULT_PHOTOS = [
   { caption: "Kanchipuram Heritage Project", category: "Temple Restoration", image_url: "/images/gallery-1.png" },
@@ -20,9 +19,6 @@ const DEFAULT_PHOTOS = [
 
 export async function GET(req: NextRequest) {
   try {
-    const session = await getSession();
-    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
     const [{ count }] = await sql`SELECT COUNT(*) FROM gallery_photos`;
     if (Number(count) < 5) {
       for (const item of DEFAULT_PHOTOS) {
@@ -48,37 +44,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ photos });
   } catch (err) {
-    console.error("GET /api/admin/gallery error:", err);
+    console.error("GET /api/public/gallery error:", err);
     return NextResponse.json({ error: "Failed to fetch gallery photos" }, { status: 500 });
-  }
-}
-
-export async function POST(req: NextRequest) {
-  try {
-    const session = await getSession();
-    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-    const body = await req.json();
-    const { image_url, caption = "", category = "events", is_featured = false } = body;
-
-    if (!image_url) {
-      return NextResponse.json({ error: "Image URL is required" }, { status: 400 });
-    }
-
-    const [photo] = await sql`
-      INSERT INTO gallery_photos (image_url, caption, category, is_featured)
-      VALUES (${image_url}, ${caption}, ${category}, ${is_featured})
-      RETURNING *
-    `;
-
-    await sql`
-      INSERT INTO activity_log (action, entity_type, entity_title)
-      VALUES ('Uploaded photo to', 'Gallery', ${category})
-    `;
-
-    return NextResponse.json({ photo }, { status: 201 });
-  } catch (err) {
-    console.error("POST /api/admin/gallery error:", err);
-    return NextResponse.json({ error: "Failed to create gallery photo" }, { status: 500 });
   }
 }

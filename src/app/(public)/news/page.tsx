@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ScrollReveal, RevealItem } from "@/components/motion/ScrollReveal";
 import { ParallaxBg } from "@/components/motion/ParallaxBg";
 import { PillButton } from "@/components/ui/PillButton";
@@ -41,10 +41,37 @@ const ARTICLES = [
 const FILTERS = ["All", "Press Releases", "Media", "Events"];
 
 export default function NewsPage() {
+  const [articlesList, setArticlesList] = useState<any[]>(ARTICLES);
   const [activeTab, setActiveTab] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredArticles = ARTICLES.filter((art) => {
+  useEffect(() => {
+    fetch("/api/public/news")
+      .then(res => res.json())
+      .then(data => {
+        if (data && Array.isArray(data.articles)) {
+          const dbArticles = data.articles.map((art: any) => ({
+            id: art.slug || String(art.id),
+            title: art.headline,
+            date: art.publish_date ? new Date(art.publish_date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "Recent",
+            tag: "Media",
+            readTime: `${art.read_time_minutes || 4} min read`,
+            desc: art.headline,
+            src: art.featured_image_url || "/images/news.png",
+          }));
+          const combined = [...dbArticles];
+          for (const item of ARTICLES) {
+            if (!combined.some(a => String(a.id) === String(item.id) || a.title === item.title)) {
+              combined.push(item);
+            }
+          }
+          setArticlesList(combined);
+        }
+      })
+      .catch(err => console.error("Error fetching public news:", err));
+  }, []);
+
+  const filteredArticles = articlesList.filter((art) => {
     const matchesFilter = activeTab === "All" || art.tag === activeTab;
     const matchesSearch =
       art.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -167,8 +194,8 @@ export default function NewsPage() {
         </ScrollReveal>
 
         <ScrollReveal staggerChildren={0.12} className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {filteredArticles.map((art) => (
-            <RevealItem key={art.id} className="h-full">
+          {filteredArticles.map((art, idx) => (
+            <RevealItem key={`${art.id}-${idx}`} className="h-full">
               <article className="modern-card bg-surface-container-lowest rounded-[28px] overflow-hidden border border-outline-variant/30 shadow-soft hover:shadow-soft-hover flex flex-col group h-full">
                 <div className="relative h-56 overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
