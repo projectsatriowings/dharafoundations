@@ -39,7 +39,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="bg-background text-on-background font-body antialiased overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
+      <body suppressHydrationWarning className="bg-background text-on-background font-body antialiased overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
         <LenisProvider>
           <CustomCursor />
           <Header />

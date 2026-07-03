@@ -70,7 +70,7 @@ export function NeoMinimalFooter() {
               title: "Quick Links", 
               links: [
                 { name: "About Us", href: "/about" },
-                { name: "Sanatana Dharma", href: "/programs" },
+                { name: "Sanatana Dharma", href: "/about" },
                 { name: "Events & Activities", href: "/events" },
                 { name: "Photo Gallery", href: "/gallery" }
               ] 

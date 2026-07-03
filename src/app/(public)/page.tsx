@@ -2,11 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import { ScrollReveal, RevealItem } from "@/components/motion/ScrollReveal";
 import { ParallaxBg } from "@/components/motion/ParallaxBg";
 import { LightboxModal } from "@/components/ui/LightboxModal";
 import InteractiveSelector from "@/components/ui/interactive-selector";
 import BorderGlow from "@/components/ui/BorderGlow";
+import VideoIntroPopup from "@/components/VideoIntroPopup/VideoIntroPopup";
 
 const HOME_GALLERY = [
   {
@@ -44,315 +46,359 @@ const PREVIEW_SLIDES = [
 
 export default function HomePage() {
   const [activeModalItem, setActiveModalItem] = useState<(typeof HOME_GALLERY)[0] | null>(null);
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [stats, setStats] = useState<any[]>([
+    { stat_value: "3", stat_label: "FOUNDING TRUSTEES" },
+    { stat_value: "8+", stat_label: "EVENTS CONDUCTED" },
+    { stat_value: "80G", stat_label: "TAX EXEMPTION" },
+  ]);
+  const [config, setConfig] = useState({
+    hero_image_url: "/images/hero-devi.png",
+    intro_video_1_url: process.env.NEXT_PUBLIC_INTRO_VIDEO_1 || "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4",
+    intro_video_2_url: process.env.NEXT_PUBLIC_INTRO_VIDEO_2 || "https://res.cloudinary.com/woo94xq2/video/upload/v1783059473/dhara_foundations/videos/osokgojzgb0sdg1vlywr.mp4",
+  });
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % PREVIEW_SLIDES.length);
-    }, 4000);
-    return () => clearInterval(timer);
+    fetch("/api/public/homepage")
+      .then((res) => res.json())
+      .then((d) => {
+        if (d.stats && d.stats.length > 0) setStats(d.stats);
+        if (d.config) setConfig((prev) => ({ ...prev, ...d.config }));
+      })
+      .catch(console.error);
   }, []);
 
   return (
     <div className="relative w-full overflow-hidden bg-background text-on-background">
-      {/* Section 1: Cinematic Full-Bleed Hero Section */}
-      <section className="relative pt-28 sm:pt-32 pb-16 w-full min-h-screen flex items-stretch overflow-hidden bg-[#0f3443] text-white">
+      {/* Floating Video Intro Popup (PiP — home page only) */}
+      <VideoIntroPopup
+        video1Src={config.intro_video_1_url}
+        video2Src={config.intro_video_2_url}
+      />
+
+      {/* ==========================================
+          SCOPED HOME PAGE TOP SECTION (Global surface background)
+         ========================================== */}
+      <div className="w-full bg-surface text-on-surface pb-20 pt-4 sm:pt-8 selection:bg-primary/20 selection:text-deep-forest">
         
-        {/* Main Background Photo */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/banner.png"
-          alt="Dhara Foundations Community Gathering"
-          className="absolute inset-0 w-full h-full object-cover scale-[1.12] z-0 transition-transform duration-1000"
-          style={{ objectFit: "cover", objectPosition: "center 15%" }}
-        />
-
-        {/* Giant Ghost Headline (Option B: Depth & Blend Mode effect) */}
-        <div 
-          className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-[1] overflow-hidden"
-          aria-hidden="true"
-        >
-          <span 
-            className="font-headline-md font-bold text-white/25 mix-blend-overlay tracking-[0.1em] leading-none text-center"
-            style={{ fontSize: "clamp(64px, 16vw, 180px)" }}
-          >
-            DHARMA
-          </span>
-        </div>
-
-        {/* Bottom-heavy Dark Gradient Overlay using brand gradient #0f3443 */}
-        <div 
-          className="absolute inset-0 z-[2] pointer-events-none"
-          style={{
-            background: "linear-gradient(to bottom, rgba(15, 52, 67, 0.3) 0%, rgba(15, 52, 67, 0.85) 100%)"
-          }}
-        />
-
-        {/* Hero Content Area */}
-        <div className="relative z-10 w-full max-w-[1440px] mx-auto flex flex-col justify-end gap-10 sm:gap-12 px-6 sm:px-12 md:px-16 mt-auto">
+        {/* 3. HERO SECTION — TWO COLUMN LAYOUT */}
+        <section className="min-h-[80vh] max-w-[1400px] mx-auto px-6 sm:px-8 md:px-12 py-6 md:py-12 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
-          {/* Top Main Heading */}
-          <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-saffron-glow text-xs font-label-lg uppercase tracking-widest shadow-sm">
-              <span>Dhara Divine Trust Portal</span>
-            </div>
-            <h1 className="font-headline-md text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.1] drop-shadow-md">
-              Transforming Lives, <br />
-              <span className="text-saffron-glow font-light italic">Preserving Traditions.</span>
-            </h1>
-          </div>
-
-          {/* Bottom Row Layout: Stat Row + CTA (Left) and Floating Preview Card (Right) */}
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10 lg:gap-12 w-full pt-6 border-t border-white/15">
+          {/* LEFT COLUMN (~52% -> col-span-6 on lg) */}
+          <div className="lg:col-span-6 space-y-6 flex flex-col justify-center">
             
-            {/* STAT ROW + CTA (bottom-left) */}
-            <div className="flex flex-col gap-8 lg:max-w-xl xl:max-w-2xl">
-              
-              {/* Three Stat Blocks */}
-              <div className="grid grid-cols-3 gap-4 sm:gap-8 pt-1">
-                <div>
-                  <div className="font-headline-md text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">
-                    25+
-                  </div>
-                  <div className="font-body-sm text-xs sm:text-sm text-white/75 mt-1 font-medium leading-snug">
-                    Years of Seva {/* [CLIENT TO CONFIRM] */}
-                  </div>
-                </div>
-                <div className="border-l border-white/20 pl-4 sm:pl-8">
-                  <div className="font-headline-md text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">
-                    10k+
-                  </div>
-                  <div className="font-body-sm text-xs sm:text-sm text-white/75 mt-1 font-medium leading-snug">
-                    Beneficiaries {/* [CLIENT TO CONFIRM] */}
-                  </div>
-                </div>
-                <div className="border-l border-white/20 pl-4 sm:pl-8">
-                  <div className="font-headline-md text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">
-                    50+
-                  </div>
-                  <div className="font-body-sm text-xs sm:text-sm text-white/75 mt-1 font-medium leading-snug">
-                    Temples Restored {/* [CLIENT TO CONFIRM] */}
-                  </div>
-                </div>
-              </div>
+            {/* A) EYEBROW LABEL */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+              className="inline-flex items-center gap-2 bg-saffron-glow/30 text-primary font-bold px-4 py-1.5 rounded-full text-xs tracking-wider uppercase self-start"
+            >
+              <svg className="w-3.5 h-3.5 fill-current shrink-0" viewBox="0 0 24 24">
+                <path d="M12 2C8.5 7 5.5 10.5 5.5 14.5c0 3.6 2.9 6.5 6.5 6.5s6.5-2.9 6.5-6.5C18.5 10.5 15.5 7 12 2zm0 17c-2.5 0-4.5-2-4.5-4.5 0-2.8 2.2-5.5 4.5-8.9 2.3 3.4 4.5 6.1 4.5 8.9 0 2.5-2 4.5-4.5 4.5z"/>
+              </svg>
+              <span>REGISTERED PUBLIC TRUST · EST. 2024</span>
+            </motion.div>
 
-              {/* Pill CTA Button + Circular Arrow Button + Supporting Sentence */}
-              <div className="flex flex-col sm:flex-row sm:items-center gap-5 pt-1">
-                <div className="flex items-center gap-3 shrink-0">
-                  <Link
-                    href="/contact"
-                    className="px-8 py-3.5 rounded-full bg-white text-[#0f3443] hover:bg-saffron-glow font-label-lg font-bold text-sm sm:text-base tracking-wide transition-all shadow-lg hover:shadow-xl active:scale-95"
-                  >
-                    Get Involved
-                  </Link>
-                  <Link
-                    href="/about"
-                    aria-label="Discover our mission"
-                    className="w-12 h-12 rounded-full border border-white/40 hover:border-white bg-white/5 hover:bg-white/15 text-white flex items-center justify-center transition-all shrink-0 group"
-                  >
-                    <span className="material-symbols-outlined text-xl group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">
-                      arrow_outward
-                    </span>
-                  </Link>
-                </div>
-                <p className="text-white/80 text-xs sm:text-sm font-body-sm leading-relaxed max-w-xs sm:max-w-sm">
-                  Building stronger communities through compassion and cultural preservation.
-                </p>
-              </div>
-            </div>
+            {/* B) MAIN HEADING */}
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.25, ease: "easeOut" }}
+              className="font-heading font-bold text-deep-forest leading-[1.15] text-[clamp(36px,4vw,58px)]"
+            >
+              Transforming Lives,<br />
+              <em className="text-primary italic font-bold not-italic">Preserving</em> Traditions.
+            </motion.h1>
 
-            {/* FLOATING PREVIEW CARD (bottom-right) */}
-            <div className="w-full sm:w-80 shrink-0 self-start lg:self-end bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-4 shadow-2xl relative overflow-hidden group">
-              <div className="relative h-44 sm:h-48 w-full rounded-2xl overflow-hidden bg-black/40 mb-3">
-                {PREVIEW_SLIDES.map((slide, idx) => (
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img
-                    key={slide.src}
-                    src={slide.src}
-                    alt={slide.label}
-                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
-                      idx === currentSlide ? "opacity-100 scale-105" : "opacity-0 scale-100"
-                    }`}
-                  />
-                ))}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
-                <div className="absolute bottom-3 left-3 right-3 flex justify-between items-end text-xs font-label-lg tracking-wider text-white">
-                  <span className="drop-shadow-md font-semibold">
-                    {PREVIEW_SLIDES[currentSlide].label}
-                  </span>
-                </div>
-              </div>
+            {/* C) BODY PARAGRAPH */}
+            <motion.p
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+              className="font-body text-on-surface-variant text-[16px] sm:text-[17px] leading-[1.7] max-w-[480px]"
+            >
+              Dhara Foundations stands beside the poor, the forgotten, and the faithful — feeding the hungry, restoring sacred spaces, and giving dignity to those society often overlooks.
+            </motion.p>
 
-              {/* Slide Counter & Progress Dots */}
-              <div className="flex items-center justify-between px-1">
-                <span className="font-label-lg text-xs font-bold tracking-widest text-white/90">
-                  {String(currentSlide + 1).padStart(2, "0")}/{String(PREVIEW_SLIDES.length).padStart(2, "0")}
-                </span>
-                <div className="flex items-center gap-1.5">
-                  {PREVIEW_SLIDES.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setCurrentSlide(idx)}
-                      aria-label={`Go to slide ${idx + 1}`}
-                      className={`h-1.5 rounded-full transition-all duration-300 ${
-                        idx === currentSlide ? "w-6 bg-white" : "w-1.5 bg-white/30 hover:bg-white/50"
-                      }`}
-                    />
-                  ))}
+            {/* D) TWO BUTTONS */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.55, ease: "easeOut" }}
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2"
+            >
+              <Link
+                href="/contact"
+                className="bg-primary hover:opacity-90 text-on-primary rounded-full px-8 py-4 font-label-lg font-bold text-[15px] text-center transition-all hover:-translate-y-0.5 hover:scale-105 shadow-md hover:shadow-lg"
+              >
+                Get Involved
+              </Link>
+              <Link
+                href="/events"
+                className="bg-transparent hover:bg-primary text-primary hover:text-on-primary border-2 border-primary rounded-full px-8 py-4 font-label-lg font-semibold text-[15px] text-center transition-all hover:scale-105"
+              >
+                Explore Our Events →
+              </Link>
+            </motion.div>
+
+            {/* E) STATS ROW */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.7, ease: "easeOut" }}
+              className={`grid gap-3 sm:gap-6 pt-10 border-t border-outline-variant/40 mt-8 ${
+                stats.length === 1
+                  ? "grid-cols-1"
+                  : stats.length === 2
+                  ? "grid-cols-2"
+                  : stats.length >= 4
+                  ? "grid-cols-2 sm:grid-cols-4"
+                  : "grid-cols-3"
+              }`}
+            >
+              {stats.map((st, idx) => (
+                <div key={idx} className={idx > 0 ? "border-l border-outline-variant/40 pl-3 sm:pl-6" : ""}>
+                  <div className="font-heading font-bold text-primary text-[28px] sm:text-[32px] leading-tight">
+                    {st.stat_value}
+                  </div>
+                  <div className="font-title text-deep-forest font-semibold text-[10px] tracking-[0.12em] uppercase mt-1">
+                    {st.stat_label}
+                  </div>
                 </div>
-              </div>
-            </div>
+              ))}
+            </motion.div>
 
           </div>
-        </div>
-      </section>
 
-      {/* Section 2: Welcome to Dhara Foundations (Asymmetric Signature Layout) */}
-      <section className="py-20 px-4 md:px-8 max-w-[1440px] mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          {/* Asymmetric Image Left */}
-          <ScrollReveal direction="right" className="lg:col-span-6 relative">
-            <div className="relative mx-auto max-w-lg lg:max-w-none">
+          {/* RIGHT COLUMN (~48% -> col-span-6 on lg) */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="lg:col-span-6 relative mt-6 lg:mt-0"
+          >
+            {/* A) AMBER OFFSET FRAME */}
+            <div className="relative z-10 p-2 sm:p-0">
+              {/* Image */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/images/about.png"
-                alt="Devotional ritual offering with sacred ash and rudraksha beads"
-                className="w-full h-[460px] sm:h-[540px] object-cover rounded-[40px] rounded-tl-[120px] rounded-br-[120px] shadow-2xl border border-outline-variant/20"
-                loading="lazy"
+                src={config.hero_image_url || "/images/hero-devi.png"}
+                alt="Devotional ritual offering and spiritual restoration"
+                className="w-full h-[360px] sm:h-[480px] lg:h-[540px] object-cover rounded-[20px] shadow-2xl relative z-10 block"
               />
-              <div className="absolute -bottom-6 -left-4 sm:-left-6 bg-surface/90 dark:bg-deep-forest/90 backdrop-blur-xl p-6 rounded-[32px] border border-outline-variant/30 shadow-2xl max-w-[220px] z-20">
-                <div className="font-headline-md text-primary dark:text-saffron-glow font-bold text-3xl">25+</div>
-                <div className="font-label-lg text-on-surface-variant dark:text-surface-variant mt-1 text-xs uppercase tracking-wider font-semibold">
-                  Years of Seva &amp; Trust
-                </div>
-              </div>
-            </div>
-          </ScrollReveal>
 
-          {/* Text Content Right */}
-          <ScrollReveal direction="left" delay={0.15} className="lg:col-span-6 space-y-6">
-            <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 dark:bg-primary-fixed/10 text-primary dark:text-saffron-glow font-label-lg uppercase tracking-widest font-bold text-xs">
-              Welcome to Dhara Foundations
+              {/* Double-border effect: Frame offset -8px behind image showing background gap */}
+              <div
+                className="absolute -inset-2 rounded-[26px] border-2 border-primary z-0 pointer-events-none bg-surface"
+              />
+
+              {/* C) FLOATING CSR BADGE */}
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.9 }}
+                className="absolute -top-4 -left-3 sm:-top-5 sm:-left-5 z-20 bg-surface-container-lowest rounded-[14px] p-3.5 sm:px-4 sm:py-3.5 shadow-xl border border-outline-variant/30 flex items-center gap-3"
+              >
+                <div className="w-9 h-9 rounded-full bg-saffron-glow/20 flex items-center justify-center text-primary shrink-0">
+                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+                  </svg>
+                </div>
+                <div>
+                  <div className="font-title font-bold text-deep-forest text-[14px] leading-tight">
+                    CSR Registered
+                  </div>
+                  <div className="font-title text-on-surface-variant text-[12px] leading-tight mt-0.5">
+                    Reg. No. CSR00086947
+                  </div>
+                </div>
+              </motion.div>
             </div>
-            <h2 className="font-headline-md text-3xl sm:text-4xl md:text-5xl font-bold text-on-surface leading-tight">
-              Transforming lives and preserving traditions with compassion
-            </h2>
-            <p className="font-body-lg text-on-surface-variant leading-relaxed text-base sm:text-lg">
-              We are dedicated to uplifting marginalized communities while safeguarding our ancient spiritual heritage. By bridging the gap between traditional wisdom and modern welfare, we create sustainable pathways for dignity and growth.
-            </p>
+          </motion.div>
+
+        </section>
+
+        {/* ==========================================
+            4. CREDENTIALS STRIP
+           ========================================== */}
+        <ScrollReveal className="max-w-[1300px] w-[90%] mx-auto my-8 bg-surface-container-lowest rounded-[16px] py-5 px-6 sm:px-10 shadow-soft border border-outline-variant/30">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-0 items-center justify-between text-center lg:text-left">
             
-            <ul className="space-y-4 pt-2">
-              <li className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-surface-container-high dark:bg-surface-container flex items-center justify-center shrink-0 shadow-sm text-primary dark:text-saffron-glow">
-                  <span className="material-symbols-outlined text-2xl">groups</span>
-                </div>
-                <span className="font-body-md font-semibold text-on-surface text-base">Upliftment of tribal and rural communities</span>
-              </li>
-              <li className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-surface-container-high dark:bg-surface-container flex items-center justify-center shrink-0 shadow-sm text-primary dark:text-saffron-glow">
-                  <span className="material-symbols-outlined text-2xl">accessible_forward</span>
-                </div>
-                <span className="font-body-md font-semibold text-on-surface text-base">Support for physically and mentally challenged individuals</span>
-              </li>
-              <li className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-surface-container-high dark:bg-surface-container flex items-center justify-center shrink-0 shadow-sm text-primary dark:text-saffron-glow">
-                  <span className="material-symbols-outlined text-2xl">temple_hindu</span>
-                </div>
-                <span className="font-body-md font-semibold text-on-surface text-base">Restoration of ancient abandoned temples &amp; spiritual centers</span>
-              </li>
-            </ul>
-
-            <div className="pt-4">
-              <Link
-                href="/about"
-                className="inline-flex items-center gap-2 font-label-lg font-bold text-primary dark:text-saffron-glow hover:translate-x-1 transition-all group text-base cursor-pointer"
-              >
-                <span>Learn more about our foundation history</span>
-                <span className="material-symbols-outlined">arrow_forward</span>
-              </Link>
+            {/* Item 1 */}
+            <div className="flex items-center justify-center lg:justify-start gap-2.5">
+              <svg className="w-4 h-4 fill-primary shrink-0" viewBox="0 0 24 24">
+                <path d="M12 2C8.5 7 5.5 10.5 5.5 14.5c0 3.6 2.9 6.5 6.5 6.5s6.5-2.9 6.5-6.5C18.5 10.5 15.5 7 12 2z"/>
+              </svg>
+              <span className="font-title font-semibold text-deep-forest text-[11px] sm:text-[12px] tracking-[0.1em] uppercase">
+                INDIAN TRUST ACT, 1882 – REGISTERED
+              </span>
             </div>
-          </ScrollReveal>
-        </div>
-      </section>
 
-      {/* Section 3: Foundational Areas of Work (Staggered Asymmetric Pillars) */}
-      <section className="py-24 bg-surface-container-low px-4 sm:px-8 md:px-12 mt-12 rounded-[40px] max-w-[1440px] mx-auto border border-outline-variant/15">
-        <ScrollReveal className="text-center mb-16 space-y-3">
-          <span className="font-label-lg text-primary dark:text-saffron-glow uppercase tracking-widest font-bold block text-xs">
-            Our Pillars
-          </span>
-          <h2 className="font-headline-md text-3xl sm:text-4xl md:text-5xl font-bold text-on-surface">
-            Foundational Areas of Work
-          </h2>
+            {/* Item 2 */}
+            <div className="flex items-center justify-center lg:justify-start gap-2.5 lg:border-l lg:border-outline-variant/30 lg:pl-6">
+              <svg className="w-4 h-4 fill-primary shrink-0" viewBox="0 0 24 24">
+                <path d="M12 2C8.5 7 5.5 10.5 5.5 14.5c0 3.6 2.9 6.5 6.5 6.5s6.5-2.9 6.5-6.5C18.5 10.5 15.5 7 12 2z"/>
+              </svg>
+              <span className="font-title font-semibold text-deep-forest text-[11px] sm:text-[12px] tracking-[0.1em] uppercase">
+                80G &amp; 12A – TAX EXEMPT
+              </span>
+            </div>
+
+            {/* Item 3 */}
+            <div className="flex items-center justify-center lg:justify-start gap-2.5 lg:border-l lg:border-outline-variant/30 lg:pl-6">
+              <svg className="w-4 h-4 fill-primary shrink-0" viewBox="0 0 24 24">
+                <path d="M12 2C8.5 7 5.5 10.5 5.5 14.5c0 3.6 2.9 6.5 6.5 6.5s6.5-2.9 6.5-6.5C18.5 10.5 15.5 7 12 2z"/>
+              </svg>
+              <span className="font-title font-semibold text-deep-forest text-[11px] sm:text-[12px] tracking-[0.1em] uppercase">
+                MCA – CSR APPROVED (Reg. No. CSR00086947)
+              </span>
+            </div>
+
+            {/* Item 4 */}
+            <div className="flex items-center justify-center lg:justify-start gap-2.5 lg:border-l lg:border-outline-variant/30 lg:pl-6">
+              <svg className="w-4 h-4 fill-primary shrink-0" viewBox="0 0 24 24">
+                <path d="M12 2C8.5 7 5.5 10.5 5.5 14.5c0 3.6 2.9 6.5 6.5 6.5s6.5-2.9 6.5-6.5C18.5 10.5 15.5 7 12 2z"/>
+              </svg>
+              <span className="font-title font-semibold text-deep-forest text-[11px] sm:text-[12px] tracking-[0.1em] uppercase">
+                NGO DARPAN – TN/2024/0473120
+              </span>
+            </div>
+
+          </div>
         </ScrollReveal>
 
-        <ScrollReveal staggerChildren={0.15} className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-          {/* Pillar 1: Desiyam (Glass Card with Dark Hover) */}
-          <RevealItem className="bg-surface/80 dark:bg-surface-container/60 backdrop-blur-md p-8 sm:p-10 rounded-[40px] flex flex-col justify-between border border-outline-variant/30 shadow-sm hover:shadow-2xl hover:bg-deep-forest hover:text-ethereal-white hover:border-ethereal-white/10 hover:-translate-y-2 transition-all duration-500 group relative overflow-hidden cursor-pointer h-full">
-            <div className="absolute -top-12 -right-12 w-48 h-48 bg-saffron-glow/20 rounded-full blur-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="relative z-10">
-              <div className="w-16 h-16 rounded-full bg-primary/10 dark:bg-primary-fixed/20 flex items-center justify-center mb-6 text-primary dark:text-saffron-glow group-hover:bg-ethereal-white/10 group-hover:text-saffron-glow group-hover:scale-110 transition-all duration-500 shadow-sm">
-                <span className="material-symbols-outlined text-3xl">public</span>
-              </div>
-              <h3 className="font-heading text-xl sm:text-2xl font-bold mb-3 text-on-surface group-hover:text-ethereal-white transition-colors duration-500">Desiyam</h3>
-              <p className="font-body text-on-surface-variant group-hover:text-ethereal-white/80 mb-8 leading-relaxed transition-colors duration-500 text-sm sm:text-base">
-                Fostering national integration, traditional heritage preservation, and civic responsibility through grassroots cultural initiatives.
+        {/* ==========================================
+            4B. WELCOME / ABOUT FOUNDATION SECTION
+           ========================================== */}
+        <section className="max-w-[1400px] mx-auto px-6 sm:px-8 md:px-12 py-16 md:py-20">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+            <ScrollReveal direction="right" className="lg:col-span-7 space-y-5">
+              <span className="font-label-lg text-primary uppercase tracking-widest text-xs font-bold block">
+                Welcome to Dhara Foundations
+              </span>
+              <h2 className="font-heading font-bold text-deep-forest text-[clamp(28px,3.5vw,46px)] leading-[1.2]">
+                Transforming lives and preserving traditions with compassion
+              </h2>
+              <p className="font-body text-on-surface-variant text-[16px] leading-[1.7]">
+                Dhara Foundations is a non-profit organization dedicated to transforming lives and protecting traditions. We work for the upliftment of:
               </p>
-            </div>
-            <Link
-              href="/programs"
-              className="w-12 h-12 rounded-full border border-primary dark:border-saffron-glow text-primary dark:text-saffron-glow flex items-center justify-center group-hover:bg-saffron-glow group-hover:text-deep-forest group-hover:border-saffron-glow transition-all duration-500 self-start relative z-10 shadow-sm"
-              aria-label="Explore Desiyam"
-            >
-              <span className="material-symbols-outlined text-lg">arrow_forward</span>
-            </Link>
-          </RevealItem>
+              <ul className="list-disc pl-6 space-y-2 font-body text-on-surface-variant text-[16px]">
+                <li>Tribal and rural communities,</li>
+                <li>Physically and mentally challenged individuals,</li>
+                <li>Economically underprivileged groups,</li>
+                <li>Abandoned temples and spiritual centers,</li>
+              </ul>
+              <p className="font-body text-on-surface-variant text-[16px] leading-[1.7]">
+                Our mission combines compassionate service, cultural revival, and spiritual awareness to build a society rooted in values and dignity.
+              </p>
+              <p className="font-body text-on-surface-variant text-[14px] sm:text-[15px] leading-[1.7] bg-surface-container-low/60 p-5 rounded-2xl border border-outline-variant/30 space-y-1.5">
+                <span className="block">It is a Non-Profit Organization registered under Indian Trust Act 1882 and The Indian Income Tax Act 1961 on 20.11.2024.</span>
+                <span className="block">The Trust is registered with QUALIFY DEDUCTION U/S 80G OF I.T Act 1961 Vide AAETD8857AE20241 and AAETD8857AF20241 dated 11.12.2024 respectively.</span>
+                <span className="block">The Trust is also registered with The Ministry of Corporate Affairs for undertaking CSR Activities Vide the Registration number CSR00086947 dated 20.02.2025.</span>
+                <span className="block">The Trust is also registered with NGO–DARPAN vide Regn No. TN/2024/0473120 dated 06.12.2024.</span>
+              </p>
+            </ScrollReveal>
 
-          {/* Pillar 2: Spiritualism (Glass Card with Dark Hover & Offset) */}
-          <RevealItem className="bg-surface/80 dark:bg-surface-container/60 backdrop-blur-md p-8 sm:p-10 rounded-[40px] flex flex-col justify-between border border-outline-variant/30 shadow-sm hover:shadow-2xl hover:bg-deep-forest hover:text-ethereal-white hover:border-ethereal-white/10 hover:-translate-y-2 transition-all duration-500 group relative overflow-hidden cursor-pointer h-full">
-            <div className="absolute -top-12 -right-12 w-48 h-48 bg-saffron-glow/20 rounded-full blur-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="relative z-10 flex flex-col h-full justify-between">
-              <div>
-                <div className="w-16 h-16 rounded-full bg-primary/10 dark:bg-primary-fixed/20 flex items-center justify-center mb-6 text-primary dark:text-saffron-glow group-hover:bg-ethereal-white/10 group-hover:text-saffron-glow group-hover:scale-110 transition-all duration-500 shadow-sm">
-                  <span className="material-symbols-outlined text-3xl">self_improvement</span>
+            <ScrollReveal direction="left" className="lg:col-span-5 relative mt-6 lg:mt-0 sticky top-28">
+              <div className="relative z-10 p-2 sm:p-0">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/about/about-section.jpg"
+                  alt="Welcome to Dhara Foundations"
+                  className="w-full h-[380px] sm:h-[480px] object-cover rounded-[24px] shadow-2xl relative z-10 block"
+                />
+                <div className="absolute -inset-2 rounded-[28px] border-2 border-primary/40 z-0 pointer-events-none" />
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+
+        {/* ==========================================
+            4C. THREE PILLAR CARDS SECTION
+           ========================================== */}
+        <section className="max-w-[1400px] mx-auto px-6 sm:px-8 md:px-12 py-8 pb-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+            
+            {/* Pillar 1 */}
+            <ScrollReveal className="relative bg-surface-container-lowest dark:bg-surface-container p-8 sm:p-9 rounded-[28px] shadow-soft hover:shadow-soft-hover hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden group min-h-[260px] border border-outline-variant/30 hover:border-primary/50">
+              <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-primary/15 to-transparent rounded-bl-full pointer-events-none" />
+              <div className="relative z-10 flex justify-between items-start mb-6">
+                <h3 className="font-heading font-bold text-[22px] sm:text-[24px] leading-tight text-deep-forest max-w-[75%]">
+                  Desiyam (National Culture)
+                </h3>
+                <div className="w-12 h-12 rounded-[14px] bg-primary/10 flex items-center justify-center text-primary shrink-0 group-hover:scale-110 transition-transform">
+                  <span className="material-symbols-outlined text-2xl">menu_book</span>
                 </div>
-                <h3 className="font-heading text-xl sm:text-2xl font-bold mb-3 text-on-surface group-hover:text-ethereal-white transition-colors duration-500">Spiritualism</h3>
-                <p className="font-body text-on-surface-variant group-hover:text-ethereal-white/80 mb-8 leading-relaxed transition-colors duration-500 text-sm sm:text-base">
-                  Reviving ancient Vedic wisdom, supporting religious education, and physically renovating abandoned rural sacred shrines.
-                </p>
               </div>
-              <Link
-                href="/programs"
-                className="w-12 h-12 rounded-full border border-primary dark:border-saffron-glow text-primary dark:text-saffron-glow flex items-center justify-center group-hover:bg-saffron-glow group-hover:text-deep-forest group-hover:border-saffron-glow transition-all duration-500 self-start relative z-10 shadow-sm"
-                aria-label="Explore Spiritualism"
-              >
-                <span className="material-symbols-outlined text-lg">arrow_forward</span>
-              </Link>
-            </div>
-          </RevealItem>
-
-          {/* Pillar 3: Community Welfare (Glass Card with Dark Hover) */}
-          <RevealItem className="bg-surface/80 dark:bg-surface-container/60 backdrop-blur-md p-8 sm:p-10 rounded-[40px] flex flex-col justify-between border border-outline-variant/30 shadow-sm hover:shadow-2xl hover:bg-deep-forest hover:text-ethereal-white hover:border-ethereal-white/10 hover:-translate-y-2 transition-all duration-500 group relative overflow-hidden cursor-pointer h-full">
-            <div className="absolute -top-12 -right-12 w-48 h-48 bg-saffron-glow/20 rounded-full blur-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="relative z-10">
-              <div className="w-16 h-16 rounded-full bg-primary/10 dark:bg-primary-fixed/20 flex items-center justify-center mb-6 text-primary dark:text-saffron-glow group-hover:bg-ethereal-white/10 group-hover:text-saffron-glow group-hover:scale-110 transition-all duration-500 shadow-sm">
-                <span className="material-symbols-outlined text-3xl">diversity_1</span>
-              </div>
-              <h3 className="font-heading text-xl sm:text-2xl font-bold mb-3 text-on-surface group-hover:text-ethereal-white transition-colors duration-500">Community Welfare</h3>
-              <p className="font-body text-on-surface-variant group-hover:text-ethereal-white/80 mb-8 leading-relaxed transition-colors duration-500 text-sm sm:text-base">
-                Empowering underprivileged tribal families and physically challenged individuals with healthcare, nutrition, and livelihood grants.
+              <p className="relative z-10 font-body italic text-on-surface-variant text-[15px] sm:text-[16px] leading-relaxed mb-8">
+                We promote and preserve India&apos;s rich cultural identity, from temple traditions to heritage arts.
               </p>
-            </div>
-            <Link
-              href="/programs"
-              className="w-12 h-12 rounded-full border border-primary dark:border-saffron-glow text-primary dark:text-saffron-glow flex items-center justify-center group-hover:bg-saffron-glow group-hover:text-deep-forest group-hover:border-saffron-glow transition-all duration-500 self-start relative z-10 shadow-sm"
-              aria-label="Explore Welfare"
-            >
-              <span className="material-symbols-outlined text-lg">arrow_forward</span>
-            </Link>
-          </RevealItem>
-        </ScrollReveal>
-      </section>
+              <div className="relative z-10 self-end mt-auto">
+                <Link
+                  href="/about"
+                  aria-label="Learn about Desiyam"
+                  className="w-11 h-11 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-white flex items-center justify-center transition-all group-hover:scale-110 shadow-sm"
+                >
+                  <span className="material-symbols-outlined text-base">arrow_forward</span>
+                </Link>
+              </div>
+            </ScrollReveal>
+
+            {/* Pillar 2 */}
+            <ScrollReveal className="relative bg-surface-container-lowest dark:bg-surface-container p-8 sm:p-9 rounded-[28px] shadow-soft hover:shadow-soft-hover hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden group min-h-[260px] border border-outline-variant/30 hover:border-primary/50">
+              <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-primary/15 to-transparent rounded-bl-full pointer-events-none" />
+              <div className="relative z-10 flex justify-between items-start mb-6">
+                <h3 className="font-heading font-bold text-[22px] sm:text-[24px] leading-tight text-deep-forest max-w-[75%]">
+                  Spiritualism
+                </h3>
+                <div className="w-12 h-12 rounded-[14px] bg-primary/10 flex items-center justify-center text-primary shrink-0 group-hover:scale-110 transition-transform">
+                  <span className="material-symbols-outlined text-2xl">self_improvement</span>
+                </div>
+              </div>
+              <p className="relative z-10 font-body italic text-on-surface-variant text-[15px] sm:text-[16px] leading-relaxed mb-8">
+                We support spiritual education, temple renovation, and rituals that connect communities with timeless wisdom.
+              </p>
+              <div className="relative z-10 self-end mt-auto">
+                <Link
+                  href="/about"
+                  aria-label="Learn about Spiritualism"
+                  className="w-11 h-11 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-white flex items-center justify-center transition-all group-hover:scale-110 shadow-sm"
+                >
+                  <span className="material-symbols-outlined text-base">arrow_forward</span>
+                </Link>
+              </div>
+            </ScrollReveal>
+
+            {/* Pillar 3 */}
+            <ScrollReveal className="relative bg-surface-container-lowest dark:bg-surface-container p-8 sm:p-9 rounded-[28px] shadow-soft hover:shadow-soft-hover hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden group min-h-[260px] border border-outline-variant/30 hover:border-primary/50">
+              <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-primary/15 to-transparent rounded-bl-full pointer-events-none" />
+              <div className="relative z-10 flex justify-between items-start mb-6">
+                <h3 className="font-heading font-bold text-[22px] sm:text-[24px] leading-tight text-deep-forest max-w-[75%]">
+                  Community Welfare
+                </h3>
+                <div className="w-12 h-12 rounded-[14px] bg-primary/10 flex items-center justify-center text-primary shrink-0 group-hover:scale-110 transition-transform">
+                  <span className="material-symbols-outlined text-2xl">volunteer_activism</span>
+                </div>
+              </div>
+              <p className="relative z-10 font-body italic text-on-surface-variant text-[15px] sm:text-[16px] leading-relaxed mb-8">
+                Through rehabilitation, medical care, and social outreach, we empower vulnerable people to live with purpose and pride.
+              </p>
+              <div className="relative z-10 self-end mt-auto">
+                <Link
+                  href="/about"
+                  aria-label="Learn about Community Welfare"
+                  className="w-11 h-11 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-white flex items-center justify-center transition-all group-hover:scale-110 shadow-sm"
+                >
+                  <span className="material-symbols-outlined text-base">arrow_forward</span>
+                </Link>
+              </div>
+            </ScrollReveal>
+
+          </div>
+        </section>
+
+      </div>
+      {/* END SCOPED HOME PAGE TOP SECTION */}
 
       {/* Section 4: Become a Volunteer CTA Band */}
       <section className="py-16 px-4 md:px-8 max-w-[1440px] mx-auto">

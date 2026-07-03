@@ -25,7 +25,7 @@ export default function AdminLayout({
       <head>
         <meta name="robots" content="noindex,nofollow" />
       </head>
-      <body className="bg-[#fbf9f4] text-[#1b1c19] font-sans antialiased selection:bg-[#f49b33] selection:text-[#633800]">
+      <body suppressHydrationWarning className="bg-[#fbf9f4] text-[#1b1c19] font-sans antialiased selection:bg-[#f49b33] selection:text-[#633800]">
         {children}
       </body>
     </html>

@@ -39,11 +39,6 @@ const NAV_LINKS: NavLink[] = [
     ],
   },
   { 
-    href: "/programs", 
-    label: "Programs",
-    popup: { badge: "6 Core Pillars", desc: "Temple Restoration, Annadanam, Education & Spiritual Welfare." }
-  },
-  { 
     href: "/events", 
     label: "Events",
     popup: { badge: "Complete Schedule", desc: "Discover upcoming heritage discourses & community gatherings." }
@@ -124,20 +119,18 @@ export function Header() {
     setHoveredDropdown(null);
   }, [pathname]);
 
-  const isTransparentHero = pathname === "/" && !isScrolledPastHero;
+  const isTransparentHero = false;
 
   return (
     <header
-      className={`${pathname === "/" ? "fixed" : "sticky"} top-4 left-0 right-0 w-full font-label-lg z-50 px-4 sm:px-6 pointer-events-none transition-all duration-300`}
+      className="sticky top-4 left-0 right-0 w-full font-label-lg z-50 px-4 sm:px-6 pointer-events-none transition-all duration-300"
       id="main-nav"
     >
       <div
         className={`pointer-events-auto mx-auto max-w-[1300px] rounded-full border flex justify-between items-center px-5 sm:px-6 py-2 transition-all duration-300 ${
-          isTransparentHero
-            ? "bg-black/25 hover:bg-black/40 backdrop-blur-md shadow-lg border-white/20 text-white"
-            : isScrolled
-            ? "bg-ethereal-white/95 dark:bg-deep-forest/95 backdrop-blur-2xl shadow-xl border-outline-variant/30 text-on-surface"
-            : "bg-ethereal-white/85 dark:bg-deep-forest/85 backdrop-blur-md shadow-md border-outline-variant/30 text-on-surface"
+          isScrolled
+            ? "bg-white/95 dark:bg-deep-forest/95 backdrop-blur-2xl shadow-xl border-outline-variant/30 text-on-surface"
+            : "bg-white/90 dark:bg-deep-forest/90 backdrop-blur-md shadow-md border-outline-variant/30 text-on-surface"
         }`}
       >
         <Link

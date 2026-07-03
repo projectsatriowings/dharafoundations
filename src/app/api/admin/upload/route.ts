@@ -19,17 +19,28 @@ export async function POST(req: NextRequest) {
     }
 
     // Validate file type
-    const validTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+    const validTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "image/gif",
+      "video/mp4",
+      "video/webm",
+      "video/quicktime",
+    ];
     if (!validTypes.includes(file.type)) {
       return NextResponse.json(
-        { error: "Invalid file type. Only JPG, PNG, WEBP, and GIF are allowed." },
+        { error: "Invalid file type. Allowed: JPG, PNG, WEBP, GIF, MP4, WEBM, MOV." },
         { status: 400 }
       );
     }
 
-    // Validate size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      return NextResponse.json({ error: "File size exceeds 5MB limit." }, { status: 400 });
+    const isVideo = file.type.startsWith("video/");
+    const maxSize = isVideo ? 100 * 1024 * 1024 : 10 * 1024 * 1024; // 100MB for video, 10MB for image
+
+    // Validate size
+    if (file.size > maxSize) {
+      return NextResponse.json({ error: `File size exceeds limit (${isVideo ? "100MB" : "10MB"}).` }, { status: 400 });
     }
 
     const arrayBuffer = await file.arrayBuffer();
@@ -43,7 +54,8 @@ export async function POST(req: NextRequest) {
     if (cloudName && apiKey && apiSecret) {
       // Upload directly to Cloudinary REST API
       const timestamp = Math.floor(Date.now() / 1000).toString();
-      const folder = "dhara_foundations";
+      const folder = isVideo ? "dhara_foundations/videos" : "dhara_foundations";
+      const resourceType = isVideo ? "video" : "image";
 
       // Simple SHA1 signature for Cloudinary upload
       const crypto = await import("crypto");
@@ -59,7 +71,7 @@ export async function POST(req: NextRequest) {
       uploadForm.append("signature", signature);
 
       const res = await fetch(
-        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`,
         { method: "POST", body: uploadForm }
       );
 
@@ -76,8 +88,8 @@ export async function POST(req: NextRequest) {
         fs.mkdirSync(uploadDir, { recursive: true });
       }
 
-      const ext = path.extname(file.name) || ".jpg";
-      const filename = `img_${Date.now()}_${Math.random().toString(36).substring(2, 8)}${ext}`;
+      const ext = path.extname(file.name) || (isVideo ? ".mp4" : ".jpg");
+      const filename = `${isVideo ? "vid" : "img"}_${Date.now()}_${Math.random().toString(36).substring(2, 8)}${ext}`;
       const filePath = path.join(uploadDir, filename);
 
       fs.writeFileSync(filePath, buffer);
