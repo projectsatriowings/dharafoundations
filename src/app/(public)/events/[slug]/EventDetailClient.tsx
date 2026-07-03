@@ -247,6 +247,64 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
             </div>
           )}
 
+          {/* Dhara Divine Awards 9 Videos Grid */}
+          {event.id === "dhara-divine-awards" && (
+            <div className="space-y-6 pt-8 border-t border-outline-variant/30">
+              <div className="space-y-1">
+                <span className="inline-flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-widest text-primary">
+                  <Play size={14} className="fill-primary" />
+                  <span>Awardee Video Archives</span>
+                </span>
+                <h2 className="font-heading text-2xl sm:text-3xl font-bold text-deep-forest">
+                  Dhara Divine Awards 2025 Videos
+                </h2>
+                <p className="text-xs sm:text-sm text-on-surface-variant font-medium">
+                  Watch speeches, felicitation ceremonies, and exclusive moments from our award recipients.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                {DHARA_AWARDS_VIDEOS.map((vid) => (
+                  <motion.div
+                    key={vid.id}
+                    whileHover={{ y: -5 }}
+                    onClick={() => setSelectedVideo({ title: vid.title, videoUrl: vid.videoUrl })}
+                    className="bg-white rounded-2xl border border-outline-variant/30 shadow-sm hover:shadow-xl overflow-hidden flex flex-col group cursor-pointer transition-all duration-300"
+                  >
+                    {/* Thumbnail Container */}
+                    <div className="relative aspect-[16/10] w-full bg-surface-container overflow-hidden">
+                      <img
+                        src={vid.thumb}
+                        alt={vid.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                      />
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors" />
+
+                      {/* Date Badge */}
+                      <div className="absolute top-3 left-3 z-10 bg-deep-forest/90 text-white px-2.5 py-1 rounded-md text-[11px] font-mono flex items-center gap-1 shadow">
+                        <span>📅 {vid.date}</span>
+                      </div>
+
+                      {/* Red YouTube Play Button */}
+                      <div className="absolute inset-0 flex items-center justify-center z-10">
+                        <div className="w-12 h-12 bg-[#FF0000] text-white rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#cc0000] transition-all duration-300">
+                          <Play size={22} className="fill-white ml-0.5" />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Content Area */}
+                    <div className="p-4 sm:p-5 flex-1 flex items-center bg-white dark:bg-surface-container">
+                      <h3 className="font-heading font-bold text-sm sm:text-base text-deep-forest dark:text-ethereal-white group-hover:text-primary transition-colors line-clamp-2">
+                        {vid.title}
+                      </h3>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Closing CTA Box */}
           <div className="p-8 sm:p-10 rounded-3xl bg-surface-container border border-outline-variant/40 shadow-xl space-y-6 relative overflow-hidden">
             <div className="relative z-10 space-y-3 max-w-2xl">
@@ -442,6 +500,61 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
         item={selectedGalleryImg} 
         onClose={() => setSelectedGalleryImg(null)} 
       />
+
+      {/* Video Lightbox Modal */}
+      <AnimatePresence>
+        {selectedVideo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4"
+            onClick={() => setSelectedVideo(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-surface-container-lowest rounded-3xl max-w-4xl w-full p-6 shadow-2xl space-y-4 border border-outline-variant/30"
+            >
+              <div className="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+                <h3 className="font-heading font-bold text-lg text-deep-forest dark:text-ethereal-white line-clamp-1">
+                  {selectedVideo.title}
+                </h3>
+                <button
+                  onClick={() => setSelectedVideo(null)}
+                  className="p-1.5 rounded-full hover:bg-surface-container text-on-surface-variant transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="aspect-video w-full bg-black rounded-2xl overflow-hidden flex items-center justify-center relative">
+                {selectedVideo.videoUrl ? (
+                  <iframe
+                    src={selectedVideo.videoUrl}
+                    title={selectedVideo.title}
+                    className="w-full h-full border-0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : (
+                  <div className="text-center p-8 space-y-3 text-white">
+                    <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mx-auto">
+                      <Play size={28} className="text-primary fill-primary ml-1" />
+                    </div>
+                    <p className="font-heading text-xl font-bold">Video Link Coming Soon</p>
+                    <p className="text-sm text-gray-300 max-w-md mx-auto">
+                      The official YouTube recording for &ldquo;{selectedVideo.title}&rdquo; is ready to be embedded as soon as you provide the link!
+                    </p>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -20,24 +20,39 @@ import {
 export default async function AdminDashboardPage() {
   const session = await getSession();
 
-  // Fetch summary counts
-  const [counts] = await sql`
-    SELECT
-      (SELECT COUNT(*) FROM events WHERE status = 'published') AS total_events,
-      (SELECT COUNT(*) FROM news_articles WHERE status = 'published') AS total_news,
-      (SELECT COUNT(*) FROM gallery_photos) AS total_gallery,
-      (SELECT COUNT(*) FROM contact_submissions WHERE status = 'new') AS unread_contact,
-      (SELECT COUNT(*) FROM event_registrations WHERE status = 'new') AS unread_registrations,
-      (SELECT COUNT(*) FROM sponsor_enquiries WHERE status = 'new') AS unread_sponsors
-  `;
+  // Fetch summary counts (with offline fallback)
+  let counts: Record<string, string | number> = {
+    total_events: "0",
+    total_news: "0",
+    total_gallery: "0",
+    unread_contact: "0",
+    unread_registrations: "0",
+    unread_sponsors: "0",
+  };
+  let recentEvents: Array<{ id: number; title: string; status: string; updated_at: string }> = [];
 
-  // Fetch recent events for activity feed
-  const recentEvents = await sql`
-    SELECT id, title, status, updated_at
-    FROM events
-    ORDER BY updated_at DESC
-    LIMIT 5
-  `;
+  try {
+    const [dbCounts] = await sql`
+      SELECT
+        (SELECT COUNT(*) FROM events WHERE status = 'published') AS total_events,
+        (SELECT COUNT(*) FROM news_articles WHERE status = 'published') AS total_news,
+        (SELECT COUNT(*) FROM gallery_photos) AS total_gallery,
+        (SELECT COUNT(*) FROM contact_submissions WHERE status = 'new') AS unread_contact,
+        (SELECT COUNT(*) FROM event_registrations WHERE status = 'new') AS unread_registrations,
+        (SELECT COUNT(*) FROM sponsor_enquiries WHERE status = 'new') AS unread_sponsors
+    `;
+    if (dbCounts) counts = dbCounts;
+
+    const dbRecent = await sql`
+      SELECT id, title, status, updated_at
+      FROM events
+      ORDER BY updated_at DESC
+      LIMIT 5
+    `;
+    recentEvents = dbRecent as typeof recentEvents;
+  } catch (err) {
+    console.warn("Admin dashboard DB offline, showing placeholder stats:", err);
+  }
 
   const stats = [
     {
