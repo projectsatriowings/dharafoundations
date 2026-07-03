@@ -13,11 +13,79 @@ import {
   AlertCircle, 
   Sparkles, 
   CheckCircle2, 
-  UserPlus 
+  UserPlus,
+  Play,
+  X
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { type Event } from "@/data/events";
 import { LightboxModal } from "@/components/ui/LightboxModal";
+
+const DHARA_AWARDS_VIDEOS = [
+  {
+    id: 1,
+    title: "Thiru T.N. Vallinayagam, Hon'ble Justice (Retd.), Madras High Court.",
+    date: "2025",
+    thumb: "/Event images/05.jpg",
+    videoUrl: "",
+  },
+  {
+    id: 2,
+    title: "Yatheeswar Raja-Spiritual Music Director",
+    date: "2025",
+    thumb: "/Event images/18.jpg",
+    videoUrl: "",
+  },
+  {
+    id: 3,
+    title: "Mahout Receiving an Award",
+    date: "2025",
+    thumb: "/Event images/22.jpg",
+    videoUrl: "",
+  },
+  {
+    id: 4,
+    title: "Dr. Rajeswari Ramachandran",
+    date: "2025",
+    thumb: "/Event images/52.jpg",
+    videoUrl: "",
+  },
+  {
+    id: 5,
+    title: "Traditional Sports Coach",
+    date: "2025",
+    thumb: "/images/event-1.png",
+    videoUrl: "",
+  },
+  {
+    id: 6,
+    title: "CA Prabakaran",
+    date: "2025",
+    thumb: "/images/event-2.png",
+    videoUrl: "",
+  },
+  {
+    id: 7,
+    title: "Traditional Folk Artist Awardee",
+    date: "2025",
+    thumb: "/images/gallery-1.png",
+    videoUrl: "",
+  },
+  {
+    id: 8,
+    title: "Traditional Puppet Art Master",
+    date: "2025",
+    thumb: "/images/gallery-2.png",
+    videoUrl: "",
+  },
+  {
+    id: 9,
+    title: "Handicraft & Artisan Recognition",
+    date: "2025",
+    thumb: "/images/gallery-3.png",
+    videoUrl: "",
+  },
+];
 
 interface EventDetailClientProps {
   event: Event;
@@ -29,6 +97,8 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
     alt: string;
     caption?: string;
   } | null>(null);
+
+  const [selectedVideo, setSelectedVideo] = useState<{ title: string; videoUrl?: string } | null>(null);
 
   const [isRegistered, setIsRegistered] = useState(false);
 
