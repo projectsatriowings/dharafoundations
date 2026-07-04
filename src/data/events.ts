@@ -16,6 +16,10 @@ export interface Event {
     pinterest?: string;
     instagram?: string;
   };
+  videoLinks?: {
+    title: string;
+    url: string;
+  }[];
   isContentUnconfirmed?: boolean;
 }
 

@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ScrollReveal, RevealItem } from "@/components/motion/ScrollReveal";
 import { ParallaxBg } from "@/components/motion/ParallaxBg";
+import { ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 const SIX_MODERN_CARDS = [
   {
@@ -46,7 +48,34 @@ const SIX_MODERN_CARDS = [
 ];
 
 export default function NewsPage() {
-  const [articlesList] = useState<typeof SIX_MODERN_CARDS>(SIX_MODERN_CARDS);
+  const [articlesList, setArticlesList] = useState<any[]>(SIX_MODERN_CARDS);
+
+  useEffect(() => {
+    fetch("/api/public/news")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && Array.isArray(data.articles) && data.articles.length > 0) {
+          const mapped = data.articles.map((art: any) => {
+            const dateStr = art.publish_date
+              ? new Date(art.publish_date).toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                })
+              : "2025";
+            return {
+              id: art.slug || art.id,
+              title: art.headline || art.title,
+              date: dateStr,
+              img: art.featured_image_url || "/images/news/card-1.jpg",
+              isDoc: art.slug?.includes("reg-cert") || art.slug?.includes("gov-"),
+            };
+          });
+          setArticlesList(mapped);
+        }
+      })
+      .catch((err) => console.error("Failed to fetch dynamic news:", err));
+  }, []);
 
   return (
     <div className="flex flex-col relative w-full overflow-hidden bg-background">
@@ -67,9 +96,15 @@ export default function NewsPage() {
 
       {/* Main 6 Cards Grid Section */}
       <section className="pb-20 pt-4 px-6 sm:px-8 md:px-12 max-w-[1300px] mx-auto w-full">
-        <ScrollReveal staggerChildren={0.1} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
           {articlesList.map((art, idx) => (
-            <RevealItem key={`${art.id}-${idx}`} className="h-full">
+            <motion.div
+              key={`${art.id}-${idx}`}
+              className="h-full"
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: idx * 0.08 }}
+            >
               <article className="bg-surface-container-lowest dark:bg-surface-container rounded-[22px] overflow-hidden border border-outline-variant/30 shadow-soft hover:shadow-soft-hover transition-all duration-300 hover:-translate-y-1.5 flex flex-col group h-full cursor-pointer">
                 {/* Image Area */}
                 <div className={`relative h-[290px] sm:h-[310px] w-full overflow-hidden ${art.isDoc ? "bg-white p-4 pb-8 flex items-center justify-center border-b border-outline-variant/20" : "bg-surface-container-low"}`}>
@@ -94,14 +129,17 @@ export default function NewsPage() {
                     {art.title}
                   </h3>
 
-                  <div className="pt-3.5 border-t border-outline-variant/20 flex items-center gap-1.5 font-label font-bold text-[13px] text-on-surface-variant group-hover:text-primary transition-colors">
-                    <span>&rarr; Read More</span>
+                  <div className="pt-4 border-t border-outline-variant/20 flex items-center justify-start mt-auto">
+                    <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-surface-container/80 dark:bg-surface-container-high/80 group-hover:bg-primary text-deep-forest dark:text-ethereal-white group-hover:text-white font-label font-bold text-xs sm:text-[13px] transition-all duration-300 shadow-sm group-hover:shadow-md">
+                      <span>Read More</span>
+                      <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform duration-300" />
+                    </span>
                   </div>
                 </div>
               </article>
-            </RevealItem>
+            </motion.div>
           ))}
-        </ScrollReveal>
+        </div>
       </section>
 
       {/* Newsletter CTA (Parallax Background) */}

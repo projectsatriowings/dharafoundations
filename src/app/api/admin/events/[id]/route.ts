@@ -31,7 +31,14 @@ export async function GET(
       ORDER BY sort_order ASC
     `;
 
-    return NextResponse.json({ event: { ...event, gallery_images: gallery } });
+    const videos = await sql`
+      SELECT id, title, video_url AS url, sort_order
+      FROM event_videos
+      WHERE event_id = ${id}
+      ORDER BY sort_order ASC
+    `;
+
+    return NextResponse.json({ event: { ...event, gallery_images: gallery, video_links: videos } });
   } catch (err) {
     console.error(`GET /api/admin/events/[id] error:`, err);
     return NextResponse.json({ error: "Failed to fetch event" }, { status: 500 });
@@ -73,6 +80,7 @@ export async function PUT(
       meta_title,
       meta_description,
       gallery_images = [],
+      video_links = [],
     } = body;
 
     const latNum = latitude !== null && latitude !== "" && latitude !== undefined ? Number(latitude) : null;
@@ -125,6 +133,22 @@ export async function PUT(
           `;
         }
       }
+    }
+
+    // Replace event videos (only if array is provided and not empty, or if explicitly requested)
+    if (Array.isArray(video_links) && video_links.length > 0) {
+      await sql`DELETE FROM event_videos WHERE event_id = ${id}`;
+      for (let i = 0; i < video_links.length; i++) {
+        const vid = video_links[i];
+        if (vid.url) {
+          await sql`
+            INSERT INTO event_videos (event_id, title, video_url, sort_order)
+            VALUES (${id}, ${vid.title || "Event Video"}, ${vid.url}, ${i})
+          `;
+        }
+      }
+    } else if (body.clear_videos === true) {
+      await sql`DELETE FROM event_videos WHERE event_id = ${id}`;
     }
 
     return NextResponse.json({ event: updatedEvent });

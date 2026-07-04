@@ -15,7 +15,8 @@ import {
   CheckCircle2, 
   UserPlus,
   Play,
-  X
+  X,
+  Award
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { type Event } from "@/data/events";
@@ -26,64 +27,64 @@ const DHARA_AWARDS_VIDEOS = [
     id: 1,
     title: "Thiru T.N. Vallinayagam, Hon'ble Justice (Retd.), Madras High Court.",
     date: "2025",
-    thumb: "/Event images/05.jpg",
-    videoUrl: "",
+    thumb: "https://img.youtube.com/vi/J6BvffQ1ZKQ/hqdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/J6BvffQ1ZKQ?autoplay=1",
   },
   {
     id: 2,
     title: "Yatheeswar Raja-Spiritual Music Director",
     date: "2025",
-    thumb: "/Event images/18.jpg",
-    videoUrl: "",
+    thumb: "https://img.youtube.com/vi/IILqWheG9f4/hqdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/IILqWheG9f4?autoplay=1",
   },
   {
     id: 3,
     title: "Mahout Receiving an Award",
     date: "2025",
-    thumb: "/Event images/22.jpg",
-    videoUrl: "",
+    thumb: "https://img.youtube.com/vi/1T_SGxOs-CY/hqdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/1T_SGxOs-CY?autoplay=1",
   },
   {
     id: 4,
     title: "Dr. Rajeswari Ramachandran",
     date: "2025",
-    thumb: "/Event images/52.jpg",
-    videoUrl: "",
+    thumb: "https://img.youtube.com/vi/oEsIdHha5uw/hqdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/oEsIdHha5uw?autoplay=1",
   },
   {
     id: 5,
     title: "Traditional Sports Coach",
     date: "2025",
-    thumb: "/images/event-1.png",
-    videoUrl: "",
+    thumb: "https://img.youtube.com/vi/VONlv_X9Aro/hqdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/VONlv_X9Aro?autoplay=1",
   },
   {
     id: 6,
     title: "CA Prabakaran",
     date: "2025",
-    thumb: "/images/event-2.png",
-    videoUrl: "",
+    thumb: "https://img.youtube.com/vi/3FQgwocLBnQ/hqdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/3FQgwocLBnQ?autoplay=1",
   },
   {
     id: 7,
     title: "Traditional Folk Artist Awardee",
     date: "2025",
-    thumb: "/images/gallery-1.png",
-    videoUrl: "",
+    thumb: "https://img.youtube.com/vi/RnZUT2BE_rM/hqdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/RnZUT2BE_rM?autoplay=1",
   },
   {
     id: 8,
     title: "Traditional Puppet Art Master",
     date: "2025",
-    thumb: "/images/gallery-2.png",
-    videoUrl: "",
+    thumb: "https://img.youtube.com/vi/2X9u2p0YxIw/hqdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/2X9u2p0YxIw?autoplay=1",
   },
   {
     id: 9,
     title: "Handicraft & Artisan Recognition",
     date: "2025",
-    thumb: "/images/gallery-3.png",
-    videoUrl: "",
+    thumb: "https://img.youtube.com/vi/1lObOM1uqY8/hqdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/1lObOM1uqY8?autoplay=1",
   },
 ];
 
@@ -247,63 +248,91 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
             </div>
           )}
 
-          {/* Dhara Divine Awards 9 Videos Grid */}
-          {event.id === "dhara-divine-awards" && (
-            <div className="space-y-6 pt-8 border-t border-outline-variant/30">
-              <div className="space-y-1">
-                <span className="inline-flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-widest text-primary">
-                  <Play size={14} className="fill-primary" />
-                  <span>Awardee Video Archives</span>
-                </span>
-                <h2 className="font-heading text-2xl sm:text-3xl font-bold text-deep-forest">
-                  Dhara Divine Awards 2025 Videos
-                </h2>
-                <p className="text-xs sm:text-sm text-on-surface-variant font-medium">
-                  Watch speeches, felicitation ceremonies, and exclusive moments from our award recipients.
-                </p>
-              </div>
+          {/* Dynamic Event Videos Grid */}
+          {(() => {
+            const displayVideos = event.videoLinks && event.videoLinks.length > 0
+              ? event.videoLinks.map((v, i) => {
+                  let videoId = "";
+                  if (v.url.includes("youtube.com/embed/")) {
+                    videoId = v.url.split("youtube.com/embed/")[1]?.split("?")[0] || "";
+                  } else if (v.url.includes("youtu.be/")) {
+                    videoId = v.url.split("youtu.be/")[1]?.split("?")[0] || "";
+                  } else if (v.url.includes("watch?v=")) {
+                    videoId = v.url.split("watch?v=")[1]?.split("&")[0] || "";
+                  }
+                  const thumb = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : "/Event images/05.jpg";
+                  return {
+                    id: i + 1,
+                    title: v.title || `Video ${i + 1}`,
+                    date: "2025",
+                    thumb,
+                    videoUrl: v.url,
+                  };
+                })
+              : event.id === "dhara-divine-awards"
+              ? DHARA_AWARDS_VIDEOS
+              : [];
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                {DHARA_AWARDS_VIDEOS.map((vid) => (
-                  <motion.div
-                    key={vid.id}
-                    whileHover={{ y: -5 }}
-                    onClick={() => setSelectedVideo({ title: vid.title, videoUrl: vid.videoUrl })}
-                    className="bg-white rounded-2xl border border-outline-variant/30 shadow-sm hover:shadow-xl overflow-hidden flex flex-col group cursor-pointer transition-all duration-300"
-                  >
-                    {/* Thumbnail Container */}
-                    <div className="relative aspect-[16/10] w-full bg-surface-container overflow-hidden">
-                      <img
-                        src={vid.thumb}
-                        alt={vid.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                      />
-                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors" />
+            if (displayVideos.length === 0) return null;
 
-                      {/* Date Badge */}
-                      <div className="absolute top-3 left-3 z-10 bg-deep-forest/90 text-white px-2.5 py-1 rounded-md text-[11px] font-mono flex items-center gap-1 shadow">
-                        <span>📅 {vid.date}</span>
-                      </div>
+            return (
+              <div className="space-y-6 pt-8 border-t border-outline-variant/30">
+                <div className="space-y-1">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-widest text-primary">
+                    <Play size={14} className="fill-primary" />
+                    <span>Awardee Video Archives</span>
+                  </span>
+                  <h2 className="font-heading text-2xl sm:text-3xl font-bold text-deep-forest">
+                    {event.id === "dhara-divine-awards" ? "Dhara Divine Awards 2025 Videos" : `${event.title} Videos`}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-on-surface-variant font-medium">
+                    Watch speeches, felicitation ceremonies, and exclusive moments from our award recipients and participants.
+                  </p>
+                </div>
 
-                      {/* Red YouTube Play Button */}
-                      <div className="absolute inset-0 flex items-center justify-center z-10">
-                        <div className="w-12 h-12 bg-[#FF0000] text-white rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#cc0000] transition-all duration-300">
-                          <Play size={22} className="fill-white ml-0.5" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                  {displayVideos.map((vid) => (
+                    <motion.div
+                      key={vid.id}
+                      whileHover={{ y: -5 }}
+                      onClick={() => setSelectedVideo({ title: vid.title, videoUrl: vid.videoUrl })}
+                      className="bg-white rounded-2xl border border-outline-variant/30 shadow-sm hover:shadow-xl overflow-hidden flex flex-col group cursor-pointer transition-all duration-300"
+                    >
+                      {/* Thumbnail Container */}
+                      <div className="relative aspect-[16/10] w-full bg-surface-container overflow-hidden">
+                        <img
+                          src={vid.thumb}
+                          alt={vid.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                        />
+                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors" />
+
+                        {/* Stylish Glassmorphic Award Badge */}
+                        <div className="absolute top-3 left-3 z-10 bg-black/60 dark:bg-white/10 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-semibold tracking-wide flex items-center gap-1.5 border border-white/20 shadow-lg">
+                          <Award size={14} className="text-amber-400 shrink-0" />
+                          <span>{vid.date} Awardee</span>
+                        </div>
+
+                        {/* Red YouTube Play Button */}
+                        <div className="absolute inset-0 flex items-center justify-center z-10">
+                          <div className="w-12 h-12 bg-[#FF0000] text-white rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#cc0000] transition-all duration-300">
+                            <Play size={22} className="fill-white ml-0.5" />
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* Content Area */}
-                    <div className="p-4 sm:p-5 flex-1 flex items-center bg-white dark:bg-surface-container">
-                      <h3 className="font-heading font-bold text-sm sm:text-base text-deep-forest dark:text-ethereal-white group-hover:text-primary transition-colors line-clamp-2">
-                        {vid.title}
-                      </h3>
-                    </div>
-                  </motion.div>
-                ))}
+                      {/* Content Area */}
+                      <div className="p-4 sm:p-5 flex-1 flex items-center bg-white dark:bg-surface-container">
+                        <h3 className="font-heading font-bold text-sm sm:text-base text-deep-forest dark:text-ethereal-white group-hover:text-primary transition-colors line-clamp-2">
+                          {vid.title}
+                        </h3>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            );
+          })()}
 
           {/* Closing CTA Box */}
           <div className="p-8 sm:p-10 rounded-3xl bg-surface-container border border-outline-variant/40 shadow-xl space-y-6 relative overflow-hidden">

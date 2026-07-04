@@ -34,6 +34,31 @@ interface EventItem {
   updated_at: string;
 }
 
+function formatDateClean(dateVal?: string | Date): string {
+  if (!dateVal) return "-";
+  try {
+    const d = new Date(dateVal);
+    if (isNaN(d.getTime())) return String(dateVal);
+    return d.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  } catch {
+    return String(dateVal);
+  }
+}
+
+function formatTimeClean(timeStr?: string): string {
+  if (!timeStr) return "-";
+  const [hoursStr, minutesStr] = timeStr.split(":");
+  const hours = parseInt(hoursStr, 10);
+  if (isNaN(hours)) return timeStr;
+  const ampm = hours >= 12 ? "PM" : "AM";
+  const formattedHours = ((hours + 11) % 12) + 1;
+  return `${formattedHours.toString().padStart(2, "0")}:${minutesStr || "00"} ${ampm}`;
+}
+
 export default function AdminEventsPage() {
   const router = useRouter();
   const [events, setEvents] = useState<EventItem[]>([]);
@@ -236,9 +261,9 @@ export default function AdminEventsPage() {
                         <td className="py-3 px-4 whitespace-nowrap">
                           <div className="flex items-center gap-1.5 text-gray-700">
                             <Calendar size={14} className="text-gray-400" />
-                            <span>{ev.event_date}</span>
+                            <span>{formatDateClean(ev.event_date)}</span>
                           </div>
-                          <div className="text-xs text-gray-400 mt-0.5">{ev.event_time}</div>
+                          <div className="text-xs text-gray-400 mt-0.5">{formatTimeClean(ev.event_time)}</div>
                         </td>
 
                         {/* Location */}

@@ -64,6 +64,17 @@ CREATE TABLE event_gallery_images (
 );
 
 CREATE INDEX idx_event_gallery_event_id ON event_gallery_images(event_id);
+
+CREATE TABLE event_videos (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  event_id    UUID NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+  title       TEXT NOT NULL,
+  video_url   TEXT NOT NULL,
+  sort_order  INTEGER NOT NULL DEFAULT 0,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_event_videos_event_id ON event_videos(event_id);
 CREATE INDEX idx_events_status_date ON events(status, event_date DESC);
 
 -- ─────────────────────────────────

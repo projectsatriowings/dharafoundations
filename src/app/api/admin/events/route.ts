@@ -87,6 +87,7 @@ export async function POST(req: NextRequest) {
       meta_title,
       meta_description,
       gallery_images = [],
+      video_links = [],
     } = body;
 
     if (!title || !event_date || !event_time || !location_name || !cover_image_url) {
@@ -135,6 +136,18 @@ export async function POST(req: NextRequest) {
           await sql`
             INSERT INTO event_gallery_images (event_id, image_url, caption, sort_order)
             VALUES (${newEvent.id}, ${img.url}, ${img.caption || null}, ${i})
+          `;
+        }
+      }
+    }
+
+    if (Array.isArray(video_links) && video_links.length > 0) {
+      for (let i = 0; i < video_links.length; i++) {
+        const vid = video_links[i];
+        if (vid.url) {
+          await sql`
+            INSERT INTO event_videos (event_id, title, video_url, sort_order)
+            VALUES (${newEvent.id}, ${vid.title || "Event Video"}, ${vid.url}, ${i})
           `;
         }
       }

@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { ImageUploader } from "./ImageUploader";
 import { GalleryUploader } from "./GalleryUploader";
+import { VideoLinksUploader, type VideoItem } from "./VideoLinksUploader";
 import type { GalleryItem } from "./ImageUploader";
 import { validateCoordinates } from "@/utils/validateCoords";
 import {
@@ -41,6 +42,7 @@ export interface EventFormData {
   meta_title?: string;
   meta_description?: string;
   gallery_images?: GalleryItem[];
+  video_links?: VideoItem[];
 }
 
 interface EventFormProps {
@@ -72,6 +74,7 @@ export function EventForm({ initialData, isEdit = false }: EventFormProps) {
     meta_title: initialData?.meta_title || "",
     meta_description: initialData?.meta_description || "",
     gallery_images: initialData?.gallery_images || [],
+    video_links: initialData?.video_links || [],
   });
 
   const [saving, setSaving] = useState(false);
@@ -417,6 +420,17 @@ export function EventForm({ initialData, isEdit = false }: EventFormProps) {
             <GalleryUploader
               items={formData.gallery_images || []}
               onChange={(items) => setFormData({ ...formData, gallery_images: items })}
+            />
+          </div>
+
+          {/* Card 4: Video Links */}
+          <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+            <h2 className="text-base font-bold text-gray-900 border-b border-gray-100 pb-4 mb-4">
+              Event Video Gallery (YouTube Links)
+            </h2>
+            <VideoLinksUploader
+              items={formData.video_links || []}
+              onChange={(items) => setFormData({ ...formData, video_links: items })}
             />
           </div>
         </div>

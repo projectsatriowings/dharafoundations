@@ -19,7 +19,10 @@ export default function EditEventPage() {
     const fetchEvent = async () => {
       try {
         const res = await fetch(`/api/admin/events/${id}`);
-        if (!res.ok) throw new Error("Event not found");
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.error || `Error ${res.status}: Failed to load event`);
+        }
         const data = await res.json();
         setEventData(data.event);
       } catch (err: any) {

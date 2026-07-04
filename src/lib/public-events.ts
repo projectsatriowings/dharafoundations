@@ -1,6 +1,31 @@
 import sql from "@/lib/db";
 import { EVENTS_DATA, type Event } from "@/data/events";
 
+function formatEventDate(dateVal?: string | Date): string {
+  if (!dateVal) return "Date TBA";
+  try {
+    const d = new Date(dateVal);
+    if (isNaN(d.getTime())) return "Date TBA";
+    return d.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  } catch {
+    return "Date TBA";
+  }
+}
+
+function formatEventTime(timeStr?: string): string {
+  if (!timeStr) return "Time TBA";
+  const [hoursStr, minutesStr] = timeStr.split(":");
+  const hours = parseInt(hoursStr, 10);
+  if (isNaN(hours)) return timeStr;
+  const ampm = hours >= 12 ? "PM" : "AM";
+  const formattedHours = ((hours + 11) % 12) + 1;
+  return `${formattedHours.toString().padStart(2, "0")}:${minutesStr || "00"} ${ampm}`;
+}
+
 /**
  * Fetches all published events from the Neon database and formats them
  * to match the public site's Event interface.
@@ -39,12 +64,8 @@ export async function getPublicEvents(): Promise<Event[]> {
         numericId: (idx + 40).toString(),
         title: r.title,
         category: r.category || "General",
-        date: r.event_date ? new Date(r.event_date).toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-        }) : "Date TBA",
-        time: r.event_time || "Time TBA",
+        date: formatEventDate(r.event_date),
+        time: formatEventTime(r.event_time),
         location: r.location_name,
         coordinates: {
           lat: Number(r.latitude || 13.0827),
@@ -86,6 +107,13 @@ export async function getPublicEventBySlug(slug: string): Promise<Event | null> 
       ORDER BY sort_order ASC
     `;
 
+    const videoRows = await sql`
+      SELECT title, video_url
+      FROM event_videos
+      WHERE event_id = ${r.id}
+      ORDER BY sort_order ASC
+    `;
+
     const descList: string[] = [];
     if (r.full_description) {
       const stripped = r.full_description.replace(/<[^>]+>/g, "\n").split("\n").map((s: string) => s.trim()).filter(Boolean);
@@ -103,16 +131,17 @@ export async function getPublicEventBySlug(slug: string): Promise<Event | null> 
       galleryUrls.push(r.cover_image_url);
     }
 
+    const videoLinks = videoRows.map((v) => ({
+      title: v.title || "Event Video",
+      url: v.video_url,
+    }));
+
     return {
       id: r.slug || r.id.toString(),
       title: r.title,
       category: r.category || "General",
-      date: r.event_date ? new Date(r.event_date).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      }) : "Date TBA",
-      time: r.event_time || "Time TBA",
+      date: formatEventDate(r.event_date),
+      time: formatEventTime(r.event_time),
       location: r.location_name,
       coordinates: {
         lat: Number(r.latitude || 13.0827),
@@ -121,6 +150,7 @@ export async function getPublicEventBySlug(slug: string): Promise<Event | null> 
       coverImage: r.cover_image_url,
       description: descList,
       galleryImages: galleryUrls,
+      videoLinks: videoLinks.length > 0 ? videoLinks : undefined,
       socialLinks: {
         twitter: r.twitter_share_url || undefined,
         facebook: r.facebook_share_url || undefined,
