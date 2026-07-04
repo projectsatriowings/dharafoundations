@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import sql from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const DEFAULT_PHOTOS = [
   { caption: "Kanchipuram Heritage Project", category: "Temple Restoration", image_url: "/images/gallery-1.png" },
   { caption: "Anna Daanam Drive", category: "Community Service", image_url: "/images/gallery-2.png" },
@@ -37,12 +40,26 @@ export async function GET(req: NextRequest) {
 
     const photos = await sql`
       SELECT id, image_url, caption, category, is_featured, sort_order, created_at
-      FROM gallery_photos
-      WHERE (${!category || category === "all"}::boolean OR category = ${category})
+      FROM (
+        SELECT id, image_url, caption, category, is_featured, sort_order, created_at
+        FROM gallery_photos
+        UNION ALL
+        SELECT g.id, g.image_url, COALESCE(g.caption, e.title) as caption, 'Events' as category, false as is_featured, g.sort_order, g.created_at
+        FROM event_gallery_images g
+        JOIN events e ON g.event_id = e.id
+        WHERE e.status = 'published'
+      ) combined
+      WHERE (${!category || category === "all" || category === "photos"}::boolean OR category = ${category})
       ORDER BY is_featured DESC, created_at DESC
     `;
 
-    return NextResponse.json({ photos });
+    const videos = await sql`
+      SELECT id, title, video_url, created_at
+      FROM event_videos
+      ORDER BY sort_order ASC, created_at DESC
+    `;
+
+    return NextResponse.json({ photos, videos });
   } catch (err) {
     console.error("GET /api/public/gallery error:", err);
     return NextResponse.json({ error: "Failed to fetch gallery photos" }, { status: 500 });

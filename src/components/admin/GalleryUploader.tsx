@@ -15,7 +15,7 @@ export function GalleryUploader({
   label = "Gallery Images",
   items = [],
   onChange,
-  maxItems = 20,
+  maxItems = 50,
 }: GalleryUploaderProps) {
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);

@@ -58,7 +58,10 @@ export default function HomePage() {
   });
 
   useEffect(() => {
-    fetch("/api/public/homepage")
+    fetch(`/api/public/homepage?t=${Date.now()}`, {
+      cache: "no-store",
+      headers: { "Cache-Control": "no-cache" },
+    })
       .then((res) => res.json())
       .then((d) => {
         if (d.stats && d.stats.length > 0) setStats(d.stats);

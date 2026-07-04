@@ -1,5 +1,5 @@
 import sql from "@/lib/db";
-import { EVENTS_DATA, type Event } from "@/data/events";
+import { EVENTS_DATA, type Event, getCleanEventImage } from "@/data/events";
 
 function formatEventDate(dateVal?: string | Date): string {
   if (!dateVal) return "Date TBA";
@@ -59,6 +59,8 @@ export async function getPublicEvents(): Promise<Event[]> {
         descList.push("Join us for this community event.");
       }
 
+      const staticMatch = EVENTS_DATA.find((e) => e.id === r.slug || e.numericId === r.id.toString());
+      const cleanImg = getCleanEventImage(`${r.title || ""} ${r.slug || ""} ${r.cover_image_url || ""}`, r.cover_image_url);
       return {
         id: r.slug || r.id.toString(),
         numericId: (idx + 40).toString(),
@@ -71,9 +73,9 @@ export async function getPublicEvents(): Promise<Event[]> {
           lat: Number(r.latitude || 13.0827),
           lng: Number(r.longitude || 80.2707),
         },
-        coverImage: r.cover_image_url,
+        coverImage: cleanImg,
         description: descList,
-        galleryImages: [r.cover_image_url],
+        galleryImages: staticMatch ? staticMatch.galleryImages : [cleanImg],
       };
     });
   } catch (err) {
@@ -89,7 +91,7 @@ export async function getPublicEventBySlug(slug: string): Promise<Event | null> 
   try {
     const rows = await sql`
       SELECT * FROM events
-      WHERE slug = ${slug} OR id::text = ${slug}
+      WHERE slug = ${slug} OR id::text = ${slug} OR (slug = 'dhara-divine-awards' AND ${slug} = 'dhara-divine-awards-2026')
       LIMIT 1
     `;
 
@@ -126,9 +128,11 @@ export async function getPublicEventBySlug(slug: string): Promise<Event | null> 
       descList.push("Join us for this community event.");
     }
 
+    const staticMatch = EVENTS_DATA.find((e) => e.id === r.slug || e.numericId === r.id.toString());
+    const cleanImg = getCleanEventImage(`${r.title || ""} ${r.slug || ""} ${r.cover_image_url || ""}`, r.cover_image_url);
     const galleryUrls = galleryRows.map((g) => g.image_url);
     if (galleryUrls.length === 0 && r.cover_image_url) {
-      galleryUrls.push(r.cover_image_url);
+      galleryUrls.push(cleanImg);
     }
 
     const videoLinks = videoRows.map((v) => ({
@@ -147,9 +151,9 @@ export async function getPublicEventBySlug(slug: string): Promise<Event | null> 
         lat: Number(r.latitude || 13.0827),
         lng: Number(r.longitude || 80.2707),
       },
-      coverImage: r.cover_image_url,
+      coverImage: cleanImg,
       description: descList,
-      galleryImages: galleryUrls,
+      galleryImages: staticMatch ? staticMatch.galleryImages : galleryUrls,
       videoLinks: videoLinks.length > 0 ? videoLinks : undefined,
       socialLinks: {
         twitter: r.twitter_share_url || undefined,

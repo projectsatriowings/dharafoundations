@@ -16,8 +16,8 @@ export async function GET(req: NextRequest) {
     const search = searchParams.get("search");
 
     const articles = await sql`
-      SELECT id, slug, headline, publish_date, read_time_minutes,
-             featured_image_url, is_external, status, updated_at
+      SELECT id, slug, headline, publish_date, read_time_minutes, excerpt, body_content,
+             featured_image_url, is_external, external_url, status, updated_at
       FROM news_articles
       WHERE (${!status || status === "all"}::boolean OR status = ${status})
         AND (${!search}::boolean OR headline ILIKE ${"%" + (search || "") + "%"})

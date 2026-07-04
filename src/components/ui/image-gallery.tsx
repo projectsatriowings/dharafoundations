@@ -10,6 +10,9 @@ export interface GalleryItem {
   category?: string;
   desc?: string;
   pillBg?: string;
+  type?: "photo" | "video";
+  videoUrl?: string;
+  videoId?: string;
 }
 
 const DEFAULT_IMAGES: GalleryItem[] = [
@@ -105,6 +108,15 @@ export default function ImageGallery({
                     src={item.src}
                     alt={item.alt || item.title || `image-${globalIdx}`}
                   />
+                  {(item.type === "video" || item.category === "Videos" || item.videoUrl) && (
+                    <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                      <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-red-600/90 text-white flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:bg-red-600 transition-all duration-300 ring-4 ring-white/30 backdrop-blur-sm">
+                        <svg className="w-8 h-8 fill-current ml-1" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </div>
+                    </div>
+                  )}
                   {/* Subtle always-visible title bar at bottom when unhovered */}
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-4 transition-opacity duration-300 group-hover:opacity-0 flex items-end z-0">
                     <span className="text-ethereal-white font-semibold text-sm line-clamp-1 drop-shadow-md">

@@ -120,7 +120,7 @@ export default function AdminProgramsPage() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Programs & Initiatives Management</h1>
-              <p className="text-sm text-gray-500 mt-0.5">Manage Dhara Foundations core welfare and cultural dharma initiatives.</p>
+              <p className="text-sm text-gray-500 mt-0.5">Manage seva activities, women empowerment, education, and temple heritage programs.</p>
             </div>
             <button
               onClick={openAdd}

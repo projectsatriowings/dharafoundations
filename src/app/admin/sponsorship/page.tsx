@@ -108,15 +108,15 @@ export default function AdminSponsorshipPage() {
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Sponsorship Packages Management</h1>
-              <p className="text-sm text-gray-500 mt-0.5">Customize corporate and individual philanthropy tiers displayed on the Sponsorship page.</p>
+              <h1 className="text-2xl font-bold text-gray-900">Sponsorship Tiers</h1>
+              <p className="text-sm text-gray-500 mt-0.5">Manage festival and corporate sponsorship levels.</p>
             </div>
             <button
               onClick={openAdd}
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#8a5000] hover:bg-[#6e4000] text-white font-semibold text-sm shadow-sm transition-colors"
             >
               <PlusCircle size={18} />
-              <span>Add Package</span>
+              <span>Add Tier</span>
             </button>
           </div>
 
@@ -194,7 +194,13 @@ export default function AdminSponsorshipPage() {
         </div>
       )}
 
-      <DeleteConfirmDialog isOpen={deleteModalOpen} onClose={() => setDeleteModalOpen(false)} onConfirm={handleDeleteConfirm} title={selectedT?.tier_name || ""} entityName="sponsorship package" />
+      <DeleteConfirmDialog
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={handleDeleteConfirm}
+        title={selectedT?.tier_name || ""}
+        entityName="sponsorship tier"
+      />
     </div>
   );
 }

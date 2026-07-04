@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import sql from "@/lib/db";
-import { EVENTS_DATA } from "@/data/events";
+import { EVENTS_DATA, getCleanEventImage } from "@/data/events";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function GET(req: NextRequest) {
   try {
@@ -12,7 +15,16 @@ export async function GET(req: NextRequest) {
       WHERE status = 'published' OR status IS NULL
       ORDER BY event_date DESC
     `;
-    return NextResponse.json({ events });
+
+    const cleanEvents = events.map((ev) => {
+      const cleanImg = getCleanEventImage(`${ev.title || ""} ${ev.slug || ""} ${ev.cover_image_url || ""}`, ev.cover_image_url);
+      return {
+        ...ev,
+        cover_image_url: cleanImg,
+      };
+    });
+
+    return NextResponse.json({ events: cleanEvents });
   } catch (err) {
     console.warn("GET /api/public/events DB error, returning static fallback:", err);
     const fallbackEvents = EVENTS_DATA.map((e) => ({

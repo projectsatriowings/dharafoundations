@@ -5,19 +5,8 @@ import { EVENTS_DATA } from "@/data/events";
 import { getPublicEventBySlug } from "@/lib/public-events";
 import { EventDetailClient } from "./EventDetailClient";
 
-// Generate static params for existing seeded/static events
-export async function generateStaticParams() {
-  const params: { slug: string }[] = [];
-  
-  for (const ev of EVENTS_DATA) {
-    params.push({ slug: ev.id });
-    if (ev.numericId) {
-      params.push({ slug: ev.numericId });
-    }
-  }
-
-  return params;
-}
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function generateMetadata({ 
   params 

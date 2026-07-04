@@ -2,11 +2,14 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import sql from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET(req: NextRequest) {
   try {
     const articles = await sql`
-      SELECT id, slug, headline, publish_date, read_time_minutes,
-             featured_image_url, is_external, status, updated_at
+      SELECT id, slug, headline, publish_date, read_time_minutes, excerpt, body_content,
+             featured_image_url, is_external, external_url, status, updated_at
       FROM news_articles
       WHERE status = 'published' OR status IS NULL
       ORDER BY publish_date DESC

@@ -127,17 +127,14 @@ export default function AdminEventsPage() {
         <AdminTopBar email="Admin" />
 
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
-          {/* Top Bar */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Events Management</h1>
-              <p className="text-sm text-gray-500 mt-0.5">
-                Manage, edit, and publish events for the public website. ({totalItems} total)
-              </p>
+              <h1 className="text-2xl font-bold text-gray-900">Events & Festivals Management</h1>
+              <p className="text-sm text-gray-500 mt-0.5">Manage community drives, cultural events, and spiritual gatherings.</p>
             </div>
             <Link
               href="/admin/events/new"
-              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#8a5000] hover:bg-[#6e4000] text-white font-semibold text-sm shadow-sm transition-colors shrink-0"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#8a5000] hover:bg-[#6e4000] text-white font-semibold text-sm shadow-sm transition-colors"
             >
               <PlusCircle size={18} />
               <span>Add New Event</span>

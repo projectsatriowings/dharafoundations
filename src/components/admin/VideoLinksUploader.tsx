@@ -21,7 +21,7 @@ export function VideoLinksUploader({
   label = "YouTube Video Links",
   items = [],
   onChange,
-  maxItems = 20,
+  maxItems = 50,
 }: VideoLinksUploaderProps) {
   const [newUrl, setNewUrl] = useState("");
   const [newTitle, setNewTitle] = useState("");

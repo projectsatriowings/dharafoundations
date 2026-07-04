@@ -202,7 +202,7 @@ export default function AdminNewsPage() {
           { label: "Publish Date", value: viewModalArticle?.publish_date },
           { label: "Source/Type", value: viewModalArticle?.is_external ? "External Media Feature" : "Internal News Post" },
         ]}
-        bodyText={viewModalArticle?.content || viewModalArticle?.summary || "No body text entered."}
+        bodyText={viewModalArticle?.body_content || viewModalArticle?.excerpt || "No body text entered."}
         editHref={viewModalArticle ? `/admin/news/${viewModalArticle.id}/edit` : undefined}
       />
     </div>

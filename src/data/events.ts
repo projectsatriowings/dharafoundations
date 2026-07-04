@@ -64,6 +64,66 @@ export const EVENTS_DATA: Event[] = [
     },
   },
   {
+    id: "dhara-divine-awards-2026",
+    numericId: "43",
+    title: "Dhara Divine Awards 2026",
+    category: "Awards & Recognition",
+    date: "24 Jan, 2026",
+    time: "09:00 AM",
+    location: "Chetpet, Chennai",
+    coordinates: { lat: 13.0714, lng: 80.2417 },
+    coverImage: "/Event images/05.jpg",
+    galleryImages: [
+      "/Event images/05.jpg",
+      "/Event images/18.jpg",
+      "/Event images/22.jpg",
+      "/Event images/52.jpg",
+      "/images/event-1.png",
+      "/images/event-2.png",
+      "/images/gallery-1.png",
+      "/images/gallery-2.png",
+    ],
+    description: [
+      "The Dhara Divine Awards 2026 was our grand annual flagship ceremony organized by Dhara Foundations to recognize and celebrate individuals, social organizations, philanthropists, spiritual leaders, and change-makers who dedicate their lives to selfless service and humanitarian work inspired by spiritual values.",
+      "More than 500 distinguished guests, CSR leaders, volunteers, and spiritually inspired service organizations assembled in Chetpet, Chennai for an extraordinary evening of honor, cultural performance, and community synergy.",
+      "Formal invitations were extended to eminent leaders and change-makers who graced the 2026 ceremony and celebrated the spirit of Sanatana Dharma revival and community welfare.",
+    ],
+    socialLinks: {
+      twitter: "https://twitter.com/intent/tweet?text=Dhara+Divine+Awards+2026",
+      facebook: "https://www.facebook.com/sharer/sharer.php",
+      instagram: "https://instagram.com",
+    },
+  },
+  {
+    id: "dhara-divine-awards-2025",
+    numericId: "42",
+    title: "Dhara Divine Awards 2025",
+    category: "Awards & Recognition",
+    date: "24 Jan, 2025",
+    time: "09:00 AM",
+    location: "Chetpet, Chennai",
+    coordinates: { lat: 13.0714, lng: 80.2417 },
+    coverImage: "/Event images/18.jpg",
+    galleryImages: [
+      "/Event images/18.jpg",
+      "/Event images/05.jpg",
+      "/Event images/22.jpg",
+      "/Event images/52.jpg",
+      "/images/gallery-1.png",
+      "/images/gallery-2.png",
+    ],
+    description: [
+      "The Dhara Divine Awards 2025 was a landmark celebration honoring exceptional social reformers, spiritual leaders, and humanitarian volunteers across Tamil Nadu. Held with great reverence, the 2025 edition set the foundation for recognizing selfless service rooted in Sanatana Dharma values.",
+      "Over 400 distinguished guests, philanthropists, and NGO leaders gathered to felicitate our 2025 award recipients, whose tireless efforts in temple restoration, education, and rural healthcare transformed thousands of lives.",
+      "With inspiring speeches from retired judges, spiritual music directors, and grassroots service champions, Dhara Divine Awards 2025 established a powerful tradition of gratitude and encouragement.",
+    ],
+    socialLinks: {
+      twitter: "https://twitter.com/intent/tweet?text=Dhara+Divine+Awards+2025",
+      facebook: "https://www.facebook.com/sharer/sharer.php",
+      instagram: "https://instagram.com",
+    },
+  },
+  {
     id: "digitisation-activities-wshg",
     numericId: "40",
     title: "In Digitisation activities for Women Self Help Group society",
@@ -72,11 +132,11 @@ export const EVENTS_DATA: Event[] = [
     time: "01:00 PM",
     location: "Cuddalore",
     coordinates: { lat: 11.7480, lng: 79.7714 },
-    coverImage: "/images/gallery-3.png",
+    coverImage: "/images/events/event-digitisation-women-shg.jpg",
     galleryImages: [
+      "/images/events/event-digitisation-women-shg.jpg",
       "/images/gallery-3.png",
       "/images/event-3.png",
-      "/Event images/18.jpg",
     ],
     description: [
       "[CONTENT TO BE GATHERED FROM SOURCE SITE / CLIENT] The Dhara Foundations initiated comprehensive digitisation training and financial literacy workshops for Women Self Help Group (SHG) societies in Cuddalore district.",
@@ -93,11 +153,11 @@ export const EVENTS_DATA: Event[] = [
     time: "02:00 PM",
     location: "Vellore",
     coordinates: { lat: 12.5855, lng: 78.8687 },
-    coverImage: "/images/gallery-2.png",
+    coverImage: "/images/events/event-tribal-welfare-javadhu.jpg",
     galleryImages: [
+      "/images/events/event-tribal-welfare-javadhu.jpg",
       "/images/gallery-2.png",
       "/images/event-1.png",
-      "/Event images/22.jpg",
     ],
     description: [
       "[CONTENT TO BE GATHERED FROM SOURCE SITE / CLIENT] A comprehensive tribal welfare outreach conducted across remote hamlets in the Javadhu Hills near Vellore, focusing on basic healthcare, nutrition, and warm clothing distribution.",
@@ -114,11 +174,11 @@ export const EVENTS_DATA: Event[] = [
     time: "01:00 PM",
     location: "Cuddalore",
     coordinates: { lat: 11.7480, lng: 79.7714 },
-    coverImage: "/images/event-1.png",
+    coverImage: "/images/events/event-diwali-dresses.jpg",
     galleryImages: [
+      "/images/events/event-diwali-dresses.jpg",
       "/images/event-1.png",
       "/images/gallery-1.png",
-      "/Event images/05.jpg",
     ],
     description: [
       "[CONTENT TO BE GATHERED FROM SOURCE SITE / CLIENT] Celebrating the Festival of Lights by distributing brand new traditional Diwali dresses, festive sweets, and firecrackers to children residing in government care homes across Cuddalore.",
@@ -135,11 +195,11 @@ export const EVENTS_DATA: Event[] = [
     time: "01:00 PM",
     location: "Cuddalore",
     coordinates: { lat: 11.7480, lng: 79.7714 },
-    coverImage: "/images/event-3.png",
+    coverImage: "/images/events/event-footwear-girl-children.jpg",
     galleryImages: [
+      "/images/events/event-footwear-girl-children.jpg",
       "/images/event-3.png",
       "/images/gallery-2.png",
-      "/Event images/18.jpg",
     ],
     description: [
       "[CONTENT TO BE GATHERED FROM SOURCE SITE / CLIENT] Dhara Foundations distributed high-quality, durable footwear to all girl children residing at the Annai Sathiya District Government Home in Cuddalore on Tamil New Year's Day.",
@@ -156,9 +216,9 @@ export const EVENTS_DATA: Event[] = [
     time: "06:00 PM",
     location: "Cuddalore",
     coordinates: { lat: 11.7480, lng: 79.7714 },
-    coverImage: "/Event images/22.jpg",
+    coverImage: "/images/events/event-sports-pongal.jpg",
     galleryImages: [
-      "/Event images/22.jpg",
+      "/images/events/event-sports-pongal.jpg",
       "/images/event-2.png",
       "/images/gallery-3.png",
     ],
@@ -177,11 +237,11 @@ export const EVENTS_DATA: Event[] = [
     time: "01:00 PM",
     location: "Cuddalore",
     coordinates: { lat: 11.7480, lng: 79.7714 },
-    coverImage: "/Event images/18.jpg",
+    coverImage: "/images/events/event-meal-food-carriers.jpg",
     galleryImages: [
-      "/Event images/18.jpg",
+      "/images/events/event-meal-food-carriers.jpg",
       "/images/event-1.png",
-      "/Event images/52.jpg",
+      "/images/gallery-1.png",
     ],
     description: [
       "[CONTENT TO BE GATHERED FROM SOURCE SITE / CLIENT] An Anna Daanam service providing wholesome festive meals along with stainless steel food carriers and water bottles to children at government welfare homes in Cuddalore.",
@@ -198,9 +258,9 @@ export const EVENTS_DATA: Event[] = [
     time: "09:00 AM",
     location: "Chennai",
     coordinates: { lat: 13.0827, lng: 80.2707 },
-    coverImage: "/Event images/52.jpg",
+    coverImage: "/images/events/event-covid-relief.jpg",
     galleryImages: [
-      "/Event images/52.jpg",
+      "/images/events/event-covid-relief.jpg",
       "/images/event-1.png",
       "/images/event-2.png",
     ],
@@ -214,4 +274,19 @@ export const EVENTS_DATA: Event[] = [
 
 export function getEventBySlugOrId(idOrSlug: string): Event | undefined {
   return EVENTS_DATA.find((e) => e.id === idOrSlug || e.numericId === idOrSlug);
+}
+
+export function getCleanEventImage(text?: string, fallbackImg?: string): string {
+  if (!text) return fallbackImg || "/images/event-1.png";
+  const lower = text.toLowerCase();
+  if (lower.includes("digitisation") || lower.includes("shg")) return "/images/events/event-digitisation-women-shg.jpg";
+  if (lower.includes("javadhu") || lower.includes("tribal")) return "/images/events/event-tribal-welfare-javadhu.jpg";
+  if (lower.includes("diwali") || lower.includes("dresses")) return "/images/events/event-diwali-dresses.jpg";
+  if (lower.includes("footwear") || lower.includes("annai sathiya") || lower.includes("girl children")) return "/images/events/event-footwear-girl-children.jpg";
+  if (lower.includes("pongal") || lower.includes("sports")) return "/images/events/event-sports-pongal.jpg";
+  if (lower.includes("meal") || lower.includes("carriers") || lower.includes("food")) return "/images/events/event-meal-food-carriers.jpg";
+  if (lower.includes("covid") || lower.includes("relief")) return "/images/events/event-covid-relief.jpg";
+  if (lower.includes("2025")) return "/Event images/18.jpg";
+  if (lower.includes("divine") || lower.includes("award") || lower.includes("2026")) return "/Event images/05.jpg";
+  return fallbackImg || "/images/event-1.png";
 }

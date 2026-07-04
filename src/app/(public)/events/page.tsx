@@ -13,10 +13,13 @@ import {
   Users, 
   Sparkles, 
   ExternalLink,
-  Quote
+  Quote,
+  Award,
+  Play
 } from "lucide-react";
 import { motion, AnimatePresence, useReducedMotion, type Variants } from "framer-motion";
-import { EVENTS_DATA } from "@/data/events";
+import { EVENTS_DATA, getCleanEventImage } from "@/data/events";
+import { LightboxModal } from "@/components/ui/LightboxModal";
 
 // ==========================================
 // DATA DEFINITIONS
@@ -53,6 +56,26 @@ const NEWS_ARTICLES = [
     desc: "Dhara volunteers participate in the prestigious gathering honoring leadership, spiritual renaissance, and relentless support for Sanatana Dharma revival.",
     img: "/images/news.png"
   }
+];
+
+const DIVINE_AWARDS_MEDIA_LIST = [
+  // Photos (6 items)
+  { id: "da-p1", title: "2025 Felicitation Ceremony", desc: "Honorable Justice and dignitaries presenting awards to changemakers.", src: "/Event images/05.jpg", type: "photo" as const },
+  { id: "da-p2", title: "Distinguished Guests & Dignitaries", desc: "Spiritual leaders and cultural protectors assembled for Dhara Divine Awards.", src: "/Event images/18.jpg", type: "photo" as const },
+  { id: "da-p3", title: "Honoring Traditional Artisans", desc: "Recognizing grassroots artisans and craftsmen preserving ancient traditions.", src: "/Event images/22.jpg", type: "photo" as const },
+  { id: "da-p4", title: "Grassroots Cultural Protectors", desc: "Empowering rural women and folk artists through national recognition.", src: "/Event images/52.jpg", type: "photo" as const },
+  { id: "da-p5", title: "Divine Awards Banner & Stage", desc: "Grand stage celebration of Sanatana Dharma and cultural revival.", src: "/images/events/event-dhara-divine-awards.png", type: "photo" as const },
+  { id: "da-p6", title: "Governor Commending Awards", desc: "Honorable Governor appreciating Dhara Foundations' tireless grassroots service.", src: "/images/banner.png", type: "photo" as const },
+  // Video Speeches (9 items)
+  { id: "da-v1", title: "Justice T.N. Vallinayagam Speech", desc: "Hon'ble Justice (Retd.), Madras High Court sharing inspiring words on dharma.", src: "https://img.youtube.com/vi/J6BvffQ1ZKQ/hqdefault.jpg", videoId: "J6BvffQ1ZKQ", type: "video" as const },
+  { id: "da-v2", title: "Yatheeswar Raja Speech", desc: "Spiritual Music Director on preserving sacred musical traditions.", src: "https://img.youtube.com/vi/IILqWheG9f4/hqdefault.jpg", videoId: "IILqWheG9f4", type: "video" as const },
+  { id: "da-v3", title: "Mahout Receiving an Award", desc: "Honoring the dedicated temple elephant caretakers and traditional protectors.", src: "https://img.youtube.com/vi/1T_SGxOs-CY/hqdefault.jpg", videoId: "1T_SGxOs-CY", type: "video" as const },
+  { id: "da-v4", title: "Dr. Rajeswari Ramachandran", desc: "Distinguished speech on grassroots education and medical empowerment.", src: "https://img.youtube.com/vi/oEsIdHha5uw/hqdefault.jpg", videoId: "oEsIdHha5uw", type: "video" as const },
+  { id: "da-v5", title: "Traditional Sports Coach", desc: "Reviving ancient Tamil martial arts, Silambam, and rural youth athletics.", src: "https://img.youtube.com/vi/VONlv_X9Aro/hqdefault.jpg", videoId: "VONlv_X9Aro", type: "video" as const },
+  { id: "da-v6", title: "CA Prabakaran Felicitation", desc: "Special address on community governance and ethical leadership.", src: "https://img.youtube.com/vi/3FQgwocLBnQ/hqdefault.jpg", videoId: "3FQgwocLBnQ", type: "video" as const },
+  { id: "da-v7", title: "Traditional Folk Artist Awardee", desc: "Celebrating indigenous folk dance masters and village storytellers.", src: "https://img.youtube.com/vi/RnZUT2BE_rM/hqdefault.jpg", videoId: "RnZUT2BE_rM", type: "video" as const },
+  { id: "da-v8", title: "Traditional Puppet Art Master", desc: "Preserving the rare and sacred art of leather puppetry (Tholpavakoothu).", src: "https://img.youtube.com/vi/2X9u2p0YxIw/hqdefault.jpg", videoId: "2X9u2p0YxIw", type: "video" as const },
+  { id: "da-v9", title: "Handicraft & Artisan Recognition", desc: "Honoring master weavers, stone sculptors, and bronze casting artisans.", src: "https://img.youtube.com/vi/1lObOM1uqY8/hqdefault.jpg", videoId: "1lObOM1uqY8", type: "video" as const },
 ];
 
 // Custom Hook / Helper for Animated Count Up
@@ -193,24 +216,33 @@ export default function EventsPage() {
   const rawReducedMotion = useReducedMotion();
   const [isMounted, setIsMounted] = useState(false);
   const [eventsList, setEventsList] = useState<any[]>(FULL_EVENTS_LIST);
+  const [awardsTab, setAwardsTab] = useState("All");
+  const [selectedAwardsPhoto, setSelectedAwardsPhoto] = useState<any | null>(null);
+  const [selectedAwardsVideo, setSelectedAwardsVideo] = useState<any | null>(null);
   
   useEffect(() => {
     setIsMounted(true);
-    fetch("/api/public/events")
+    fetch(`/api/public/events?t=${Date.now()}`, {
+      cache: "no-store",
+      headers: { "Cache-Control": "no-cache" },
+    })
       .then(res => res.json())
       .then(data => {
         if (data && Array.isArray(data.events)) {
-          const dbEvents = data.events.map((ev: any) => ({
-            id: ev.slug || String(ev.id),
-            title: ev.title,
-            category: ev.category || "Events",
-            date: ev.event_date ? new Date(ev.event_date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "Upcoming",
-            time: ev.event_time || "10:00 AM",
-            location: ev.location_name || "Tamil Nadu",
-            mapsUrl: "https://maps.google.com",
-            img: ev.cover_image_url || "/images/event-1.png",
-            desc: ev.title,
-          }));
+          const dbEvents = data.events.map((ev: any) => {
+            const cleanImg = getCleanEventImage(`${ev.title || ""} ${ev.slug || ""} ${ev.cover_image_url || ""}`, ev.cover_image_url);
+            return {
+              id: ev.slug || String(ev.id),
+              title: ev.title,
+              category: ev.category || "Events",
+              date: ev.event_date ? new Date(ev.event_date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "Upcoming",
+              time: ev.event_time || "10:00 AM",
+              location: ev.location_name || "Tamil Nadu",
+              mapsUrl: "https://maps.google.com",
+              img: cleanImg,
+              desc: ev.title,
+            };
+          });
           const combined = [...dbEvents];
           for (const item of FULL_EVENTS_LIST) {
             if (!combined.some(e => String(e.id) === String(item.id) || e.title === item.title)) {
@@ -235,8 +267,7 @@ export default function EventsPage() {
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
-  const upcomingEvents = eventsList.filter(ev => ev.date.includes("2026") || ev.date.includes("Upcoming"));
-  const recentEvents = eventsList.filter(ev => !ev.date.includes("2026") && !ev.date.includes("Upcoming"));
+  const recentEvents = eventsList;
 
   const filteredRecentEvents = activeCategoryFilter === "All" 
     ? recentEvents 
@@ -373,6 +404,188 @@ export default function EventsPage() {
                 </div>
               </div>
             </motion.div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ==========================================
+          SECTION 1.5 — DHARA DIVINE AWARDS SPOTLIGHT
+         ========================================== */}
+      <section id="dhara-divine-awards-section" className="py-16 px-6 md:px-12 max-w-7xl mx-auto w-full scroll-mt-28">
+        <div className="bg-gradient-to-br from-deep-forest via-[#183623] to-[#112619] rounded-3xl p-8 sm:p-12 lg:p-16 text-ethereal-white shadow-2xl relative overflow-hidden border border-saffron-glow/30">
+          
+          {/* Background Decorative Elements */}
+          <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-saffron-glow/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute top-0 right-1/4 w-64 h-64 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative z-10 max-w-5xl mx-auto space-y-10">
+            {/* Header Badge & Title */}
+            <div className="text-center space-y-4">
+              <motion.div 
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUpVariant}
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-saffron-glow/20 text-saffron-glow font-mono font-bold text-xs uppercase tracking-widest border border-saffron-glow/40 shadow-inner"
+              >
+                <Award size={15} className="text-saffron-glow shrink-0" />
+                <span>Annual Flagship Celebration • Sanatana Dharma Revival</span>
+              </motion.div>
+
+              <motion.h2 
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUpVariant}
+                className="font-headline-md text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight"
+              >
+                Dhara Divine Awards
+              </motion.h2>
+
+              <motion.p 
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUpVariant}
+                className="font-body-lg text-ethereal-white/90 text-base sm:text-lg leading-relaxed max-w-3xl mx-auto pt-2"
+              >
+                Our flagship initiative to recognize and celebrate individuals, social organizations, philanthropists, spiritual leaders, and grassroots change-makers who dedicate their lives to selfless service and humanitarian work inspired by spiritual values.
+              </motion.p>
+            </div>
+
+            {/* Edition Cards (2026 Upcoming vs 2025 Past) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+              {/* 2026 Completed Edition */}
+              <motion.div 
+                whileHover={shouldReduceMotion ? {} : { scale: 1.02, y: -4 }}
+                className="bg-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-8 border border-white/20 flex flex-col justify-between space-y-6 hover:bg-white/15 transition-all group"
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="px-3 py-1 rounded-full bg-saffron-glow/20 text-saffron-glow font-bold text-xs uppercase tracking-wider border border-saffron-glow/30">
+                      Completed • 24 Jan 2026
+                    </span>
+                    <span className="text-xs font-mono text-ethereal-white/80">Chetpet, Chennai</span>
+                  </div>
+                  <h3 className="text-2xl font-bold text-white group-hover:text-saffron-glow transition-colors">
+                    Dhara Divine Awards 2026
+                  </h3>
+                  <p className="text-xs sm:text-sm text-ethereal-white/80 leading-relaxed">
+                    Over 500 distinguished guests, CSR leaders, and NGO changemakers assembled for an extraordinary evening of honor, cultural tribute, and community upliftment.
+                  </p>
+                </div>
+
+                <div className="pt-2">
+                  <Link 
+                    href="/events/dhara-divine-awards-2026"
+                    className="inline-flex items-center justify-center w-full py-3 px-6 rounded-xl bg-saffron-glow hover:bg-amber-400 text-deep-forest font-bold text-sm transition-all shadow-md gap-2"
+                  >
+                    <span>View 2026 Awardees & Highlights</span>
+                    <ArrowRight size={16} />
+                  </Link>
+                </div>
+              </motion.div>
+
+              {/* 2025 Past Edition */}
+              <motion.div 
+                whileHover={shouldReduceMotion ? {} : { scale: 1.02, y: -4 }}
+                className="bg-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-8 border border-white/20 flex flex-col justify-between space-y-6 hover:bg-white/15 transition-all group"
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="px-3 py-1 rounded-full bg-white/20 text-white font-bold text-xs uppercase tracking-wider">
+                      Completed • 24 Jan 2025
+                    </span>
+                    <span className="text-xs font-mono text-ethereal-white/80">Chetpet, Chennai</span>
+                  </div>
+                  <h3 className="text-2xl font-bold text-white group-hover:text-saffron-glow transition-colors">
+                    Dhara Divine Awards 2025
+                  </h3>
+                  <p className="text-xs sm:text-sm text-ethereal-white/80 leading-relaxed">
+                    Explore the memorable felicitation speeches from retired high court judges, spiritual music directors, and grassroots service champions from our 2025 ceremony.
+                  </p>
+                </div>
+
+                <div className="pt-2">
+                  <Link 
+                    href="/events/dhara-divine-awards-2025"
+                    className="inline-flex items-center justify-center w-full py-3 px-6 rounded-xl bg-white/20 hover:bg-white/30 text-white font-bold text-sm transition-all shadow-md gap-2 border border-white/30"
+                  >
+                    <span>Watch 2025 Video Archives</span>
+                    <Play size={16} className="fill-white" />
+                  </Link>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Images & Videos Showcase inside the Section */}
+            <div className="space-y-6 pt-6 border-t border-white/15">
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <div>
+                  <span className="text-xs font-mono font-bold uppercase tracking-widest text-saffron-glow">Visual Archives</span>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white">Event Highlights & Video Speeches</h3>
+                  <div className="flex flex-wrap gap-2 pt-3">
+                    {["All (15)", "Photos (6)", "Video Speeches (9)"].map((tabLabel) => {
+                      const tabKey = tabLabel.split(" ")[0];
+                      const isActive = awardsTab === tabKey;
+                      return (
+                        <button
+                          key={tabLabel}
+                          type="button"
+                          onClick={() => setAwardsTab(tabKey)}
+                          className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                            isActive
+                              ? "bg-saffron-glow text-deep-forest shadow-md"
+                              : "bg-white/10 text-white/80 hover:bg-white/20 hover:text-white"
+                          }`}
+                        >
+                          {tabLabel}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+                <Link href="/gallery" className="text-xs text-saffron-glow hover:underline flex items-center gap-1 font-semibold">
+                  <span>Explore Full Media Gallery</span>
+                  <ExternalLink size={12} />
+                </Link>
+              </div>
+
+              {/* Photo & Video Mixed Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                {DIVINE_AWARDS_MEDIA_LIST.filter(item => {
+                  if (awardsTab === "Photos") return item.type === "photo";
+                  if (awardsTab === "Video") return item.type === "video";
+                  return true;
+                }).map((item, idx) => (
+                  <div
+                    key={`${item.id}-${idx}`}
+                    onClick={() => {
+                      if (item.type === "photo") {
+                        setSelectedAwardsPhoto(item);
+                      } else {
+                        setSelectedAwardsVideo(item);
+                      }
+                    }}
+                    className="aspect-[4/3] rounded-xl overflow-hidden relative group bg-black/40 border border-white/15 hover:border-saffron-glow/60 transition-all cursor-pointer shadow-sm hover:shadow-lg"
+                  >
+                    <img src={item.src} alt={item.title} className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500" />
+                    {item.type === "video" && (
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-full bg-[#FF0000] text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                          <Play size={18} className="fill-white ml-0.5" />
+                        </div>
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-90 group-hover:opacity-100 transition-opacity p-3 flex flex-col justify-end">
+                      <span className="text-[10px] text-saffron-glow font-mono font-semibold uppercase">{item.type === "video" ? "Video Speech" : "Photo Archive"}</span>
+                      <span className="text-xs font-bold text-white line-clamp-1">{item.title}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
           </div>
         </div>
@@ -601,38 +814,8 @@ export default function EventsPage() {
           SECTION 4 — UPCOMING & RECENT EVENTS
          ========================================== */}
       <section id="full-events-list" className="py-24 px-6 md:px-12 max-w-7xl mx-auto w-full space-y-20 scroll-mt-24">
-        {/* Upcoming Events Block */}
-        <div className="space-y-8">
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={fadeUpVariant}
-            className="border-b border-[#D9CBB0]/60 pb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4"
-          >
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary font-mono text-xs font-bold uppercase tracking-widest mb-2">
-                <Sparkles size={13} />
-                <span>Mark Your Calendar</span>
-              </div>
-              <h2 className="font-headline-md text-3xl sm:text-4xl font-bold text-deep-forest">
-                Upcoming Gatherings
-              </h2>
-            </div>
-            <p className="text-xs sm:text-sm text-on-surface-variant max-w-md">
-              Join us in our upcoming ceremonies and welfare drives across Tamil Nadu. Click any event to view the complete schedule, GPS venue map, and registration.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {upcomingEvents.map((ev, idx) => (
-              <EventCard key={`${ev.id}-up-${idx}`} ev={ev} idx={idx} shouldReduceMotion={shouldReduceMotion} router={router} />
-            ))}
-          </div>
-        </div>
-
         {/* Recent Events Block with Filter */}
-        <div className="space-y-8 pt-8">
+        <div className="space-y-8">
           <motion.div 
             initial="hidden"
             whileInView="visible"
@@ -653,13 +836,19 @@ export default function EventsPage() {
 
           {/* Filter Bar */}
           <div className="flex flex-wrap items-center gap-2 pb-2">
-            {["All", "Temple & Heritage", "Cultural & Spiritual", "Welfare Drives", "Awards & Recognition", "Children & Education", "Women's Empowerment"].map((tag) => (
+            {["All", "Awards & Recognition", "Temple & Heritage", "Cultural & Spiritual", "Welfare Drives", "Children & Education", "Women's Empowerment"].map((tag) => (
               <motion.button
                 key={tag}
                 whileHover={shouldReduceMotion ? {} : { scale: 1.05 }}
                 whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 400 }}
-                onClick={() => setActiveCategoryFilter(tag)}
+                onClick={() => {
+                  setActiveCategoryFilter(tag);
+                  if (tag === "Awards & Recognition") {
+                    const el = document.getElementById("dhara-divine-awards-section");
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
                 className={`px-4 py-1.5 rounded-full text-xs font-label-md font-semibold transition-colors cursor-pointer ${
                   activeCategoryFilter === tag 
                     ? "bg-primary text-white shadow-md" 
@@ -1091,6 +1280,60 @@ export default function EventsPage() {
           </div>
         </div>
       </section>
+
+      {/* Lightbox for Awards Photos */}
+      <LightboxModal
+        item={
+          selectedAwardsPhoto
+            ? {
+                src: selectedAwardsPhoto.src,
+                alt: selectedAwardsPhoto.title,
+                caption: selectedAwardsPhoto.desc,
+                category: "Dhara Divine Awards",
+              }
+            : null
+        }
+        onClose={() => setSelectedAwardsPhoto(null)}
+      />
+
+      {/* YouTube Video Modal for Awards Videos */}
+      <AnimatePresence>
+        {selectedAwardsVideo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedAwardsVideo(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 sm:p-6"
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ type: "spring", duration: 0.5, bounce: 0.2 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-4xl bg-black rounded-2xl overflow-hidden shadow-2xl border border-white/20 aspect-video flex flex-col my-auto"
+            >
+              <button
+                type="button"
+                onClick={() => setSelectedAwardsVideo(null)}
+                className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-black/70 text-white hover:bg-red-600 transition-colors flex items-center justify-center cursor-pointer shadow-lg"
+                title="Close Video"
+              >
+                <span className="material-symbols-outlined text-xl">close</span>
+              </button>
+
+              <iframe
+                src={`https://www.youtube.com/embed/${selectedAwardsVideo.videoId}?autoplay=1`}
+                title={selectedAwardsVideo.title}
+                className="w-full h-full border-0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </div>
   );

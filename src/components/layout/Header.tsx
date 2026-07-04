@@ -41,6 +41,11 @@ const NAV_LINKS: NavLink[] = [
   { 
     href: "/events", 
     label: "Events",
+    dropdown: [
+      { href: "/events", label: "All Events Overview", desc: "Browse all upcoming & past gatherings" },
+      { href: "https://dhara-devineawards.vercel.app", label: "Dhara Divine Awards 2026", desc: "2026 awardees, highlights & nominations" },
+      { href: "https://dhara-devineawards.vercel.app", label: "Dhara Divine Awards 2025", desc: "Past 2025 awardees & video archives" },
+    ],
     popup: { badge: "Complete Schedule", desc: "Discover upcoming heritage discourses & community gatherings." }
   },
   { 
@@ -200,10 +205,13 @@ export function Header() {
                       >
                         {link.dropdown.map((subItem) => {
                           const isSubActive = pathname === subItem.href;
+                          const isExternal = subItem.href.startsWith("http");
                           return (
                             <Link
-                              key={subItem.href}
+                              key={subItem.label}
                               href={subItem.href}
+                              target={isExternal ? "_blank" : undefined}
+                              rel={isExternal ? "noopener noreferrer" : undefined}
                               className={`block p-3 rounded-xl transition-all duration-200 group/sub ${
                                 isSubActive
                                   ? "bg-primary text-ethereal-white dark:bg-saffron-glow dark:text-deep-forest font-bold shadow-sm"
@@ -370,10 +378,13 @@ export function Header() {
                       <div className="pl-4 ml-3 border-l-2 border-outline-variant/30 flex flex-col gap-2 pt-1">
                         {link.dropdown.map((sub) => {
                           const isSubActive = pathname === sub.href;
+                          const isExternal = sub.href.startsWith("http");
                           return (
                             <Link
-                              key={sub.href}
+                              key={sub.label}
                               href={sub.href}
+                              target={isExternal ? "_blank" : undefined}
+                              rel={isExternal ? "noopener noreferrer" : undefined}
                               className={`text-sm px-4 py-2 rounded-full transition-colors ${
                                 isSubActive
                                   ? "bg-primary/20 text-primary dark:text-saffron-glow font-bold"

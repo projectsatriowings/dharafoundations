@@ -269,7 +269,7 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
                     videoUrl: v.url,
                   };
                 })
-              : event.id === "dhara-divine-awards"
+              : event.id.includes("dhara-divine-awards")
               ? DHARA_AWARDS_VIDEOS
               : [];
 
@@ -283,7 +283,7 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
                     <span>Awardee Video Archives</span>
                   </span>
                   <h2 className="font-heading text-2xl sm:text-3xl font-bold text-deep-forest">
-                    {event.id === "dhara-divine-awards" ? "Dhara Divine Awards 2025 Videos" : `${event.title} Videos`}
+                    {event.id.includes("dhara-divine-awards") ? "Dhara Divine Awards 2025 Videos" : `${event.title} Videos`}
                   </h2>
                   <p className="text-xs sm:text-sm text-on-surface-variant font-medium">
                     Watch speeches, felicitation ceremonies, and exclusive moments from our award recipients and participants.
