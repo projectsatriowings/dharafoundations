@@ -185,11 +185,19 @@ export default function HomePage() {
               {/* Media: Video or Image */}
               {(config.hero_image_url || "").match(/\.(mp4|webm|mov)$/i) || (config.hero_image_url || "").includes("/video/") ? (
                 <video
+                  ref={(el) => {
+                    if (el) {
+                      el.defaultMuted = true;
+                      el.muted = true;
+                      el.play().catch(() => {});
+                    }
+                  }}
                   src={config.hero_image_url || "https://res.cloudinary.com/woo94xq2/video/upload/v1783348864/dhara_foundations/videos/injjcsbcbzokjavsswoc.mp4"}
                   autoPlay
                   loop
                   muted
                   playsInline
+                  preload="auto"
                   className="w-full h-[360px] sm:h-[480px] lg:h-[540px] object-cover rounded-[20px] shadow-2xl relative z-10 block bg-black/5"
                 />
               ) : (

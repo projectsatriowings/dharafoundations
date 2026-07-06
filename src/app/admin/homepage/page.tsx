@@ -133,11 +133,19 @@ export default function AdminHomepagePage() {
                     {config.hero_image_url ? (
                       (config.hero_image_url || "").match(/\.(mp4|webm|mov)$/i) || (config.hero_image_url || "").includes("/video/") ? (
                         <video
+                          ref={(el) => {
+                            if (el) {
+                              el.defaultMuted = true;
+                              el.muted = true;
+                              el.play().catch(() => {});
+                            }
+                          }}
                           src={config.hero_image_url}
                           autoPlay
                           loop
                           muted
                           playsInline
+                          preload="auto"
                           className="w-full h-48 object-cover rounded-lg shadow-sm bg-black/5"
                         />
                       ) : (
