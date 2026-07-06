@@ -52,7 +52,7 @@ export default function HomePage() {
     { stat_value: "80G", stat_label: "TAX EXEMPTION" },
   ]);
   const [config, setConfig] = useState({
-    hero_image_url: "/images/hero-devi.png",
+    hero_image_url: "https://res.cloudinary.com/woo94xq2/video/upload/v1783348864/dhara_foundations/videos/injjcsbcbzokjavsswoc.mp4",
     intro_video_1_url: process.env.NEXT_PUBLIC_INTRO_VIDEO_1 || "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4",
     intro_video_2_url: process.env.NEXT_PUBLIC_INTRO_VIDEO_2 || "https://res.cloudinary.com/woo94xq2/video/upload/v1783059473/dhara_foundations/videos/osokgojzgb0sdg1vlywr.mp4",
   });
@@ -182,13 +182,24 @@ export default function HomePage() {
           >
             {/* A) AMBER OFFSET FRAME */}
             <div className="relative z-10 p-2 sm:p-0">
-              {/* Image */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={config.hero_image_url || "/images/hero-devi.png"}
-                alt="Devotional ritual offering and spiritual restoration"
-                className="w-full h-[360px] sm:h-[480px] lg:h-[540px] object-cover rounded-[20px] shadow-2xl relative z-10 block"
-              />
+              {/* Media: Video or Image */}
+              {(config.hero_image_url || "").match(/\.(mp4|webm|mov)$/i) || (config.hero_image_url || "").includes("/video/") ? (
+                <video
+                  src={config.hero_image_url || "https://res.cloudinary.com/woo94xq2/video/upload/v1783348864/dhara_foundations/videos/injjcsbcbzokjavsswoc.mp4"}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-[360px] sm:h-[480px] lg:h-[540px] object-cover rounded-[20px] shadow-2xl relative z-10 block bg-black/5"
+                />
+              ) : (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={config.hero_image_url || "/images/hero-devi.png"}
+                  alt="Devotional ritual offering and spiritual restoration"
+                  className="w-full h-[360px] sm:h-[480px] lg:h-[540px] object-cover rounded-[20px] shadow-2xl relative z-10 block"
+                />
+              )}
 
               {/* Double-border effect: Frame offset -8px behind image showing background gap */}
               <div

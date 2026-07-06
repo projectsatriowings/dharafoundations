@@ -131,14 +131,25 @@ export default function AdminHomepagePage() {
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
                   <div className="md:col-span-5 flex flex-col items-center justify-center bg-gray-50 border border-gray-200 rounded-xl p-3 overflow-hidden">
                     {config.hero_image_url ? (
-                      /* eslint-disable-next-line @next/next/no-img-element */
-                      <img
-                        src={config.hero_image_url}
-                        alt="Hero Banner Preview"
-                        className="w-full h-48 object-cover rounded-lg shadow-sm"
-                      />
+                      (config.hero_image_url || "").match(/\.(mp4|webm|mov)$/i) || (config.hero_image_url || "").includes("/video/") ? (
+                        <video
+                          src={config.hero_image_url}
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="w-full h-48 object-cover rounded-lg shadow-sm bg-black/5"
+                        />
+                      ) : (
+                        /* eslint-disable-next-line @next/next/no-img-element */
+                        <img
+                          src={config.hero_image_url}
+                          alt="Hero Banner Preview"
+                          className="w-full h-48 object-cover rounded-lg shadow-sm"
+                        />
+                      )
                     ) : (
-                      <div className="h-48 flex items-center justify-center text-xs text-gray-400">No image selected</div>
+                      <div className="h-48 flex items-center justify-center text-xs text-gray-400">No media selected</div>
                     )}
                   </div>
 
@@ -162,10 +173,10 @@ export default function AdminHomepagePage() {
                       </label>
                       <label className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-xs font-semibold text-gray-700 cursor-pointer transition-all border border-gray-200">
                         {uploadingHero ? <Loader2 size={15} className="animate-spin text-[#8a5000]" /> : <Upload size={15} />}
-                        <span>{uploadingHero ? "Uploading..." : "Upload Photo (JPG, PNG, WEBP)"}</span>
+                        <span>{uploadingHero ? "Uploading..." : "Upload Media (JPG, PNG, WEBP, MP4)"}</span>
                         <input
                           type="file"
-                          accept="image/*"
+                          accept="image/*,video/*"
                           className="hidden"
                           disabled={uploadingHero}
                           onChange={(e) => {
