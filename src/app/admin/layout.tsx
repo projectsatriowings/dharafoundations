@@ -13,6 +13,11 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://dharafoundations.in"),
   title: "Admin Portal | Dhara Foundations",
   robots: { index: false, follow: false },
+  icons: {
+    icon: [{ url: "/logo-icon-only.png?v=2", type: "image/png" }],
+    shortcut: ["/logo-icon-only.png?v=2"],
+    apple: [{ url: "/logo-icon-only.png?v=2", type: "image/png" }],
+  },
 };
 
 export default function AdminLayout({
