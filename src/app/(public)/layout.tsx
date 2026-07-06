@@ -2,20 +2,20 @@ import type { Metadata } from "next";
 import { Roboto_Slab, Montserrat } from "next/font/google";
 import "../globals.css";
 import { LenisProvider } from "@/components/motion/LenisProvider";
-import DotTrailCursor from "@/components/DotTrailCursor/DotTrailCursor";
+import DivineHaloCursor from "@/components/effects/DivineHaloCursor";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 
 const robotoSlab = Roboto_Slab({
   subsets: ["latin"],
-  weight: ["600", "700"],
+  weight: ["600", "700", "800", "900"],
   variable: "--font-heading",
   display: "swap",
 });
 
 const montserrat = Montserrat({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
   variable: "--font-title",
   display: "swap",
 });
@@ -45,8 +45,8 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning className="bg-background text-on-background font-body antialiased overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
+        <DivineHaloCursor />
         <LenisProvider>
-          <DotTrailCursor />
           <Header />
           <main className="min-h-screen">{children}</main>
           <Footer />

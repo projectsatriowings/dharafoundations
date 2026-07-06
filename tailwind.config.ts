@@ -12,7 +12,7 @@ const config: Config = {
       colors: {
         // Surface & Backgrounds
         "surface": "#fbf9f4",
-        "surface-dim": "#dbdad5",
+        "surface-dim": "#272101ff",
         "surface-bright": "#fbf9f4",
         "surface-container-lowest": "#ffffff",
         "surface-container-low": "#f5f3ee",

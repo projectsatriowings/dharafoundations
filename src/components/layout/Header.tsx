@@ -146,7 +146,7 @@ export function Header() {
           <img
             src="/logo-horizontal.png"
             alt="Dhara Foundations"
-            className={`h-7 sm:h-8 md:h-9 w-auto object-contain transition-transform ${
+            className={`h-9 sm:h-10 md:h-12 w-auto object-contain transition-transform ${
               isTransparentHero ? "hidden" : "block dark:hidden drop-shadow-sm"
             }`}
           />
@@ -154,7 +154,7 @@ export function Header() {
           <img
             src="/logo-horizontal-dark.png"
             alt="Dhara Foundations"
-            className={`h-7 sm:h-8 md:h-9 w-auto object-contain transition-transform ${
+            className={`h-9 sm:h-10 md:h-12 w-auto object-contain transition-transform ${
               isTransparentHero ? "block drop-shadow-md" : "hidden dark:block drop-shadow-sm"
             }`}
           />
@@ -178,14 +178,14 @@ export function Header() {
                 >
                   <Link
                     href={link.href}
-                    className={`relative inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full transition-all text-xs lg:text-sm ${
+                    className={`relative inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full transition-all text-sm lg:text-base ${
                       isTopActive
                         ? isTransparentHero
-                          ? "bg-white/20 text-saffron-glow font-bold"
-                          : "bg-primary/10 dark:bg-saffron-glow/15 text-primary dark:text-saffron-glow font-bold"
+                          ? "bg-white/20 text-saffron-glow font-extrabold"
+                          : "bg-primary/10 dark:bg-saffron-glow/15 text-primary dark:text-saffron-glow font-extrabold"
                         : isTransparentHero
-                        ? "text-white/90 hover:text-saffron-glow hover:bg-white/10 font-semibold"
-                        : "text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow hover:bg-surface-container/50 font-semibold"
+                        ? "text-white/90 hover:text-saffron-glow hover:bg-white/10 font-bold"
+                        : "text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow hover:bg-surface-container/50 font-bold"
                     }`}
                   >
                     <span>{link.label}</span>
@@ -218,7 +218,7 @@ export function Header() {
                                   : "hover:bg-surface-container/60 text-on-surface dark:text-ethereal-white"
                               }`}
                             >
-                              <div className={`text-sm font-semibold transition-colors ${!isSubActive && "group-hover/sub:text-primary dark:group-hover/sub:text-saffron-glow"}`}>
+                              <div className={`text-sm font-bold transition-colors ${!isSubActive && "group-hover/sub:text-primary dark:group-hover/sub:text-saffron-glow"}`}>
                                 {subItem.label}
                               </div>
                               {subItem.desc && (
@@ -246,14 +246,14 @@ export function Header() {
               >
                 <Link
                   href={link.href}
-                  className={`relative inline-block px-3.5 py-1.5 rounded-full transition-all text-xs lg:text-sm hover:-translate-y-0.5 ${
+                  className={`relative inline-block px-3.5 py-1.5 rounded-full transition-all text-sm lg:text-base hover:-translate-y-0.5 ${
                     isTopActive
                       ? isTransparentHero
-                        ? "bg-white/20 text-saffron-glow font-bold"
-                        : "bg-primary/10 dark:bg-saffron-glow/15 text-primary dark:text-saffron-glow font-bold"
+                        ? "bg-white/20 text-saffron-glow font-extrabold"
+                        : "bg-primary/10 dark:bg-saffron-glow/15 text-primary dark:text-saffron-glow font-extrabold"
                       : isTransparentHero
-                      ? "text-white/90 hover:text-saffron-glow hover:bg-white/10 font-semibold"
-                      : "text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow hover:bg-surface-container/50 font-semibold"
+                      ? "text-white/90 hover:text-saffron-glow hover:bg-white/10 font-bold"
+                      : "text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow hover:bg-surface-container/50 font-bold"
                   }`}
                 >
                   {link.label}
@@ -365,10 +365,10 @@ export function Header() {
                   >
                     <Link
                       href={link.href}
-                      className={`flex items-center justify-between text-base px-4 py-2.5 rounded-full transition-all ${
+                      className={`flex items-center justify-between text-lg px-4 py-2.5 rounded-full transition-all ${
                         isTopActive
-                          ? "bg-primary text-ethereal-white dark:bg-saffron-glow dark:text-deep-forest font-bold shadow-sm"
-                          : "text-on-surface dark:text-ethereal-white font-medium hover:bg-surface-container/50"
+                          ? "bg-primary text-ethereal-white dark:bg-saffron-glow dark:text-deep-forest font-extrabold shadow-sm"
+                          : "text-on-surface dark:text-ethereal-white font-bold hover:bg-surface-container/50"
                       }`}
                     >
                       <span>{link.label}</span>
@@ -388,7 +388,7 @@ export function Header() {
                               className={`text-sm px-4 py-2 rounded-full transition-colors ${
                                 isSubActive
                                   ? "bg-primary/20 text-primary dark:text-saffron-glow font-bold"
-                                  : "text-on-surface-variant dark:text-surface-variant hover:text-primary"
+                                  : "text-on-surface-variant dark:text-surface-variant hover:text-primary font-bold"
                               }`}
                             >
                               {sub.label}
