@@ -49,8 +49,13 @@ export default function DivineHaloCursor() {
   const haloAngle = useRef(0);
 
   useEffect(() => {
-    const isTouchOnly = window.matchMedia("(pointer: coarse)").matches && !window.matchMedia("(any-pointer: fine)").matches;
-    if (isTouchOnly) return;
+    const isTouchDevice =
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0 ||
+      window.matchMedia("(pointer: coarse)").matches ||
+      !window.matchMedia("(pointer: fine)").matches ||
+      window.innerWidth < 1024;
+    if (isTouchDevice) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -195,7 +200,7 @@ export default function DivineHaloCursor() {
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none fixed inset-0 z-[9999]"
+      className="pointer-events-none fixed inset-0 z-[9999] hidden lg:block"
       aria-hidden="true"
     />
   );
