@@ -123,8 +123,8 @@ export default function AdminHomepagePage() {
                 <div className="flex items-center gap-2 border-b border-gray-100 pb-4 mb-6">
                   <ImageIcon size={20} className="text-[#8a5000]" />
                   <div>
-                    <h2 className="text-base font-bold text-gray-900">Hero Banner Photograph</h2>
-                    <p className="text-xs text-gray-400">The primary image showcased on the right side of the home page hero section.</p>
+                    <h2 className="text-base font-bold text-gray-900">Hero Banner Video / Media</h2>
+                    <p className="text-xs text-gray-400">The primary video or image showcased on the right side of the home page hero section.</p>
                   </div>
                 </div>
 
@@ -164,24 +164,24 @@ export default function AdminHomepagePage() {
                   <div className="md:col-span-7 space-y-4">
                     <div>
                       <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">
-                        Hero Image URL
+                        Hero Video / Media URL
                       </label>
                       <input
                         type="text"
                         value={config.hero_image_url}
                         onChange={(e) => setConfig({ ...config, hero_image_url: e.target.value })}
-                        placeholder="/images/about.png or Cloudinary URL"
+                        placeholder="/videos/banner.mp4 or Cloudinary URL"
                         className="w-full px-3.5 py-2.5 text-sm bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-[#8a5000] outline-none transition-all"
                       />
                     </div>
 
                     <div>
                       <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">
-                        Or Upload New Image
+                        Or Upload New Video / Media
                       </label>
                       <label className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-xs font-semibold text-gray-700 cursor-pointer transition-all border border-gray-200">
                         {uploadingHero ? <Loader2 size={15} className="animate-spin text-[#8a5000]" /> : <Upload size={15} />}
-                        <span>{uploadingHero ? "Uploading..." : "Upload Media (JPG, PNG, WEBP, MP4)"}</span>
+                        <span>{uploadingHero ? "Uploading..." : "Upload Media (MP4, WEBP, JPG, PNG)"}</span>
                         <input
                           type="file"
                           accept="image/*,video/*"

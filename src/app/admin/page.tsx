@@ -17,6 +17,19 @@ import {
   Clock,
 } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+interface ActivityItem {
+  id: string;
+  title: string;
+  type: string;
+  action: string;
+  status: string;
+  time: string;
+  href: string;
+}
+
 export default async function AdminDashboardPage() {
   const session = await getSession();
 
@@ -29,13 +42,13 @@ export default async function AdminDashboardPage() {
     unread_registrations: "0",
     unread_sponsors: "0",
   };
-  let recentEvents: Array<{ id: number; title: string; status: string; updated_at: string }> = [];
+  let recentEvents: ActivityItem[] = [];
 
   try {
     const [dbCounts] = await sql`
       SELECT
-        (SELECT COUNT(*) FROM events WHERE status = 'published') AS total_events,
-        (SELECT COUNT(*) FROM news_articles WHERE status = 'published') AS total_news,
+        (SELECT COUNT(*) FROM events) AS total_events,
+        (SELECT COUNT(*) FROM news_articles) AS total_news,
         (SELECT COUNT(*) FROM gallery_photos) AS total_gallery,
         (SELECT COUNT(*) FROM contact_submissions WHERE status = 'new') AS unread_contact,
         (SELECT COUNT(*) FROM event_registrations WHERE status = 'new') AS unread_registrations,
@@ -43,20 +56,34 @@ export default async function AdminDashboardPage() {
     `;
     if (dbCounts) counts = dbCounts;
 
-    const dbRecent = await sql`
-      SELECT id, title, status, updated_at
-      FROM events
-      ORDER BY updated_at DESC
-      LIMIT 5
-    `;
-    recentEvents = dbRecent as typeof recentEvents;
+    const [evs, news, gals, conts, regs, spons, logs] = await Promise.all([
+      sql`SELECT id, title, status, updated_at AS time, 'event' AS type, 'Event updated / created' AS action, '/admin/events/' || id || '/edit' AS href FROM events ORDER BY updated_at DESC LIMIT 5`,
+      sql`SELECT id, headline AS title, status, updated_at AS time, 'news' AS type, 'News article published / updated' AS action, '/admin/news/' || id || '/edit' AS href FROM news_articles ORDER BY updated_at DESC LIMIT 5`,
+      sql`SELECT id, caption AS title, category AS status, created_at AS time, 'gallery' AS type, 'Gallery photo uploaded' AS action, '/admin/gallery' AS href FROM gallery_photos ORDER BY created_at DESC LIMIT 5`,
+      sql`SELECT id, full_name || ' — ' || subject AS title, status, submitted_at AS time, 'contact' AS type, 'Contact message received' AS action, '/admin/submissions' AS href FROM contact_submissions ORDER BY submitted_at DESC LIMIT 5`,
+      sql`SELECT id, full_name || ' (' || event_name || ')' AS title, status, submitted_at AS time, 'registration' AS type, 'Event registration submitted' AS action, '/admin/submissions' AS href FROM event_registrations ORDER BY submitted_at DESC LIMIT 5`,
+      sql`SELECT id, org_name || ' (' || email || ')' AS title, status, submitted_at AS time, 'sponsor' AS type, 'Sponsor enquiry submitted' AS action, '/admin/sponsorship' AS href FROM sponsor_enquiries ORDER BY submitted_at DESC LIMIT 5`,
+      sql`SELECT id, entity_title AS title, '' AS status, created_at AS time, entity_type AS type, action, '/admin' AS href FROM activity_log ORDER BY created_at DESC LIMIT 5`,
+    ]);
+
+    const combined = [
+      ...evs,
+      ...news,
+      ...gals,
+      ...conts,
+      ...regs,
+      ...spons,
+      ...logs,
+    ].sort((a: any, b: any) => new Date(b.time).getTime() - new Date(a.time).getTime()).slice(0, 10);
+
+    recentEvents = combined as ActivityItem[];
   } catch (err) {
     console.warn("Admin dashboard DB offline, showing placeholder stats:", err);
   }
 
   const stats = [
     {
-      title: "Total Published Events",
+      title: "Total Events",
       value: counts?.total_events || "0",
       icon: Calendar,
       color: "bg-amber-500/10 text-amber-600",
@@ -102,6 +129,23 @@ export default async function AdminDashboardPage() {
     },
   ];
 
+  const formatDate = (dateStr: string) => {
+    try {
+      if (!dateStr) return "";
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return "";
+      return d.toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    } catch {
+      return "";
+    }
+  };
+
   return (
     <div className="min-h-screen flex bg-[#fbf9f4]">
       <AdminSidebar />
@@ -113,7 +157,7 @@ export default async function AdminDashboardPage() {
           <div className="mb-8">
             <h1 className="text-2xl font-bold text-gray-900">Dashboard Overview</h1>
             <p className="text-sm text-gray-500 mt-1">
-              Manage website content, monitor submissions, and review recent activity.
+              Manage website content, monitor submissions, and review live activity across your database.
             </p>
           </div>
 
@@ -187,43 +231,58 @@ export default async function AdminDashboardPage() {
             {/* Recent Activity Feed */}
             <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-base font-bold text-gray-900">Recent Activity</h2>
-                <span className="text-xs text-gray-400">Live Database</span>
+                <h2 className="text-base font-bold text-gray-900">Live Recent Activity</h2>
+                <span className="text-xs font-semibold px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-full flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
+                  Real-time Database
+                </span>
               </div>
 
               {recentEvents.length === 0 ? (
-                <div className="text-center py-8 text-sm text-gray-400">
-                  No recent activity logged.
+                <div className="text-center py-12 text-sm text-gray-400">
+                  No recent activity logged in the database yet.
                 </div>
               ) : (
                 <div className="divide-y divide-gray-100">
                   {recentEvents.map((item) => (
-                    <div key={item.id} className="py-3.5 flex items-center justify-between gap-4">
+                    <div key={`${item.type}-${item.id}-${item.time}`} className="py-3.5 flex items-center justify-between gap-4 hover:bg-gray-50/50 px-2 rounded-lg transition-colors">
                       <div className="min-w-0">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
                           <span className="text-sm font-semibold text-gray-900 truncate">
                             {item.title}
                           </span>
-                          <span
-                            className={`px-2 py-0.5 text-[10px] uppercase font-bold rounded ${
-                              item.status === "published"
-                                ? "bg-emerald-100 text-emerald-800"
-                                : "bg-amber-100 text-amber-800"
-                            }`}
-                          >
-                            {item.status}
-                          </span>
+                          {item.status && (
+                            <span
+                              className={`px-2 py-0.5 text-[10px] uppercase font-bold rounded shrink-0 ${
+                                ["published", "confirmed", "read", "replied", "active"].includes(item.status)
+                                  ? "bg-emerald-100 text-emerald-800"
+                                  : ["new", "draft", "in_discussion"].includes(item.status)
+                                  ? "bg-amber-100 text-amber-800"
+                                  : ["cancelled", "declined", "hidden"].includes(item.status)
+                                  ? "bg-rose-100 text-rose-800"
+                                  : "bg-blue-100 text-blue-800"
+                              }`}
+                            >
+                              {item.status}
+                            </span>
+                          )}
                         </div>
-                        <div className="text-xs text-gray-500 mt-0.5 flex items-center gap-1">
-                          <Clock size={12} />
-                          <span>Event updated</span>
+                        <div className="text-xs text-gray-500 mt-1 flex items-center gap-1.5 flex-wrap">
+                          <Clock size={12} className="text-[#8a5000] shrink-0" />
+                          <span className="font-medium text-gray-700">{item.action}</span>
+                          {item.time && (
+                            <>
+                              <span className="text-gray-300">•</span>
+                              <span className="text-gray-400">{formatDate(item.time)}</span>
+                            </>
+                          )}
                         </div>
                       </div>
                       <Link
-                        href={`/admin/events/${item.id}/edit`}
-                        className="text-xs font-medium text-[#8a5000] hover:underline shrink-0"
+                        href={item.href || "/admin"}
+                        className="text-xs font-medium text-[#8a5000] hover:underline shrink-0 bg-amber-500/10 hover:bg-amber-500/20 px-3 py-1.5 rounded-lg transition-colors"
                       >
-                        Edit
+                        View / Edit
                       </Link>
                     </div>
                   ))}

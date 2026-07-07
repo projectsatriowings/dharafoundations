@@ -567,7 +567,7 @@ export function EventForm({ initialData, isEdit = false }: EventFormProps) {
       </div>
 
       {/* Sticky Bottom Bar */}
-      <div className="fixed bottom-0 left-0 lg:left-60 right-0 z-40 bg-white border-t border-gray-200 px-6 py-4 shadow-lg flex items-center justify-between">
+      <div className="sticky bottom-0 -mx-4 sm:-mx-6 lg:-mx-8 -mb-4 sm:-mb-6 lg:-mb-8 mt-10 bg-white border-t border-gray-200 px-6 py-4 shadow-[0_-4px_15px_rgba(0,0,0,0.08)] flex items-center justify-between z-30">
         <div className="text-xs text-gray-500 hidden sm:block">
           Ensure all required fields marked with <span className="text-red-500">*</span> are filled.
         </div>

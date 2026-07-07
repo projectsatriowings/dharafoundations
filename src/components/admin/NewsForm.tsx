@@ -163,7 +163,7 @@ export function NewsForm({ initialData, isEdit = false }: { initialData?: any; i
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-0 md:left-60 right-0 z-40 bg-white border-t border-gray-200 px-6 py-4 shadow-lg flex justify-end gap-3">
+      <div className="sticky bottom-0 -mx-4 sm:-mx-6 lg:-mx-8 -mb-4 sm:-mb-6 lg:-mb-8 mt-10 bg-white border-t border-gray-200 px-6 py-4 shadow-[0_-4px_15px_rgba(0,0,0,0.08)] flex justify-end gap-3 z-30">
         <button
           type="button"
           disabled={saving}
