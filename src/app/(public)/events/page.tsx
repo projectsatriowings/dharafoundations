@@ -268,7 +268,7 @@ export default function EventsPage() {
       {/* ==========================================
           SECTION 1 — HERO (Photo + Stat Badge)
          ========================================== */}
-      <section className="relative pt-28 sm:pt-32 pb-20 px-4 sm:px-8 max-w-7xl mx-auto w-full">
+      <section className="relative pt-16 sm:pt-20 pb-20 px-4 sm:px-8 max-w-7xl mx-auto w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           {/* Left Column: Copy */}
@@ -348,8 +348,8 @@ export default function EventsPage() {
               <div className="absolute inset-2 pointer-events-none flex items-center justify-center group-hover:[animation:spin_8s_linear_infinite]">
                 <svg className="w-full h-full" viewBox="0 0 100 100">
                   <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="none" />
-                  <text className="text-[10.5px] font-mono font-bold uppercase fill-saffron-glow tracking-[2.2px]">
-                    <textPath href="#circlePath">VIEW ALL EVENTS • SEE OUR WORK • </textPath>
+                  <text className="text-[9px] font-mono font-bold uppercase fill-saffron-glow tracking-[1.45px]">
+                    <textPath href="#circlePath" textLength="226" lengthAdjust="spacing">VIEW ALL EVENTS • SEE OUR WORK • </textPath>
                   </text>
                 </svg>
               </div>

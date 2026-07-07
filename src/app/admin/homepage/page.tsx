@@ -17,8 +17,6 @@ export default function AdminHomepagePage() {
   const [msg, setMsg] = useState<string | null>(null);
 
   const [uploadingHero, setUploadingHero] = useState(false);
-  const [uploadingV1, setUploadingV1] = useState(false);
-  const [uploadingV2, setUploadingV2] = useState(false);
 
   useEffect(() => {
     fetch("/api/admin/homepage")
@@ -199,82 +197,7 @@ export default function AdminHomepagePage() {
                 </div>
               </div>
 
-              {/* 2. FLOATING INTRO VIDEOS SETTINGS */}
-              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                <div className="flex items-center gap-2 border-b border-gray-100 pb-4 mb-6">
-                  <Video size={20} className="text-[#8a5000]" />
-                  <div>
-                    <h2 className="text-base font-bold text-gray-900">Floating Video Popup Clips</h2>
-                    <p className="text-xs text-gray-400">Configure the sequential video clips playing inside the home page picture-in-picture window.</p>
-                  </div>
-                </div>
-
-                <div className="space-y-6">
-                  {/* Video 1 */}
-                  <div className="p-4 bg-[#fbf9f4] rounded-xl border border-gray-200 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <label className="text-xs font-bold text-gray-800 uppercase tracking-wider">
-                        Clip 1 — First Video URL
-                      </label>
-                      <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-gray-300 hover:bg-gray-50 text-xs font-semibold text-gray-700 cursor-pointer shadow-2xs">
-                        {uploadingV1 ? <Loader2 size={13} className="animate-spin text-[#8a5000]" /> : <Upload size={13} />}
-                        <span>{uploadingV1 ? "Uploading..." : "Upload Video File"}</span>
-                        <input
-                          type="file"
-                          accept="video/*"
-                          className="hidden"
-                          disabled={uploadingV1}
-                          onChange={(e) => {
-                            if (e.target.files?.[0]) {
-                              handleUploadFile(e.target.files[0], "intro_video_1_url", setUploadingV1);
-                            }
-                          }}
-                        />
-                      </label>
-                    </div>
-                    <input
-                      type="text"
-                      value={config.intro_video_1_url}
-                      onChange={(e) => setConfig({ ...config, intro_video_1_url: e.target.value })}
-                      placeholder="https://res.cloudinary.com/..."
-                      className="w-full px-3.5 py-2 text-sm bg-white border border-gray-300 rounded-lg font-mono text-xs focus:ring-2 focus:ring-[#8a5000] outline-none"
-                    />
-                  </div>
-
-                  {/* Video 2 */}
-                  <div className="p-4 bg-[#fbf9f4] rounded-xl border border-gray-200 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <label className="text-xs font-bold text-gray-800 uppercase tracking-wider">
-                        Clip 2 — Second Video URL
-                      </label>
-                      <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-gray-300 hover:bg-gray-50 text-xs font-semibold text-gray-700 cursor-pointer shadow-2xs">
-                        {uploadingV2 ? <Loader2 size={13} className="animate-spin text-[#8a5000]" /> : <Upload size={13} />}
-                        <span>{uploadingV2 ? "Uploading..." : "Upload Video File"}</span>
-                        <input
-                          type="file"
-                          accept="video/*"
-                          className="hidden"
-                          disabled={uploadingV2}
-                          onChange={(e) => {
-                            if (e.target.files?.[0]) {
-                              handleUploadFile(e.target.files[0], "intro_video_2_url", setUploadingV2);
-                            }
-                          }}
-                        />
-                      </label>
-                    </div>
-                    <input
-                      type="text"
-                      value={config.intro_video_2_url}
-                      onChange={(e) => setConfig({ ...config, intro_video_2_url: e.target.value })}
-                      placeholder="https://res.cloudinary.com/..."
-                      className="w-full px-3.5 py-2 text-sm bg-white border border-gray-300 rounded-lg font-mono text-xs focus:ring-2 focus:ring-[#8a5000] outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* 3. IMPACT STATISTICS COUNTERS */}
+              {/* 2. IMPACT STATISTICS COUNTERS */}
               <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
                 <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-6">
                   <div>

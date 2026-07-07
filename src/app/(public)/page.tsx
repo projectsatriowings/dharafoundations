@@ -8,7 +8,6 @@ import { ParallaxBg } from "@/components/motion/ParallaxBg";
 import { LightboxModal } from "@/components/ui/LightboxModal";
 import InteractiveSelector from "@/components/ui/interactive-selector";
 import BorderGlow from "@/components/ui/BorderGlow";
-import VideoIntroPopup from "@/components/VideoIntroPopup/VideoIntroPopup";
 
 const HOME_GALLERY = [
   {
@@ -52,7 +51,7 @@ export default function HomePage() {
     { stat_value: "80G", stat_label: "TAX EXEMPTION" },
   ]);
   const [config, setConfig] = useState({
-    hero_image_url: "https://res.cloudinary.com/woo94xq2/video/upload/v1783348864/dhara_foundations/videos/injjcsbcbzokjavsswoc.mp4",
+    hero_image_url: "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4",
     intro_video_1_url: process.env.NEXT_PUBLIC_INTRO_VIDEO_1 || "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4",
     intro_video_2_url: process.env.NEXT_PUBLIC_INTRO_VIDEO_2 || "https://res.cloudinary.com/woo94xq2/video/upload/v1783059473/dhara_foundations/videos/osokgojzgb0sdg1vlywr.mp4",
   });
@@ -65,19 +64,19 @@ export default function HomePage() {
       .then((res) => res.json())
       .then((d) => {
         if (d.stats && d.stats.length > 0) setStats(d.stats);
-        if (d.config) setConfig((prev) => ({ ...prev, ...d.config }));
+        if (d.config) {
+          let updatedHero = d.config.hero_image_url;
+          if (!updatedHero || updatedHero === "https://res.cloudinary.com/woo94xq2/video/upload/v1783348864/dhara_foundations/videos/injjcsbcbzokjavsswoc.mp4") {
+            updatedHero = "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4";
+          }
+          setConfig((prev) => ({ ...prev, ...d.config, hero_image_url: updatedHero }));
+        }
       })
       .catch(console.error);
   }, []);
 
   return (
     <div className="relative w-full overflow-hidden bg-background text-on-background">
-      {/* Floating Video Intro Popup (PiP — home page only) */}
-      <VideoIntroPopup
-        video1Src={config.intro_video_1_url}
-        video2Src={config.intro_video_2_url}
-      />
-
       {/* ==========================================
           SCOPED HOME PAGE TOP SECTION (Global surface background)
          ========================================== */}
@@ -192,7 +191,7 @@ export default function HomePage() {
                       el.play().catch(() => {});
                     }
                   }}
-                  src={config.hero_image_url || "https://res.cloudinary.com/woo94xq2/video/upload/v1783348864/dhara_foundations/videos/injjcsbcbzokjavsswoc.mp4"}
+                  src={config.hero_image_url || "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4"}
                   autoPlay
                   loop
                   muted

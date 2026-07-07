@@ -12,7 +12,7 @@ export async function GET() {
     const [configRow] = await sql`SELECT hero_image_url, intro_video_1_url, intro_video_2_url FROM site_settings WHERE id = 1`;
 
     const config = {
-      hero_image_url: configRow?.hero_image_url || "https://res.cloudinary.com/woo94xq2/video/upload/v1783348864/dhara_foundations/videos/injjcsbcbzokjavsswoc.mp4",
+      hero_image_url: (!configRow?.hero_image_url || configRow.hero_image_url === "https://res.cloudinary.com/woo94xq2/video/upload/v1783348864/dhara_foundations/videos/injjcsbcbzokjavsswoc.mp4") ? "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4" : configRow.hero_image_url,
       intro_video_1_url: configRow?.intro_video_1_url || "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4",
       intro_video_2_url: configRow?.intro_video_2_url || "https://res.cloudinary.com/woo94xq2/video/upload/v1783059473/dhara_foundations/videos/osokgojzgb0sdg1vlywr.mp4",
     };
@@ -81,7 +81,7 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({
       stats: updatedStats,
       config: {
-        hero_image_url: updatedConfigRow?.hero_image_url || "https://res.cloudinary.com/woo94xq2/video/upload/v1783348864/dhara_foundations/videos/injjcsbcbzokjavsswoc.mp4",
+        hero_image_url: (!updatedConfigRow?.hero_image_url || updatedConfigRow.hero_image_url === "https://res.cloudinary.com/woo94xq2/video/upload/v1783348864/dhara_foundations/videos/injjcsbcbzokjavsswoc.mp4") ? "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4" : updatedConfigRow.hero_image_url,
         intro_video_1_url: updatedConfigRow?.intro_video_1_url || "",
         intro_video_2_url: updatedConfigRow?.intro_video_2_url || "",
       },
