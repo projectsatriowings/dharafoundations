@@ -221,13 +221,7 @@ export default function EventsPage() {
               desc: ev.title,
             };
           });
-          const combined = [...dbEvents];
-          for (const item of FULL_EVENTS_LIST) {
-            if (!combined.some(e => String(e.id) === String(item.id) || e.title === item.title)) {
-              combined.push(item);
-            }
-          }
-          setEventsList(combined);
+          setEventsList(dbEvents);
         }
       })
       .catch(err => console.error("Error fetching public events:", err));
