@@ -57,7 +57,7 @@ export function NewsDetailClient({ article }: NewsDetailClientProps) {
       <div className="w-full h-3 bg-[linear-gradient(90deg,#8a5000_0%,#f49b33_50%,#FFD27F_100%)] shadow-sm" />
 
       {/* Hero / Header Section */}
-      <section className="bg-deep-forest text-ethereal-white py-12 px-6 md:px-12 relative overflow-hidden border-b border-white/10">
+      <section className="bg-deep-forest text-ethereal-white pt-28 sm:pt-32 pb-14 sm:pb-16 px-6 md:px-12 relative overflow-hidden border-b border-white/10">
         <div className="max-w-7xl mx-auto relative z-10 space-y-5">
           <Link
             href="/news"
@@ -102,7 +102,7 @@ export function NewsDetailClient({ article }: NewsDetailClientProps) {
 
         {/* Subtle background cover overlay */}
         <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
-          <img src={article.img} alt={article.title} className="w-full h-full object-cover blur-sm" />
+          <img src={article.img} alt={article.title} className="w-full h-full object-cover object-top blur-sm" />
         </div>
       </section>
 
