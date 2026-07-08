@@ -291,7 +291,7 @@ export function Header() {
 
           {/* Single Sliding Horizontal Active Indicator */}
           <motion.div
-            className="absolute top-1/2 -translate-y-1/2 rounded-full bg-primary/5 dark:bg-saffron-glow/5 pointer-events-none -z-10"
+            className="absolute top-1/2 -translate-y-1/2 rounded-full pointer-events-none -z-10"
             initial={false}
             animate={{
               left: indicatorStyle.left,
@@ -313,14 +313,25 @@ export function Header() {
           </motion.div>
         </nav>
 
-        {/* Donate Now CTA */}
+        {/* Donate Now CTA with Corner Brackets Hover Effect */}
         <div className="hidden sm:flex items-center gap-4 shrink-0">
-          <Link
-            href="/contact"
-            className="inline-flex items-center justify-center px-5 py-2 bg-gradient-to-r from-primary to-amber-600 dark:from-saffron-glow dark:to-amber-500 text-ethereal-white dark:text-deep-forest rounded-full hover:scale-105 active:scale-95 shadow-md hover:shadow-lg transition-all duration-300 font-label-lg font-bold tracking-wide text-xs md:text-sm"
-          >
-            Donate Now
-          </Link>
+          <div className="relative group/btn inline-flex items-center justify-center p-1.5 sm:p-2">
+            {/* Top-Left Corner Bracket (Appears on Hover) */}
+            <span className="absolute top-0 left-0 w-3.5 h-3.5 sm:w-4 sm:h-4 border-t-2 border-l-2 border-amber-500 dark:border-saffron-glow rounded-tl-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
+            {/* Top-Right Corner Bracket (Appears on Hover) */}
+            <span className="absolute top-0 right-0 w-3.5 h-3.5 sm:w-4 sm:h-4 border-t-2 border-r-2 border-amber-500 dark:border-saffron-glow rounded-tr-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
+            {/* Bottom-Left Corner Bracket (Appears on Hover) */}
+            <span className="absolute bottom-0 left-0 w-3.5 h-3.5 sm:w-4 sm:h-4 border-b-2 border-l-2 border-amber-500 dark:border-saffron-glow rounded-bl-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
+            {/* Bottom-Right Corner Bracket (Appears on Hover) */}
+            <span className="absolute bottom-0 right-0 w-3.5 h-3.5 sm:w-4 sm:h-4 border-b-2 border-r-2 border-amber-500 dark:border-saffron-glow rounded-br-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
+
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center px-6 py-2.5 lg:px-7 lg:py-3 bg-gradient-to-r from-primary to-amber-600 dark:from-saffron-glow dark:to-amber-500 text-ethereal-white dark:text-deep-forest rounded-full shadow-md hover:shadow-lg transition-all duration-300 font-extrabold tracking-wide text-sm lg:text-base hover:scale-[1.02] active:scale-95"
+            >
+              Donate Now
+            </Link>
+          </div>
         </div>
 
         {/* Mobile menu button */}
@@ -402,12 +413,22 @@ export function Header() {
               })}
 
               <div className="pt-4 border-t border-outline-variant/20 flex flex-col gap-3 sm:hidden">
-                <Link
-                  href="/contact"
-                  className="w-full text-center px-6 py-3 bg-gradient-to-r from-primary to-amber-600 dark:from-saffron-glow dark:to-amber-500 text-ethereal-white dark:text-deep-forest rounded-full font-bold shadow-md"
-                >
-                  Donate Now
-                </Link>
+                <div className="relative group/btn inline-flex items-center justify-center p-1.5 w-full">
+                  {/* Top-Left Corner Bracket (Appears on Hover) */}
+                  <span className="absolute top-0 left-0 w-3.5 h-3.5 border-t-2 border-l-2 border-amber-500 dark:border-saffron-glow rounded-tl-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
+                  {/* Top-Right Corner Bracket (Appears on Hover) */}
+                  <span className="absolute top-0 right-0 w-3.5 h-3.5 border-t-2 border-r-2 border-amber-500 dark:border-saffron-glow rounded-tr-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
+                  {/* Bottom-Left Corner Bracket (Appears on Hover) */}
+                  <span className="absolute bottom-0 left-0 w-3.5 h-3.5 border-b-2 border-l-2 border-amber-500 dark:border-saffron-glow rounded-bl-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
+                  {/* Bottom-Right Corner Bracket (Appears on Hover) */}
+                  <span className="absolute bottom-0 right-0 w-3.5 h-3.5 border-b-2 border-r-2 border-amber-500 dark:border-saffron-glow rounded-br-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
+                  <Link
+                    href="/contact"
+                    className="w-full text-center px-6 py-3 bg-gradient-to-r from-primary to-amber-600 dark:from-saffron-glow dark:to-amber-500 text-ethereal-white dark:text-deep-forest rounded-full font-extrabold tracking-wide text-base shadow-md"
+                  >
+                    Donate Now
+                  </Link>
+                </div>
               </div>
             </div>
           </motion.div>
