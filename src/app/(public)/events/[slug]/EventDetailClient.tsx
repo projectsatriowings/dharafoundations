@@ -379,10 +379,49 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
       </div>
 
       {/* Lightbox Modal for Gallery */}
-      <LightboxModal 
-        item={selectedGalleryImg} 
-        onClose={() => setSelectedGalleryImg(null)} 
-      />
+      {(() => {
+        const currentGalleryIdx = selectedGalleryImg
+          ? event.galleryImages.indexOf(selectedGalleryImg.src)
+          : -1;
+        return (
+          <LightboxModal
+            item={selectedGalleryImg}
+            onClose={() => setSelectedGalleryImg(null)}
+            onPrev={
+              currentGalleryIdx !== -1 && event.galleryImages.length > 1
+                ? () => {
+                    const prevIdx =
+                      currentGalleryIdx > 0
+                        ? currentGalleryIdx - 1
+                        : event.galleryImages.length - 1;
+                    setSelectedGalleryImg({
+                      src: event.galleryImages[prevIdx],
+                      alt: `${event.title} - Photo ${prevIdx + 1}`,
+                      caption: `${event.title} • Photo ${prevIdx + 1}`,
+                    });
+                  }
+                : undefined
+            }
+            onNext={
+              currentGalleryIdx !== -1 && event.galleryImages.length > 1
+                ? () => {
+                    const nextIdx =
+                      currentGalleryIdx < event.galleryImages.length - 1
+                        ? currentGalleryIdx + 1
+                        : 0;
+                    setSelectedGalleryImg({
+                      src: event.galleryImages[nextIdx],
+                      alt: `${event.title} - Photo ${nextIdx + 1}`,
+                      caption: `${event.title} • Photo ${nextIdx + 1}`,
+                    });
+                  }
+                : undefined
+            }
+            currentIndex={currentGalleryIdx !== -1 ? currentGalleryIdx : undefined}
+            totalCount={event.galleryImages.length}
+          />
+        );
+      })()}
     </div>
   );
 }

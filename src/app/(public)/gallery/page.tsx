@@ -260,6 +260,18 @@ export default function GalleryPage() {
             : null
         }
         onClose={() => setLightboxIndex(null)}
+        onPrev={() =>
+          setLightboxIndex((prev) =>
+            prev !== null ? (prev > 0 ? prev - 1 : photoItems.length - 1) : null
+          )
+        }
+        onNext={() =>
+          setLightboxIndex((prev) =>
+            prev !== null ? (prev < photoItems.length - 1 ? prev + 1 : 0) : null
+          )
+        }
+        currentIndex={lightboxIndex !== null ? lightboxIndex : undefined}
+        totalCount={photoItems.length}
       />
     </div>
   );
