@@ -14,9 +14,9 @@ export const metadata: Metadata = {
   title: "Admin Portal | Dhara Foundations",
   robots: { index: false, follow: false },
   icons: {
-    icon: [{ url: "/logo-icon-only.png?v=2", type: "image/png" }],
-    shortcut: ["/logo-icon-only.png?v=2"],
-    apple: [{ url: "/logo-icon-only.png?v=2", type: "image/png" }],
+    icon: [{ url: "/logo-icon-only.png?v=4", type: "image/png" }],
+    shortcut: ["/logo-icon-only.png?v=4"],
+    apple: [{ url: "/logo-icon-only.png?v=4", type: "image/png" }],
   },
 };
 

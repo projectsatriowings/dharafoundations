@@ -48,7 +48,7 @@ export function AdminSidebar() {
       <div className="p-4 border-b border-white/10">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-white/10 p-1.5 flex items-center justify-center shrink-0 border border-white/15 shadow-sm">
-            <img src="/logo-icon-only.png" alt="DF" className="w-full h-full object-contain" />
+            <img src="/logo-icon-only.png?v=4" alt="DF" className="w-full h-full object-contain" />
           </div>
           {!collapsed && (
             <div className="min-w-0">

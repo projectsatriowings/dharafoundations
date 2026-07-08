@@ -140,21 +140,21 @@ export function Header() {
       >
         <Link
           href="/"
-          className="flex items-center hover:scale-105 transition-transform duration-300 py-1 shrink-0 mr-4"
+          className="flex items-center hover:scale-105 transition-transform duration-300 py-1 shrink-0 ml-4 sm:ml-6 mr-4"
         >
           {/* Light Mode Logo */}
           <img
-            src="/logo-horizontal.png"
+            src="/logo-horizontal.png?v=4"
             alt="Dhara Foundations"
-            className={`h-9 sm:h-10 md:h-12 w-auto object-contain transition-transform ${
+            className={`h-14 sm:h-16 md:h-18 w-auto object-contain transition-transform ${
               isTransparentHero ? "hidden" : "block dark:hidden drop-shadow-sm"
             }`}
           />
           {/* Dark Mode Logo */}
           <img
-            src="/logo-horizontal-dark.png"
+            src="/logo-horizontal-dark.png?v=4"
             alt="Dhara Foundations"
-            className={`h-9 sm:h-10 md:h-12 w-auto object-contain transition-transform ${
+            className={`h-14 sm:h-16 md:h-18 w-auto object-contain transition-transform ${
               isTransparentHero ? "block drop-shadow-md" : "hidden dark:block drop-shadow-sm"
             }`}
           />
@@ -178,14 +178,14 @@ export function Header() {
                 >
                   <Link
                     href={link.href}
-                    className={`relative inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full transition-all text-sm lg:text-base ${
+                    className={`relative inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full transition-all text-[15px] lg:text-[17px] ${
                       isTopActive
                         ? isTransparentHero
-                          ? "bg-white/20 text-saffron-glow font-extrabold"
-                          : "bg-primary/10 dark:bg-saffron-glow/15 text-primary dark:text-saffron-glow font-extrabold"
+                          ? "bg-white/20 text-saffron-glow font-extrabold tracking-wide"
+                          : "bg-primary/10 dark:bg-saffron-glow/15 text-primary dark:text-saffron-glow font-extrabold tracking-wide"
                         : isTransparentHero
-                        ? "text-white/90 hover:text-saffron-glow hover:bg-white/10 font-bold"
-                        : "text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow hover:bg-surface-container/50 font-bold"
+                        ? "text-white/90 hover:text-saffron-glow hover:bg-white/10 font-extrabold tracking-wide"
+                        : "text-on-surface dark:text-ethereal-white hover:text-primary dark:hover:text-saffron-glow hover:bg-surface-container/50 font-extrabold tracking-wide"
                     }`}
                   >
                     <span>{link.label}</span>
@@ -214,11 +214,11 @@ export function Header() {
                               rel={isExternal ? "noopener noreferrer" : undefined}
                               className={`block p-3 rounded-xl transition-all duration-200 group/sub ${
                                 isSubActive
-                                  ? "bg-primary text-ethereal-white dark:bg-saffron-glow dark:text-deep-forest font-bold shadow-sm"
+                                  ? "bg-primary text-ethereal-white dark:bg-saffron-glow dark:text-deep-forest font-extrabold shadow-sm"
                                   : "hover:bg-surface-container/60 text-on-surface dark:text-ethereal-white"
                               }`}
                             >
-                              <div className={`text-sm font-bold transition-colors ${!isSubActive && "group-hover/sub:text-primary dark:group-hover/sub:text-saffron-glow"}`}>
+                              <div className={`text-sm font-extrabold transition-colors ${!isSubActive && "group-hover/sub:text-primary dark:group-hover/sub:text-saffron-glow"}`}>
                                 {subItem.label}
                               </div>
                               {subItem.desc && (
@@ -246,14 +246,14 @@ export function Header() {
               >
                 <Link
                   href={link.href}
-                  className={`relative inline-block px-3.5 py-1.5 rounded-full transition-all text-sm lg:text-base hover:-translate-y-0.5 ${
+                  className={`relative inline-block px-3.5 py-1.5 rounded-full transition-all text-[15px] lg:text-[17px] hover:-translate-y-0.5 ${
                     isTopActive
                       ? isTransparentHero
-                        ? "bg-white/20 text-saffron-glow font-extrabold"
-                        : "bg-primary/10 dark:bg-saffron-glow/15 text-primary dark:text-saffron-glow font-extrabold"
+                        ? "bg-white/20 text-saffron-glow font-extrabold tracking-wide"
+                        : "bg-primary/10 dark:bg-saffron-glow/15 text-primary dark:text-saffron-glow font-extrabold tracking-wide"
                       : isTransparentHero
-                      ? "text-white/90 hover:text-saffron-glow hover:bg-white/10 font-bold"
-                      : "text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-saffron-glow hover:bg-surface-container/50 font-bold"
+                      ? "text-white/90 hover:text-saffron-glow hover:bg-white/10 font-extrabold tracking-wide"
+                      : "text-on-surface dark:text-ethereal-white hover:text-primary dark:hover:text-saffron-glow hover:bg-surface-container/50 font-extrabold tracking-wide"
                   }`}
                 >
                   {link.label}

@@ -21,7 +21,7 @@ export function NeoMinimalFooter() {
           <div className="col-span-1 sm:col-span-2 md:col-span-5 flex flex-col gap-6">
             <Link href="/" className="inline-block hover:opacity-90 transition-opacity w-fit">
               <img
-                src="/logo-stacked-dark.png"
+                src="/logo-stacked-dark.png?v=4"
                 alt="Dhara Foundations"
                 className="h-16 sm:h-20 md:h-24 w-auto object-contain drop-shadow-sm"
               />

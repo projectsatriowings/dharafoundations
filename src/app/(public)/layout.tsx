@@ -25,9 +25,9 @@ export const metadata: Metadata = {
   title: "Dhara Foundations - Transforming Lives, Preserving Traditions",
   description: "A non-profit organization dedicated to cultural revival, compassionate service, and spiritual awareness.",
   icons: {
-    icon: [{ url: "/logo-icon-only.png?v=2", type: "image/png" }],
-    shortcut: ["/logo-icon-only.png?v=2"],
-    apple: [{ url: "/logo-icon-only.png?v=2", type: "image/png" }],
+    icon: [{ url: "/logo-icon-only.png?v=4", type: "image/png" }],
+    shortcut: ["/logo-icon-only.png?v=4"],
+    apple: [{ url: "/logo-icon-only.png?v=4", type: "image/png" }],
   },
 };
 

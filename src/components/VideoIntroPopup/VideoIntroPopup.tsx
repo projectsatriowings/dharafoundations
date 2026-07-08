@@ -169,7 +169,7 @@ export default function VideoIntroPopup({ video1Src, video2Src }: VideoIntroPopu
               {!isMaximized && <span className="vip-drag-grip" aria-hidden="true">⋮⋮</span>}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/logo-stacked-white.png"
+                src="/logo-stacked-white.png?v=4"
                 alt=""
                 className="vip-brand-icon"
                 onError={(e) => {

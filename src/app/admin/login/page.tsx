@@ -14,7 +14,7 @@ export default function AdminLoginPage() {
         {/* Brand */}
         <div className="text-center mb-8">
           <div className="w-16 h-16 rounded-2xl bg-[#00322B] p-2 flex items-center justify-center mx-auto mb-4 shadow-lg border border-[#FFD27F]/20">
-            <img src="/logo-icon-only.png" alt="Dhara Foundations" className="w-full h-full object-contain" />
+            <img src="/logo-icon-only.png?v=4" alt="Dhara Foundations" className="w-full h-full object-contain" />
           </div>
           <h1 className="text-xl font-bold text-gray-900">Dhara Foundations</h1>
           <p className="text-sm text-gray-500 mt-1">Admin Portal Login</p>
