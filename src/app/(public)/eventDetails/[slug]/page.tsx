@@ -22,7 +22,12 @@ export default async function EventDetailsRedirectPage({
   const event = EVENTS_DATA.find((e) => e.numericId === slug || e.id === slug);
 
   if (event) {
-    redirect(`/events/${event.id}`);
+    const isAward = event.id.toLowerCase().includes("award") || event.category.toLowerCase().includes("award");
+    if (isAward) {
+      redirect(`/events/${event.id}`);
+    } else {
+      redirect(`/sevas/${event.id}`);
+    }
   } else {
     redirect(`/events`);
   }

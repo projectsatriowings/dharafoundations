@@ -15,6 +15,32 @@ export interface NewsArticle {
 
 export const SIX_MODERN_CARDS: NewsArticle[] = [
   {
+    id: "dhara-gifts-children-cuddalore",
+    slug: "dhara-gifts-children-cuddalore",
+    title: "Dhara Foundation Distributes Gifts to Children at Welfare Home",
+    date: "15 Sep, 2025",
+    img: "/images/news/dhara-gifts-children.jpg",
+    category: "Community Welfare",
+    excerpt: "On Tamil New Year and Ambedkar Jayanti, Dhara Foundation distributed birthday gifts and shoes to school children at Annai Sathya Children Welfare Home in Cuddalore.",
+    body_content: `<p>On September 15, commemorating both Tamil New Year and the birth anniversary of Dr. B.R. Ambedkar, Dhara Foundation organized a heartfelt gift distribution drive at the Annai Sathya Kuzhanthai Nala Pengal Kaapagatham (Children & Women's Welfare Home) in Cuddalore.</p>
+<p>Under the leadership of Vinodhra Raghavendra, State Secretary of the BJP Aanmeegam and Aalaya Membership Division, birthday gifts and brand-new shoes were distributed to all the school children residing at the welfare home. The event was organized in partnership with the Dhara Pavundation (Foundation) team from Cuddalore.</p>
+<p>The ceremony was attended by Annai Sathya Kuzhanthai Nala Kaapagam Chairperson P.A.J., Maaanagar Thunaithalaiver Ezhumalai, Former General Secretary Baakar, Dr. Karunaagaran, Advocate Chandrasekar, Muthu Kumarasaamy, Vaithiyanathan, Murugan, and several other dignitaries and well-wishers. The event was widely covered by local Tamil press.</p>`,
+    read_time_minutes: 3,
+  },
+  {
+    id: "dhara-diwali-clothes-distribution",
+    slug: "dhara-diwali-clothes-distribution",
+    title: "Dhara Foundations Distributes New Clothes to Children Ahead of Diwali",
+    date: "18 Oct, 2025",
+    img: "/images/news/dhara-diwali-clothes.jpg",
+    category: "Community Welfare",
+    excerpt: "Ahead of Diwali, Dhara Foundations distributed new clothes (Puthadai) to school children at Annai Sathya Sevai Illam in Cuddalore.",
+    body_content: `<p>Ahead of the Diwali festival, Dhara Foundations organized a special new clothes (Puthadai) distribution drive for the underprivileged school children residing at the Annai Sathya Sevai Illam (Service Home) in Cuddalore.</p>
+<p>Advocate Shankar, representing Dhara Foundations, led the distribution ceremony and personally handed over the new clothes to the children, extending warm Diwali wishes and blessings. The children at the Annai Sathya Sevai Illam were overjoyed to receive their brand-new festival attire.</p>
+<p>The event was graced by Vijayakumar, Dr. Karunaagaran, Semmandalam Ezhumalai, and many other community leaders and supporters. This initiative is part of Dhara Foundations' continuing commitment to uplifting underprivileged children through acts of compassion and celebration during festive occasions.</p>`,
+    read_time_minutes: 3,
+  },
+  {
     id: "sendoff-ceremony",
     slug: "sendoff-ceremony",
     title: "Send-Off Ceremony in Honour of His Excellency, Hon. Governor",

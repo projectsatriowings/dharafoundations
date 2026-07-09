@@ -42,11 +42,7 @@ export async function getPublicEvents(): Promise<Event[]> {
       ORDER BY event_date DESC
     `;
 
-    if (!rows || rows.length === 0) {
-      return EVENTS_DATA;
-    }
-
-    return rows.map((r, idx): Event => {
+    const dbEvents: Event[] = rows.map((r, idx): Event => {
       const descList: string[] = [];
       if (r.full_description) {
         const stripped = r.full_description.replace(/<[^>]+>/g, "\n").split("\n").map((s: string) => s.trim()).filter(Boolean);
@@ -59,7 +55,6 @@ export async function getPublicEvents(): Promise<Event[]> {
         descList.push("Join us for this community event.");
       }
 
-      const staticMatch = EVENTS_DATA.find((e) => e.id === r.slug || e.numericId === r.id.toString());
       const cleanImg = getCleanEventImage(`${r.title || ""} ${r.slug || ""} ${r.cover_image_url || ""}`, r.cover_image_url);
       return {
         id: r.slug || r.id.toString(),
@@ -78,6 +73,14 @@ export async function getPublicEvents(): Promise<Event[]> {
         galleryImages: [],
       };
     });
+
+    const existingSlugs = new Set(dbEvents.map((e) => e.id.toLowerCase()));
+    const existingTitles = new Set(dbEvents.map((e) => e.title.toLowerCase().trim()));
+    const staticFiltered = EVENTS_DATA.filter(
+      (s) => !existingSlugs.has(s.id.toLowerCase()) && !existingTitles.has(s.title.toLowerCase().trim())
+    );
+
+    return [...dbEvents, ...staticFiltered];
   } catch (err) {
     console.warn("Falling back to static EVENTS_DATA due to DB error:", err);
     return EVENTS_DATA;

@@ -2,61 +2,27 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { 
-  Calendar, 
-  Clock, 
-  MapPin, 
   ArrowRight, 
-  Heart, 
   ShieldCheck, 
   Users, 
   Sparkles, 
-  ExternalLink,
   Quote,
   Award,
-  Play
+  Play,
+  Video,
+  Clock,
+  CheckCircle2
 } from "lucide-react";
-import { motion, AnimatePresence, useReducedMotion, type Variants } from "framer-motion";
-import { EVENTS_DATA, getCleanEventImage } from "@/data/events";
-import { LightboxModal } from "@/components/ui/LightboxModal";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 
 // ==========================================
 // DATA DEFINITIONS
 // ==========================================
 
-const FULL_EVENTS_LIST = EVENTS_DATA.map((ev) => ({
-  id: ev.id,
-  title: ev.title,
-  category: ev.category,
-  date: ev.date,
-  time: ev.time,
-  location: ev.location,
-  mapsUrl: `https://www.google.com/maps?q=${ev.coordinates.lat},${ev.coordinates.lng}`,
-  img: ev.coverImage,
-  desc: ev.description[0],
-}));
-
-const NEWS_ARTICLES = [
-  {
-    title: "Registrations & Certifications",
-    date: "October 15, 2024",
-    desc: "Dhara Foundations achieves updated compliance milestones under the Indian Trust Act, 80G tax exemption status, CSR certification, and NGO-Darpan registry.",
-    img: "/images/about.png"
-  },
-  {
-    title: "Governor of Maharashtra Appreciates DHARA Divine Awards 2025",
-    date: "November 18, 2024",
-    desc: "Honorable Governor commends Dhara Foundations for recognizing grassroot cultural protectors and empowering traditional artisans across India.",
-    img: "/images/banner.png"
-  },
-  {
-    title: "Send-Off Ceremony for Governor R.N. Ravi",
-    date: "December 10, 2024",
-    desc: "Dhara volunteers participate in the prestigious gathering honoring leadership, spiritual renaissance, and relentless support for Sanatana Dharma revival.",
-    img: "/images/news.png"
-  }
-];
+// ==========================================
+// DATA DEFINITIONS & HELPERS
+// ==========================================
 
 
 // Custom Hook / Helper for Animated Count Up
@@ -105,145 +71,22 @@ function CounterItem({ target, staticText, shouldReduceMotion }: { target: numbe
   );
 }
 
-function EventCard({ 
-  ev, 
-  idx, 
-  shouldReduceMotion, 
-  router 
-}: { 
-  ev: typeof FULL_EVENTS_LIST[0]; 
-  idx: number; 
-  shouldReduceMotion: boolean | null; 
-  router: any;
-}) {
-  return (
-    <motion.div 
-      initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      whileHover={shouldReduceMotion ? {} : { scale: 1.02, y: -6 }}
-      transition={{ duration: 0.5, delay: idx * 0.1, ease: "easeOut" }}
-      onClick={(e) => {
-        if (!(e.target as HTMLElement).closest("a")) {
-          router.push(`/events/${ev.id}`);
-        }
-      }}
-      className="bg-white rounded-3xl border border-[#D9CBB0]/60 overflow-hidden shadow-md hover:shadow-2xl transition-shadow group cursor-pointer flex flex-col sm:flex-row h-full"
-    >
-      <div className="sm:w-2/5 h-56 sm:h-auto relative overflow-hidden bg-surface-container shrink-0">
-        <motion.img 
-          variants={{ hover: { scale: shouldReduceMotion ? 1 : 1.08 } }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-          src={ev.img} 
-          alt={ev.title} 
-          className="w-full h-full object-cover" 
-        />
-        <motion.div 
-          whileHover={{ scale: 1.08 }}
-          className="absolute top-3 left-3 bg-deep-forest text-saffron-glow px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider shadow"
-        >
-          {ev.category}
-        </motion.div>
-      </div>
 
-      <div className="p-6 flex flex-col justify-between flex-1 space-y-6">
-        <div className="space-y-3">
-          <div className="space-y-1 text-xs font-mono text-primary">
-            <div className="flex items-center gap-1.5 font-bold">
-              <Calendar size={14} />
-              <span>{ev.date}</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-on-surface-variant">
-              <Clock size={14} />
-              <span>{ev.time}</span>
-            </div>
-          </div>
-
-          <h3 className="font-headline-sm text-lg font-bold text-deep-forest leading-snug group-hover:text-primary transition-colors">
-            <Link href={`/events/${ev.id}`} className="hover:underline">
-              {ev.title}
-            </Link>
-          </h3>
-
-          <p className="font-body-sm text-xs text-on-surface-variant leading-relaxed line-clamp-3">
-            {ev.desc}
-          </p>
-
-          <div className="pt-2 flex items-center justify-between">
-            <a 
-              href={ev.mapsUrl} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
-              className="inline-flex items-center gap-1 text-xs font-medium text-deep-forest hover:text-primary transition-colors z-10"
-            >
-              <MapPin size={13} className="text-primary" />
-              <span className="line-clamp-1 underline">{ev.location}</span>
-              <ExternalLink size={11} />
-            </a>
-
-            <span className="text-xs font-bold text-primary flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-              View Details <ArrowRight size={13} />
-            </span>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
 
 export default function EventsPage() {
-  const router = useRouter();
   const rawReducedMotion = useReducedMotion();
   const [isMounted, setIsMounted] = useState(false);
-  const [eventsList, setEventsList] = useState<any[]>(FULL_EVENTS_LIST);
   
   useEffect(() => {
     setIsMounted(true);
-    fetch(`/api/public/events?t=${Date.now()}`, {
-      cache: "no-store",
-      headers: { "Cache-Control": "no-cache" },
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data && Array.isArray(data.events)) {
-          const dbEvents = data.events.map((ev: any) => {
-            const cleanImg = getCleanEventImage(`${ev.title || ""} ${ev.slug || ""} ${ev.cover_image_url || ""}`, ev.cover_image_url);
-            return {
-              id: ev.slug || String(ev.id),
-              title: ev.title,
-              category: ev.category || "Events",
-              date: ev.event_date ? new Date(ev.event_date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "Upcoming",
-              time: ev.event_time || "10:00 AM",
-              location: ev.location_name || "Tamil Nadu",
-              mapsUrl: "https://maps.google.com",
-              img: cleanImg,
-              desc: ev.title,
-            };
-          });
-          setEventsList(dbEvents);
-        }
-      })
-      .catch(err => console.error("Error fetching public events:", err));
   }, []);
 
   const shouldReduceMotion = isMounted ? rawReducedMotion : false;
-  const [activeCategoryFilter, setActiveCategoryFilter] = useState<string>("All");
 
-  const scrollToSectionAndFilter = (filterTag?: string) => {
-    if (filterTag) {
-      // Map category title to filter tag or exact category
-      setActiveCategoryFilter(filterTag);
-    }
-    const el = document.getElementById("full-events-list");
+  const scrollToAwardsSection = () => {
+    const el = document.getElementById("dhara-divine-awards-section");
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
-
-  const recentEvents = eventsList;
-
-  const filteredRecentEvents = activeCategoryFilter === "All" 
-    ? recentEvents 
-    : recentEvents.filter(ev => ev.category === activeCategoryFilter || ev.category.includes(activeCategoryFilter));
 
   // Animation Helper Variants reflecting prefers-reduced-motion
   const fadeUpVariant: Variants = {
@@ -273,8 +116,8 @@ export default function EventsPage() {
               transition={{ duration: 0.6, delay: 0.05, ease: "easeOut" }}
               className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/15 text-primary font-label-lg font-bold text-xs uppercase tracking-widest"
             >
-              <Sparkles size={14} />
-              <span>Dhara Gatherings</span>
+              <Award size={14} className="text-primary shrink-0" />
+              <span>Annual Flagship Ceremony</span>
             </motion.div>
             
             <motion.h1 
@@ -283,7 +126,7 @@ export default function EventsPage() {
               transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
               className="font-headline-md text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-deep-forest leading-[1.15]"
             >
-              Building Community Through Every Gathering
+              Dhara Divine Awards
             </motion.h1>
             
             <motion.p 
@@ -292,7 +135,7 @@ export default function EventsPage() {
               transition={{ duration: 0.7, delay: 0.25, ease: "easeOut" }}
               className="font-body-lg text-on-surface-variant text-base sm:text-lg leading-relaxed pt-2"
             >
-              Join us in sacred spaces of cultural preservation, spiritual elevation, and active community welfare. Every gathering transforms empathy into enduring action.
+              Our flagship national celebration honoring grassroots Sanatana Dharma champions, unheralded traditional artists, temple caretakers, and selflessly dedicated volunteers.
             </motion.p>
 
             <motion.div 
@@ -302,10 +145,10 @@ export default function EventsPage() {
               className="pt-4 flex flex-wrap items-center gap-4"
             >
               <button 
-                onClick={() => scrollToSectionAndFilter("All")}
+                onClick={scrollToAwardsSection}
                 className="px-8 py-3.5 rounded-full bg-primary hover:bg-[#633800] text-white font-label-lg font-bold transition-all duration-300 shadow-md hover:shadow-xl cursor-pointer flex items-center gap-2"
               >
-                <span>Browse Upcoming Events</span>
+                <span>Explore Awards Spotlight</span>
                 <ArrowRight size={18} />
               </button>
             </motion.div>
@@ -323,8 +166,8 @@ export default function EventsPage() {
               <motion.img 
                 whileHover={shouldReduceMotion ? {} : { scale: 1.05 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                src="/images/event-2.png" 
-                alt="Dhara Gatherings" 
+                src="/images/hero-devi.png" 
+                alt="Dhara Divine Awards Hero Devi" 
                 className="w-full h-full object-cover object-center"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/60 via-transparent to-transparent pointer-events-none" />
@@ -335,7 +178,7 @@ export default function EventsPage() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: "spring", stiffness: 300, damping: 15 }}
-              onClick={() => scrollToSectionAndFilter("All")}
+              onClick={scrollToAwardsSection}
               className="absolute -top-6 -right-4 sm:-top-8 sm:-right-6 w-28 h-28 sm:w-36 sm:h-36 rounded-full bg-deep-forest border-4 border-[#F9F7F2] shadow-xl flex items-center justify-center cursor-pointer group z-20"
             >
               {/* Rotating Text Ring Wheel */}
@@ -343,7 +186,7 @@ export default function EventsPage() {
                 <svg className="w-full h-full" viewBox="0 0 100 100">
                   <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="none" />
                   <text className="text-[9px] font-mono font-bold uppercase fill-saffron-glow tracking-[1.45px]">
-                    <textPath href="#circlePath" textLength="226" lengthAdjust="spacing">VIEW ALL EVENTS • SEE OUR WORK • </textPath>
+                    <textPath href="#circlePath" textLength="226" lengthAdjust="spacing">EXPLORE AWARDS SPOTLIGHT • DHARA • </textPath>
                   </text>
                 </svg>
               </div>
@@ -468,151 +311,209 @@ export default function EventsPage() {
       </section>
 
       {/* ==========================================
-          SECTION 2 — PHOTO COLLAGE GRID
+          SECTION 1.8 — DHARA DIVINE AWARDS CEREMONY PORTAL CTA
          ========================================== */}
-      <section className="py-20 px-6 md:px-12 max-w-7xl mx-auto w-full">
-        <motion.div 
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={fadeUpVariant}
-          className="text-center max-w-2xl mx-auto mb-12 space-y-3"
-        >
-          <h2 className="font-headline-md text-3xl sm:text-4xl font-bold text-deep-forest">
-            Moments of Seva & Celebration
-          </h2>
-          <p className="font-body-md text-on-surface-variant text-sm sm:text-base">
-            Glimpses from our recent cultural gatherings, temple consecrations, and rural welfare drives.
-          </p>
-        </motion.div>
-
-        {/* Asymmetric 8-Photo Grid */}
-        <motion.div 
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={{
-            visible: { transition: { staggerChildren: 0.08 } }
-          }}
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 auto-rows-[220px]"
-        >
+      <section className="py-16 px-6 md:px-12 max-w-7xl mx-auto w-full">
+        <div className="bg-gradient-to-br from-[#12241A] via-deep-forest to-[#183623] rounded-3xl p-8 sm:p-12 lg:p-14 text-ethereal-white shadow-2xl relative overflow-hidden border border-saffron-glow/30">
           
-          {/* Item 1: Wide Rectangular (Spans 2 cols) */}
-          <motion.div 
-            variants={{
-              hidden: { opacity: 0, scale: shouldReduceMotion ? 1 : 0.92 },
-              visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
-            }}
-            whileHover={shouldReduceMotion ? {} : { scale: 1.03, y: -4 }}
-            transition={{ duration: 0.3 }}
-            className="sm:col-span-2 relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl group cursor-pointer"
-          >
-            <img src="/images/gallery-1.png" alt="Dhara Gatherings" className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500 ease-out" />
-            <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-6 flex items-end">
-              <span className="text-white font-bold text-lg translate-y-3 group-hover:translate-y-0 transition-transform duration-300">Girivalam Seva Camp</span>
-            </div>
-          </motion.div>
+          {/* Background Ambient Glows */}
+          <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-saffron-glow/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -top-24 -right-24 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
-          {/* Item 2 */}
-          <motion.div 
-            variants={{
-              hidden: { opacity: 0, scale: shouldReduceMotion ? 1 : 0.92 },
-              visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
-            }}
-            whileHover={shouldReduceMotion ? {} : { scale: 1.04, y: -4 }}
-            transition={{ duration: 0.3 }}
-            className="relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl group cursor-pointer"
-          >
-            <img src="/images/event-1.png" alt="Anna Daanam" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out" />
-            <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-6 flex items-end">
-              <span className="text-white font-bold text-base translate-y-3 group-hover:translate-y-0 transition-transform duration-300">Anna Daanam Drive</span>
-            </div>
-          </motion.div>
-
-          {/* Item 3 */}
-          <motion.div 
-            variants={{
-              hidden: { opacity: 0, scale: shouldReduceMotion ? 1 : 0.92 },
-              visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
-            }}
-            whileHover={shouldReduceMotion ? {} : { scale: 1.04, y: -4 }}
-            transition={{ duration: 0.3 }}
-            className="relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl group cursor-pointer"
-          >
-            <img src="/images/event-3.png" alt="Temple Restoration" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out" />
-            <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-6 flex items-end">
-              <span className="text-white font-bold text-base translate-y-3 group-hover:translate-y-0 transition-transform duration-300">Temple Consecration</span>
-            </div>
-          </motion.div>
-
-          {/* Item 4 */}
-          <motion.div 
-            variants={{
-              hidden: { opacity: 0, scale: shouldReduceMotion ? 1 : 0.92 },
-              visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
-            }}
-            whileHover={shouldReduceMotion ? {} : { scale: 1.04, y: -4 }}
-            transition={{ duration: 0.3 }}
-            className="relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl group cursor-pointer"
-          >
-            <img src="/images/gallery-2.png" alt="Tribal School Outreach" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out" />
-            <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-6 flex items-end">
-              <span className="text-white font-bold text-base translate-y-3 group-hover:translate-y-0 transition-transform duration-300">Tribal School Support</span>
-            </div>
-          </motion.div>
-
-          {/* Item 5: Interactive Overlay Card with Pill Button */}
-          <motion.div 
-            variants={{
-              hidden: { opacity: 0, scale: shouldReduceMotion ? 1 : 0.92 },
-              visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
-            }}
-            whileHover="hover"
-            className="sm:col-span-2 relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl bg-deep-forest border border-white/10 group flex flex-col justify-center items-center p-8 text-center text-white transition-shadow duration-300"
-          >
-            <motion.img 
-              variants={{ hover: { scale: shouldReduceMotion ? 1 : 1.06 } }}
-              transition={{ duration: 0.5 }}
-              src="/images/banner.png" 
-              alt="Gallery Background" 
-              className="absolute inset-0 w-full h-full object-cover opacity-25" 
-            />
-            <motion.div 
-              variants={{ hover: { y: shouldReduceMotion ? 0 : -6 } }}
-              transition={{ duration: 0.3 }}
-              className="relative z-10 space-y-4 max-w-sm"
-            >
-              <h3 className="font-headline-sm text-2xl font-bold">Witness Our Continuing Journey</h3>
-              <p className="text-xs text-ethereal-white/80 font-body-sm">
-                Explore hundreds of high-resolution memories across all our Dharma revival sectors.
-              </p>
-              <Link 
-                href="/gallery"
-                className="inline-block px-6 py-2.5 rounded-full bg-primary hover:bg-[#633800] text-white font-label-md font-bold transition-all shadow-md active:scale-95"
+          <div className="relative z-10 space-y-10">
+            {/* Header Badge & Title */}
+            <div className="text-center max-w-3xl mx-auto space-y-4">
+              <motion.div 
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUpVariant}
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-saffron-glow/20 text-saffron-glow font-mono font-bold text-xs uppercase tracking-widest border border-saffron-glow/40 shadow-inner"
               >
-                See How We Work
-              </Link>
-            </motion.div>
-          </motion.div>
+                <Award size={15} className="text-saffron-glow shrink-0" />
+                <span>COMPLETE CEREMONY • EXCLUSIVE COVERAGE</span>
+              </motion.div>
 
-          {/* Item 6 */}
-          <motion.div 
-            variants={{
-              hidden: { opacity: 0, scale: shouldReduceMotion ? 1 : 0.92 },
-              visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
-            }}
-            whileHover={shouldReduceMotion ? {} : { scale: 1.04, y: -4 }}
-            transition={{ duration: 0.3 }}
-            className="relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl group cursor-pointer"
-          >
-            <img src="/images/gallery-3.png" alt="Women Empowerment" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out" />
-            <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-6 flex items-end">
-              <span className="text-white font-bold text-base translate-y-3 group-hover:translate-y-0 transition-transform duration-300">Women Empowerment Circle</span>
+              <motion.h2 
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUpVariant}
+                className="font-headline-md text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight"
+              >
+                Experience the Dhara Divine Awards Ceremony
+              </motion.h2>
+
+              <motion.p 
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUpVariant}
+                className="font-body-lg text-ethereal-white/85 text-sm sm:text-base leading-relaxed"
+              >
+                Relive the full 4-hour live national ceremony from Chetpet, Chennai — featuring keynote addresses, soul-stirring cultural tributes, and the historic honoring of grassroots Sanatana Dharma champions.
+              </motion.p>
             </div>
-          </motion.div>
 
-        </motion.div>
+            {/* CTA Card + Highlights Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start pt-2">
+              
+              {/* Left Column: Premium CTA Card (8 cols) */}
+              <motion.div 
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUpVariant}
+                className="lg:col-span-8 space-y-5"
+              >
+                <Link
+                  href="https://dhara-devineawards.vercel.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group block relative aspect-video w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.6)] border-2 border-saffron-glow/40 bg-deep-forest"
+                >
+                  {/* Background Image */}
+                  <img
+                    src="/images/hero-devi.png"
+                    alt="Dhara Divine Awards Ceremony"
+                    className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-75 group-hover:scale-105 transition-all duration-700"
+                  />
+                  {/* Overlay Gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
+                  
+                  {/* Content Overlay */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 p-6 text-center">
+                    {/* Play Button Circle */}
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-saffron-glow/90 flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:bg-saffron-glow transition-all duration-300">
+                      <ArrowRight size={36} className="text-deep-forest ml-1" />
+                    </div>
+                    <div className="space-y-2">
+                      <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white drop-shadow-lg">
+                        Visit the Divine Awards Portal
+                      </h3>
+                      <p className="text-sm sm:text-base text-ethereal-white/80 max-w-md mx-auto">
+                        Explore awardees, ceremony highlights, photo galleries, and the complete 4-hour broadcast
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Hover Shine Effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                </Link>
+
+                {/* Meta Bar */}
+                <div className="bg-white/5 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs sm:text-sm text-ethereal-white/80">
+                  <div className="flex items-center gap-2">
+                    <Video className="text-saffron-glow shrink-0" size={18} />
+                    <span className="font-bold text-white font-mono">Official Ceremony Archive</span>
+                  </div>
+                  <div className="flex items-center gap-6">
+                    <span className="flex items-center gap-1.5">
+                      <Clock className="text-amber-400 shrink-0" size={16} />
+                      <span>Duration: <strong>4 Hours</strong></span>
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+                      <span>Chetpet, Chennai</span>
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Right Column: Ceremony Highlights & Timeline (4 cols) */}
+              <motion.div 
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUpVariant}
+                className="lg:col-span-4 space-y-6"
+              >
+                <div className="bg-white/10 backdrop-blur-md rounded-2xl sm:rounded-3xl p-6 sm:p-7 border border-white/20 space-y-6 shadow-xl">
+                  <div className="flex items-center gap-3 border-b border-white/15 pb-4">
+                    <div className="p-2.5 rounded-xl bg-saffron-glow/20 text-saffron-glow">
+                      <Sparkles size={20} />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-lg text-white font-headline-sm">Ceremony Highlights</h3>
+                      <p className="text-xs text-ethereal-white/70 font-mono">Key ceremony milestones</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="flex gap-3.5 items-start">
+                      <div className="p-1.5 rounded-lg bg-saffron-glow/15 text-saffron-glow mt-0.5 shrink-0">
+                        <CheckCircle2 size={16} />
+                      </div>
+                      <div className="space-y-1">
+                        <h4 className="font-bold text-sm text-white">Vedic Invocation &amp; Deepa Pragatya</h4>
+                        <p className="text-xs text-ethereal-white/75 leading-relaxed">
+                          Sacred Vedic mantras, traditional lamp lighting ceremony, and divine blessings from spiritual dignitaries.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-3.5 items-start">
+                      <div className="p-1.5 rounded-lg bg-saffron-glow/15 text-saffron-glow mt-0.5 shrink-0">
+                        <CheckCircle2 size={16} />
+                      </div>
+                      <div className="space-y-1">
+                        <h4 className="font-bold text-sm text-white">
+                          Founder&apos;s Keynote &amp; Vision
+                        </h4>
+                        <p className="text-xs text-ethereal-white/75 leading-relaxed">
+                          Inspiring address highlighting our mission to protect temple heritage and uplift rural welfare across Tamil Nadu.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-3.5 items-start">
+                      <div className="p-1.5 rounded-lg bg-saffron-glow/15 text-saffron-glow mt-0.5 shrink-0">
+                        <CheckCircle2 size={16} />
+                      </div>
+                      <div className="space-y-1">
+                        <h4 className="font-bold text-sm text-white">Traditional Cultural Tributes</h4>
+                        <p className="text-xs text-ethereal-white/75 leading-relaxed">
+                          Classical dance, devotional music, and authentic folk art performances by renowned traditional artists.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-3.5 items-start">
+                      <div className="p-1.5 rounded-lg bg-saffron-glow/15 text-saffron-glow mt-0.5 shrink-0">
+                        <CheckCircle2 size={16} />
+                      </div>
+                      <div className="space-y-1">
+                        <h4 className="font-bold text-sm text-amber-300">Seva Ratna Awards Conferral</h4>
+                        <p className="text-xs text-ethereal-white/80 leading-relaxed">
+                          The defining moment honoring 25+ unheralded grassroots champions before 500+ distinguished guests.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t border-white/10 space-y-4">
+                    <p className="text-[11px] font-mono text-saffron-glow/90 italic text-center">
+                      &quot;Recognizing those who serve the divine by serving humanity without seeking fame or reward.&quot;
+                    </p>
+                    <Link
+                      href="https://dhara-devineawards.vercel.app"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-saffron-glow hover:bg-amber-400 text-deep-forest font-bold text-sm transition-all shadow-lg hover:scale-[1.02]"
+                    >
+                      <span>Explore Awards Portal</span>
+                      <ArrowRight size={16} />
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+
+            </div>
+          </div>
+        </div>
       </section>
+
+
 
       {/* ==========================================
           SECTION 3 — STATS BAR
@@ -686,72 +587,7 @@ export default function EventsPage() {
         </div>
       </section>
 
-      {/* ==========================================
-          SECTION 4 — UPCOMING & RECENT EVENTS
-         ========================================== */}
-      <section id="full-events-list" className="py-24 px-6 md:px-12 max-w-7xl mx-auto w-full space-y-20 scroll-mt-24">
-        {/* Recent Events Block with Filter */}
-        <div className="space-y-8">
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={fadeUpVariant}
-            className="border-b border-[#D9CBB0]/60 pb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4"
-          >
-            <div>
-              <div className="text-xs font-mono font-bold text-primary uppercase tracking-widest mb-1">Impact Archive</div>
-              <h2 className="font-headline-md text-3xl sm:text-4xl font-bold text-deep-forest">
-                Recent Events & Welfare Drives
-              </h2>
-            </div>
-            <p className="text-xs sm:text-sm text-on-surface-variant max-w-md">
-              Explore our completed milestones in cultural restoration, tribal outreach, and student support across rural districts.
-            </p>
-          </motion.div>
 
-          {/* Filter Bar */}
-          <div className="flex flex-wrap items-center gap-2 pb-2">
-            {["All", "Awards & Recognition", "Temple & Heritage", "Cultural & Spiritual", "Welfare Drives", "Children & Education", "Women's Empowerment"].map((tag) => (
-              <motion.button
-                key={tag}
-                whileHover={shouldReduceMotion ? {} : { scale: 1.05 }}
-                whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
-                transition={{ type: "spring", stiffness: 400 }}
-                onClick={() => {
-                  setActiveCategoryFilter(tag);
-                  if (tag === "Awards & Recognition") {
-                    const el = document.getElementById("dhara-divine-awards-section");
-                    if (el) el.scrollIntoView({ behavior: "smooth" });
-                  }
-                }}
-                className={`px-4 py-1.5 rounded-full text-xs font-label-md font-semibold transition-colors cursor-pointer ${
-                  activeCategoryFilter === tag 
-                    ? "bg-primary text-white shadow-md" 
-                    : "bg-white border border-[#D9CBB0]/80 text-on-surface-variant hover:border-primary hover:text-primary hover:shadow-sm"
-                }`}
-              >
-                {tag === "All" ? "All Categories" : tag}
-              </motion.button>
-            ))}
-          </div>
-
-          <AnimatePresence mode="popLayout">
-            <motion.div 
-              key={activeCategoryFilter}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0, transition: { duration: 0.15 } }}
-              transition={{ duration: 0.3 }}
-              className="grid grid-cols-1 md:grid-cols-2 gap-8"
-            >
-              {filteredRecentEvents.map((ev, idx) => (
-                <EventCard key={`${ev.id}-rec-${idx}`} ev={ev} idx={idx} shouldReduceMotion={shouldReduceMotion} router={router} />
-              ))}
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </section>
 
       {/* ==========================================
           SECTION 5 — TESTIMONIALS / IMPACT STORIES
@@ -886,87 +722,7 @@ export default function EventsPage() {
       </section>
 
       {/* ==========================================
-          SECTION 6 — NEWS / INSIGHTS CARDS (3-up)
-         ========================================== */}
-      <section className="py-24 px-6 md:px-12 max-w-7xl mx-auto w-full space-y-12">
-        <motion.div 
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={fadeUpVariant}
-          className="flex flex-col sm:flex-row sm:items-end justify-between gap-6"
-        >
-          <div className="space-y-2">
-            <h2 className="font-headline-md text-3xl sm:text-4xl font-bold text-deep-forest">
-              Latest Updates & Media Mentions
-            </h2>
-            <p className="font-body-md text-on-surface-variant text-sm">
-              Official press highlights and state recognition of Dhara Foundations.
-            </p>
-          </div>
-          <Link 
-            href="/news"
-            className="px-6 py-2.5 rounded-full bg-primary hover:bg-[#633800] text-white font-label-md font-bold transition-all shadow shrink-0 w-fit"
-          >
-            Read All News
-          </Link>
-        </motion.div>
-
-        <motion.div 
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={{
-            visible: { transition: { staggerChildren: 0.12 } }
-          }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
-        >
-          {NEWS_ARTICLES.map((art, idx) => (
-            <motion.div 
-              key={idx} 
-              variants={cardFadeUpVariant}
-              whileHover={shouldReduceMotion ? {} : "hover"}
-              className="bg-white rounded-2xl border border-[#D9CBB0]/50 overflow-hidden shadow-sm hover:shadow-2xl transition-shadow flex flex-col justify-between group cursor-pointer"
-            >
-              <motion.div variants={{ hover: { y: shouldReduceMotion ? 0 : -8 } }} transition={{ type: "spring", stiffness: 300, damping: 20 }} className="flex flex-col justify-between h-full">
-                <div>
-                  <div className="h-48 overflow-hidden bg-surface-container relative">
-                    <motion.img 
-                      variants={{ hover: { scale: shouldReduceMotion ? 1 : 1.08 } }}
-                      transition={{ duration: 0.4, ease: "easeOut" }}
-                      src={art.img} 
-                      alt={art.title} 
-                      className="w-full h-full object-cover" 
-                    />
-                  </div>
-                  <div className="p-6 space-y-3">
-                    <div className="text-xs font-mono text-primary font-bold">
-                      {art.date}
-                    </div>
-                    <h3 className="font-headline-sm text-lg font-bold text-deep-forest group-hover:text-primary transition-colors leading-snug">
-                      {art.title}
-                    </h3>
-                    <p className="font-body-sm text-on-surface-variant text-xs leading-relaxed line-clamp-3">
-                      {art.desc}
-                    </p>
-                  </div>
-                </div>
-                <div className="px-6 pb-6 pt-2 border-t border-[#D9CBB0]/30 mt-4">
-                  <Link href="/news" className="text-xs font-bold text-deep-forest group-hover:text-primary inline-flex items-center gap-1.5 transition-colors">
-                    <span className="underline">Read Article</span>
-                    <motion.span variants={{ hover: { x: shouldReduceMotion ? 0 : 4 } }} transition={{ type: "spring", stiffness: 400 }}>
-                      <ArrowRight size={14} />
-                    </motion.span>
-                  </Link>
-                </div>
-              </motion.div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </section>
-
-      {/* ==========================================
-          SECTION 7 — FEATURE LIST WITH CONNECTOR PATH ("Why Our Events Matter")
+          SECTION 6 — FEATURE LIST WITH CONNECTOR PATH ("Why Dhara Divine Awards Matter")
          ========================================== */}
       <section className="bg-[#EFECE6] py-24 px-6 md:px-12 border-t border-[#D9CBB0]/40 relative overflow-hidden">
         <div className="max-w-5xl mx-auto space-y-16">
@@ -978,10 +734,10 @@ export default function EventsPage() {
             className="text-center max-w-2xl mx-auto space-y-3"
           >
             <h2 className="font-headline-md text-3xl sm:text-4xl font-bold text-deep-forest">
-              Why Our Events Matter
+              Why Dhara Divine Awards Matter
             </h2>
             <p className="font-body-md text-on-surface-variant text-sm sm:text-base">
-              We approach every event not as a momentary spectacle, but as a sustainable seed for cultural renaissance and grassroot empowerment.
+              We approach the prestigious Dhara Divine Awards not as a momentary ceremony, but as a national movement recognizing our unsung grassroots custodians and spiritual protectors.
             </p>
           </motion.div>
 
@@ -1011,9 +767,9 @@ export default function EventsPage() {
                 transition={{ duration: 0.3 }}
                 className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl border border-[#D9CBB0]/60 flex-1 transition-shadow"
               >
-                <h3 className="font-headline-sm text-lg font-bold text-deep-forest mb-1 group-hover:text-primary transition-colors">1. Cultural Authenticity</h3>
+                <h3 className="font-headline-sm text-lg font-bold text-deep-forest mb-1 group-hover:text-primary transition-colors">1. Honoring Unsung Custodians</h3>
                 <p className="font-body-sm text-xs sm:text-sm text-on-surface-variant leading-relaxed">
-                  Every ritual and celebration strictly follows authentic Sanatana Dharma scriptures and temple traditions, avoiding commercial dilution.
+                  Recognizing grassroots protectors, traditional temple priests, and Vedic scholars whose lifelong devotion preserves our sacred heritage in remote corners of Bharat.
                 </p>
               </motion.div>
               {/* Connector Path 1 -> 2 */}
@@ -1056,9 +812,9 @@ export default function EventsPage() {
                 transition={{ duration: 0.3 }}
                 className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl border border-[#D9CBB0]/60 flex-1 md:text-right transition-shadow"
               >
-                <h3 className="font-headline-sm text-lg font-bold text-deep-forest mb-1 group-hover:text-primary transition-colors">2. Community-Centered</h3>
+                <h3 className="font-headline-sm text-lg font-bold text-deep-forest mb-1 group-hover:text-primary transition-colors">2. Empowering Artisan Communities</h3>
                 <p className="font-body-sm text-xs sm:text-sm text-on-surface-variant leading-relaxed">
-                  Our drives are tailored directly around real beneficiary needs—from remote mountain tribal hamlets to underserved urban neighborhoods.
+                  Celebrating traditional craftsmen, sculptors, and heritage revivalists by bringing national visibility and tangible support to their sacred livelihoods.
                 </p>
               </motion.div>
               {/* Connector Path 2 -> 3 */}
@@ -1101,9 +857,9 @@ export default function EventsPage() {
                 transition={{ duration: 0.3 }}
                 className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl border border-[#D9CBB0]/60 flex-1 transition-shadow"
               >
-                <h3 className="font-headline-sm text-lg font-bold text-deep-forest mb-1 group-hover:text-primary transition-colors">3. Transparent & Registered</h3>
+                <h3 className="font-headline-sm text-lg font-bold text-deep-forest mb-1 group-hover:text-primary transition-colors">3. Rigorous & Transparent Selection</h3>
                 <p className="font-body-sm text-xs sm:text-sm text-on-surface-variant leading-relaxed">
-                  Fully compliant under the Indian Trust Act with verified 80G tax benefits, CSR eligibility, and NITI Aayog NGO-Darpan registry.
+                  An uncompromised, merit-based selection process honoring genuine cultural elevation across rural hamlets and historic temple ecosystems.
                 </p>
               </motion.div>
               {/* Connector Path 3 -> 4 */}
@@ -1136,7 +892,7 @@ export default function EventsPage() {
                 transition={{ type: "spring", stiffness: 300 }}
                 className="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shrink-0 z-10 group-hover:bg-saffron-glow group-hover:text-deep-forest transition-colors"
               >
-                <Heart size={28} />
+                <Award size={28} />
               </motion.div>
               <motion.div 
                 initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 24 }}
@@ -1146,9 +902,9 @@ export default function EventsPage() {
                 transition={{ duration: 0.3 }}
                 className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl border border-[#D9CBB0]/60 flex-1 md:text-right transition-shadow"
               >
-                <h3 className="font-headline-sm text-lg font-bold text-deep-forest mb-1 group-hover:text-primary transition-colors">4. Consistent Impact</h3>
+                <h3 className="font-headline-sm text-lg font-bold text-deep-forest mb-1 group-hover:text-primary transition-colors">4. National Inspiration & Legacy</h3>
                 <p className="font-body-sm text-xs sm:text-sm text-on-surface-variant leading-relaxed">
-                  We maintain long-term relationships with communities rather than one-off photo opportunities, ensuring lasting socio-cultural elevation.
+                  Inspiring future generations to take pride in Sanatana Dharma by celebrating extraordinary lives of selflessness, Dharma preservation, and community leadership.
                 </p>
               </motion.div>
             </div>

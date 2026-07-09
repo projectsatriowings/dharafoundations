@@ -33,6 +33,82 @@ export function isValidCoordinate(coord: { lat: number; lng: number }): boolean 
 
 export const EVENTS_DATA: Event[] = [
   {
+    id: "raghavendra-bhoomi-pooja",
+    numericId: "45",
+    title: "Bhoomi Pooja Performed for Raghavendra Temple",
+    category: "Sanatana Dharma",
+    date: "15 Jan, 2025",
+    time: "09:00 AM",
+    location: "Cuddalore",
+    coordinates: { lat: 11.7480, lng: 79.7714 },
+    coverImage: "/images/events/raghavendra-bhoomi-pooja.jpg",
+    galleryImages: [],
+    description: [
+      "A Bhoomi Pooja ceremony was conducted for the construction of a new Sri Raghavendra Swamigal Temple at Cuddalore. Devotees, organizers, and priests participated in the sacred ritual and offered special prayers seeking divine blessings for the successful completion of the temple project. The event was held with traditional Vedic rituals and spiritual devotion.",
+    ],
+  },
+  {
+    id: "masi-pournami-girivalam",
+    numericId: "44",
+    title: "Masi Pournami Maha Girivalam",
+    category: "Sanatana Dharma",
+    date: "02 Mar, 2026",
+    time: "06:00 PM",
+    location: "Thirupparankundram, Madurai",
+    coordinates: { lat: 9.8821, lng: 78.0734 },
+    coverImage: "/images/events/masi-pournami-girivalam.jpg",
+    galleryImages: [],
+    description: [
+      "A religious awareness procession was organized to promote the “Masi Pournami Maha Girivalam” to be held on 2nd March 2026 at Thirupparankundram. Devotees and organizers carried a banner featuring Lord Murugan and details of the sacred event, inviting the public to participate in the spiritual Girivalam procession. The event reflects devotion, community involvement, and the promotion of Hindu spiritual and temple traditions.",
+    ],
+  },
+  {
+    id: "devotional-offering-kodai",
+    numericId: "43",
+    title: "Devotional offering presented to the temple",
+    category: "Sanatana Dharma",
+    date: "10 Feb, 2025",
+    time: "10:30 AM",
+    location: "Tamil Nadu",
+    coordinates: { lat: 13.0827, lng: 80.2707 },
+    coverImage: "/images/events/devotional-offering-kodai.jpg",
+    galleryImages: [],
+    description: [
+      "As a mark of faith and devotion, the Kodai was respectfully presented to the temple as a devotional contribution. This sacred offering symbolizes spiritual dedication, gratitude, and support towards preserving temple traditions and religious activities.",
+    ],
+  },
+  {
+    id: "brindavana-kumbabhishekam",
+    numericId: "42",
+    title: "Brindavana Kumbabhishekam ceremony",
+    category: "Sanatana Dharma",
+    date: "28 Jan, 2025",
+    time: "08:00 AM",
+    location: "Cuddalore",
+    coordinates: { lat: 11.7480, lng: 79.7714 },
+    coverImage: "/images/events/brindavana-kumbabhishekam.jpg",
+    galleryImages: [],
+    description: [
+      "The Maha Kumbabhishekam Vaibhavam of Shri Raghavendra Swamigal Dakshina Bikshalaya Brindavanam, located at Maruthi Nagar, Anaikuppam, Cuddalore, was celebrated in a grand spiritual manner under the divine blessings and holy presence of Poojya Shri Vidya Vallabha Madhava Theertha Swamigal. On this auspicious occasion, I had the privilege of receiving the sacred blessings (Arulasi) of Poojya Shri Swamigal during the Shri Raghavendra Swamigal Brindavanam Kumbabhishekam celebrations.",
+    ],
+  },
+  {
+    id: "madurai-adheenam",
+    numericId: "41",
+    title: "Madurai Adheenam",
+    category: "Sanatana Dharma",
+    date: "20 Dec, 2024",
+    time: "11:00 AM",
+    location: "Madurai",
+    coordinates: { lat: 9.9252, lng: 78.1198 },
+    coverImage: "/images/events/madurai-adheenam.jpg",
+    galleryImages: [],
+    description: [
+      "Madurai Adheenam is one of the oldest and most respected Saivite religious institutions in Tamil Nadu. It is headquartered in Madurai and is dedicated to the propagation of Saiva Siddhanta, Tamil culture, and Hindu spiritual traditions.",
+      "The Madurai Adheenakarthar (Madurai Adhinam) is the spiritual head of the institution and plays a significant role in promoting religious teachings, temple traditions, Tamil literature, and social service activities. The Adheenam has historically contributed to the preservation and development of Tamil language, Saivite philosophy, and religious heritage.",
+    ],
+  },
+  {
     id: "digitisation-activities-wshg",
     numericId: "40",
     title: "In Digitisation activities for Women Self Help Group society",
@@ -160,6 +236,11 @@ export function getEventBySlugOrId(idOrSlug: string): Event | undefined {
 export function getCleanEventImage(text?: string, fallbackImg?: string): string {
   if (!text) return fallbackImg || "/images/event-1.png";
   const lower = text.toLowerCase();
+  if (lower.includes("raghavendra") || lower.includes("bhoomi pooja")) return "/images/events/raghavendra-bhoomi-pooja.jpg";
+  if (lower.includes("girivalam") || lower.includes("masi pournami")) return "/images/events/masi-pournami-girivalam.jpg";
+  if (lower.includes("kodai") || lower.includes("devotional offering")) return "/images/events/devotional-offering-kodai.jpg";
+  if (lower.includes("kumbabhishekam") || lower.includes("brindavana")) return "/images/events/brindavana-kumbabhishekam.jpg";
+  if (lower.includes("adheenam") || lower.includes("madurai adheenam")) return "/images/events/madurai-adheenam.jpg";
   if (lower.includes("digitisation") || lower.includes("shg")) return "/images/events/event-digitisation-women-shg.jpg";
   if (lower.includes("javadhu") || lower.includes("tribal")) return "/images/events/event-tribal-welfare-javadhu.jpg";
   if (lower.includes("diwali") || lower.includes("dresses")) return "/images/events/event-diwali-dresses.jpg";

@@ -50,6 +50,22 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
   const pinterestShare = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(pageUrl)}&description=${encodeURIComponent(event.title)}`;
   const instagramShare = "https://instagram.com"; // Direct link since IG doesn't have web sharer URL
 
+  const isAward = event.id.toLowerCase().includes("award") || event.category.toLowerCase().includes("award");
+  const isDharma = !isAward && (event.category.toLowerCase().includes("sanatana") || event.category.toLowerCase().includes("dharma"));
+  const isCharity = !isAward && !isDharma;
+
+  const backHref = isAward 
+    ? "/events" 
+    : isDharma 
+      ? "/gallery?category=Sanatana+Dharma" 
+      : "/gallery?category=Charity";
+
+  const backLabel = isAward 
+    ? "BACK TO ALL EVENTS" 
+    : isDharma 
+      ? "BACK TO SANATANA DHARMA SEVAS" 
+      : "BACK TO CHARITY SEVAS";
+
   return (
     <div className="min-h-screen bg-surface text-foreground font-body pb-24">
       {/* Decorative Top Banner Strip using Brand Gradient */}
@@ -59,11 +75,11 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
       <section className="bg-deep-forest text-ethereal-white pt-28 sm:pt-32 pb-14 sm:pb-16 px-6 md:px-12 relative overflow-hidden border-b border-white/10">
         <div className="max-w-7xl mx-auto relative z-10 space-y-4">
           <Link 
-            href="/events" 
+            href={backHref} 
             className="inline-flex items-center gap-2 text-xs font-mono font-bold text-saffron-glow hover:text-white transition-colors"
           >
             <ArrowLeft size={14} />
-            <span>BACK TO ALL EVENTS</span>
+            <span>{backLabel}</span>
           </Link>
 
           <div className="flex flex-wrap items-center gap-3 pt-2">

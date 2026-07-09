@@ -39,6 +39,15 @@ const NAV_LINKS: NavLink[] = [
     ],
   },
   { 
+    href: "/gallery", 
+    label: "Sevas",
+    dropdown: [
+      { href: "/gallery?category=Charity", label: "Charity", desc: "Humanitarian & Community Welfare" },
+      { href: "/gallery?category=Sanatana+Dharma", label: "Sanatana Dharma", desc: "Temple & Heritage Preservation" },
+    ],
+    popup: { badge: "Divine & Social Seva", desc: "Witness ancient architectural revival & volunteer charity service." }
+  },
+  { 
     href: "/events", 
     label: "Events",
     dropdown: [
@@ -51,11 +60,6 @@ const NAV_LINKS: NavLink[] = [
     href: "/news", 
     label: "News & Media",
     popup: { badge: "Press & Impact", desc: "Read recent announcements, articles, and field reports." }
-  },
-  { 
-    href: "/gallery", 
-    label: "Seva",
-    popup: { badge: "Divine & Social Seva", desc: "Witness ancient architectural revival & volunteer charity service." }
   },
   { 
     href: "/partnership", 
@@ -131,20 +135,20 @@ export function Header() {
       id="main-nav"
     >
       <div
-        className={`pointer-events-auto mx-auto max-w-[1300px] rounded-full border flex justify-between items-center px-5 sm:px-6 py-2 transition-all duration-300 ${
+        className={`pointer-events-auto mx-auto max-w-[1340px] rounded-full border flex justify-between items-center px-5 sm:px-7 py-2.5 sm:py-3 transition-all duration-300 ${
           isScrolled
-            ? "bg-deep-forest/95 backdrop-blur-2xl shadow-2xl border-ethereal-white/15 text-ethereal-white"
-            : "bg-deep-forest/90 backdrop-blur-md shadow-xl border-ethereal-white/15 text-ethereal-white"
+            ? "bg-deep-forest/95 backdrop-blur-2xl shadow-2xl border-ethereal-white/20 text-ethereal-white"
+            : "bg-deep-forest/90 backdrop-blur-md shadow-xl border-ethereal-white/20 text-ethereal-white"
         }`}
       >
         <Link
           href="/"
-          className="flex items-center hover:opacity-90 transition-opacity shrink-0 ml-4 sm:ml-6 mr-4"
+          className="flex items-center hover:opacity-95 transition-transform hover:scale-105 shrink-0 ml-2 sm:ml-4 mr-5 group/logo"
         >
           <img
-            src="/logo-stacked-dark.png?v=4"
+            src="/logo-stacked-dark.png?v=6"
             alt="Dhara Foundations"
-            className="h-14 sm:h-15 md:h-16 w-auto object-contain block"
+            className="h-16 sm:h-18 w-auto object-contain block drop-shadow-[0_2px_12px_rgba(255,255,255,0.25)] brightness-110"
           />
         </Link>
 
