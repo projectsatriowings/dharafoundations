@@ -41,7 +41,7 @@ export async function GET() {
       ...regs,
       ...spons,
       ...logs,
-    ].sort((a: any, b: any) => new Date(b.time).getTime() - new Date(a.time).getTime()).slice(0, 10);
+    ].sort((a: any, b: any) => new Date(b.time).getTime() - new Date(a.time).getTime()).slice(0, 7);
 
     return NextResponse.json({
       counts: {

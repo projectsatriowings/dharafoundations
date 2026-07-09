@@ -74,7 +74,7 @@ export default async function AdminDashboardPage() {
       ...regs,
       ...spons,
       ...logs,
-    ].sort((a: any, b: any) => new Date(b.time).getTime() - new Date(a.time).getTime()).slice(0, 10);
+    ].sort((a: any, b: any) => new Date(b.time).getTime() - new Date(a.time).getTime()).slice(0, 7);
 
     recentEvents = combined as ActivityItem[];
   } catch (err) {

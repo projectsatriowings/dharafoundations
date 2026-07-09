@@ -13,13 +13,14 @@ export async function PUT(
 
     const { id } = await params;
     const body = await req.json();
-    const { caption, category, is_featured } = body;
+    const { caption, category, is_featured, image_url } = body;
 
     const [updated] = await sql`
       UPDATE gallery_photos SET
-        caption = COALESCE(${caption}, caption),
-        category = COALESCE(${category}, category),
-        is_featured = COALESCE(${is_featured}, is_featured)
+        caption = COALESCE(${caption !== undefined ? caption : null}, caption),
+        category = COALESCE(${category !== undefined ? category : null}, category),
+        is_featured = COALESCE(${is_featured !== undefined ? is_featured : null}, is_featured),
+        image_url = COALESCE(${image_url !== undefined ? image_url : null}, image_url)
       WHERE id = ${id}
       RETURNING *
     `;

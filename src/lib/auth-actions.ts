@@ -3,10 +3,19 @@
 import { redirect } from 'next/navigation';
 import bcrypt from 'bcryptjs';
 import sql from '@/lib/db';
-import { createSession, deleteSession } from '@/lib/session';
+import { createSession, deleteSession, getSession } from '@/lib/session';
 
 export interface LoginState {
   error?: string;
+}
+
+export async function getCurrentSessionInfo(): Promise<{ email: string; expiresAt: string } | null> {
+  const session = await getSession();
+  if (!session) return null;
+  return {
+    email: session.email,
+    expiresAt: session.expiresAt.toISOString(),
+  };
 }
 
 export async function login(

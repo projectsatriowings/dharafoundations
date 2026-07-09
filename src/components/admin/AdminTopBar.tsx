@@ -2,34 +2,57 @@
 
 import React, { useEffect, useState } from "react";
 import { LogOut, Clock } from "lucide-react";
-import { logout } from "@/lib/auth-actions";
+import { logout, getCurrentSessionInfo } from "@/lib/auth-actions";
 
 interface AdminTopBarProps {
   email: string;
 }
 
 export function AdminTopBar({ email }: AdminTopBarProps) {
-  const [timeLeft, setTimeLeft] = useState("2:00:00");
+  const [timeLeft, setTimeLeft] = useState<string>("Loading...");
+  const [userEmail, setUserEmail] = useState<string>(email);
+  const [expiresAtMs, setExpiresAtMs] = useState<number | null>(null);
 
-  // Simple countdown timer — resets on page navigation (middleware refreshes the session)
   useEffect(() => {
-    let seconds = 2 * 60 * 60; // 2 hours
-    const interval = setInterval(() => {
-      seconds -= 1;
-      if (seconds <= 0) {
-        clearInterval(interval);
+    let isMounted = true;
+    getCurrentSessionInfo().then((info) => {
+      if (!isMounted) return;
+      if (info) {
+        if (info.email) setUserEmail(info.email);
+        const expiryTime = new Date(info.expiresAt).getTime();
+        setExpiresAtMs(expiryTime);
+      } else {
+        setTimeLeft("Expired");
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (expiresAtMs === null) return;
+
+    const updateTimer = () => {
+      const now = Date.now();
+      const remainingMs = expiresAtMs - now;
+      if (remainingMs <= 0) {
         setTimeLeft("Expired");
         return;
       }
-      const h = Math.floor(seconds / 3600);
-      const m = Math.floor((seconds % 3600) / 60);
-      const s = seconds % 60;
+      const totalSeconds = Math.floor(remainingMs / 1000);
+      const h = Math.floor(totalSeconds / 3600);
+      const m = Math.floor((totalSeconds % 3600) / 60);
+      const s = totalSeconds % 60;
       setTimeLeft(
         `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`
       );
-    }, 1000);
+    };
+
+    updateTimer();
+    const interval = setInterval(updateTimer, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [expiresAtMs]);
 
   const handleLogout = async () => {
     await logout();
@@ -52,7 +75,7 @@ export function AdminTopBar({ email }: AdminTopBarProps) {
 
           {/* User email */}
           <div className="text-xs sm:text-sm text-gray-600 font-medium truncate max-w-[200px]">
-            {email}
+            {userEmail}
           </div>
 
           {/* Logout */}

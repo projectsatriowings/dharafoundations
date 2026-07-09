@@ -5,7 +5,7 @@ import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AdminTopBar } from "@/components/admin/AdminTopBar";
 import { ImageUploader } from "@/components/admin/ImageUploader";
 import { DeleteConfirmDialog } from "@/components/admin/DeleteConfirmDialog";
-import { PlusCircle, Trash2, Star, Loader2, Filter, X } from "lucide-react";
+import { PlusCircle, Trash2, Star, Loader2, Filter, X, Edit2 } from "lucide-react";
 
 export default function AdminGalleryPage() {
   const [photos, setPhotos] = useState<any[]>([]);
@@ -19,6 +19,15 @@ export default function AdminGalleryPage() {
   const [newCategory, setNewCategory] = useState("events");
   const [newFeatured, setNewFeatured] = useState(false);
   const [uploading, setUploading] = useState(false);
+
+  // Edit Modal states
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editingPhoto, setEditingPhoto] = useState<any | null>(null);
+  const [editUrl, setEditUrl] = useState("");
+  const [editCaption, setEditCaption] = useState("");
+  const [editCategory, setEditCategory] = useState("events");
+  const [editFeatured, setEditFeatured] = useState(false);
+  const [editing, setEditing] = useState(false);
 
   const DEFAULT_GAL_CATS = [
     { value: "temple_heritage", label: "Temple Heritage" },
@@ -87,6 +96,45 @@ export default function AdminGalleryPage() {
       body: JSON.stringify({ is_featured: !photo.is_featured }),
     });
     fetchPhotos();
+  };
+
+  const handleOpenEditModal = (photo: any) => {
+    setEditingPhoto(photo);
+    setEditUrl(photo.image_url || "");
+    setEditCaption(photo.caption || "");
+    setEditCategory(photo.category || "events");
+    setEditFeatured(!!photo.is_featured);
+    setEditModalOpen(true);
+  };
+
+  const handleEditSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingPhoto) return;
+    setEditing(true);
+    try {
+      const res = await fetch(`/api/admin/gallery/${editingPhoto.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          image_url: editUrl || editingPhoto.image_url,
+          caption: editCaption || "Dhara Foundation Seva",
+          category: editCategory,
+          is_featured: editFeatured,
+        }),
+      });
+      if (res.ok) {
+        setEditModalOpen(false);
+        setEditingPhoto(null);
+        fetchPhotos();
+      } else {
+        alert("Failed to update photo.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error updating photo.");
+    } finally {
+      setEditing(false);
+    }
   };
 
   const handleDeleteConfirm = async () => {
@@ -169,12 +217,22 @@ export default function AdminGalleryPage() {
                     >
                       <Star size={14} fill={photo.is_featured ? "currentColor" : "none"} />
                     </button>
-                    <button
-                      onClick={() => { setSelectedPhoto(photo); setDeleteModalOpen(true); }}
-                      className="absolute top-2 right-2 p-1.5 rounded-lg bg-red-600 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-700 shadow"
-                    >
-                      <Trash2 size={14} />
-                    </button>
+                    <div className="absolute top-2 right-2 flex items-center gap-1.5 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10">
+                      <button
+                        onClick={() => handleOpenEditModal(photo)}
+                        title="Edit Photo Details"
+                        className="p-1.5 rounded-lg bg-[#8a5000] text-white hover:bg-[#6e4000] shadow transition-colors cursor-pointer"
+                      >
+                        <Edit2 size={14} />
+                      </button>
+                      <button
+                        onClick={() => { setSelectedPhoto(photo); setDeleteModalOpen(true); }}
+                        title="Delete Photo"
+                        className="p-1.5 rounded-lg bg-red-600 text-white hover:bg-red-700 shadow transition-colors cursor-pointer"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
                   </div>
                   <div className="p-3 flex-1 flex flex-col justify-between">
                     <p className="text-xs font-semibold text-gray-800 line-clamp-1">{photo.caption}</p>
@@ -292,6 +350,117 @@ export default function AdminGalleryPage() {
               <div className="flex justify-end gap-2 pt-2">
                 <button type="button" onClick={() => setUploadModalOpen(false)} className="px-4 py-2 rounded-lg text-xs font-semibold bg-gray-100 text-gray-700">Cancel</button>
                 <button type="submit" disabled={uploading || !newUrl} className="px-4 py-2 rounded-lg text-xs font-semibold bg-[#8a5000] text-white disabled:opacity-50">Upload</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Modal */}
+      {editModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-100 space-y-4 relative">
+            <button onClick={() => setEditModalOpen(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+              <X size={18} />
+            </button>
+            <h3 className="text-lg font-bold text-gray-900">Edit Photo Details</h3>
+            <form onSubmit={handleEditSubmit} className="space-y-4">
+              <ImageUploader label="Change Image (Optional)" value={editUrl} onChange={setEditUrl} />
+              <div>
+                <label className="block text-xs font-semibold uppercase text-gray-700 mb-1">Caption</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Annadhanam Seva at Cuddalore"
+                  value={editCaption}
+                  onChange={(e) => setEditCaption(e.target.value)}
+                  className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 focus:outline-none focus:border-[#8a5000]"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold uppercase text-gray-700 mb-1">Category</label>
+                {isCreatingGalCat ? (
+                  <div className="flex items-center gap-1.5">
+                    <input
+                      type="text"
+                      autoFocus
+                      placeholder="New category..."
+                      value={newGalCatInput}
+                      onChange={(e) => setNewGalCatInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          if (newGalCatInput.trim()) {
+                            const val = newGalCatInput.trim().toLowerCase().replace(/\s+/g, "_");
+                            if (!customGalCategories.some((c) => c.value === val)) {
+                              setCustomGalCategories((prev) => [...prev, { value: val, label: newGalCatInput.trim() }]);
+                            }
+                            setEditCategory(val);
+                            setIsCreatingGalCat(false);
+                            setNewGalCatInput("");
+                          }
+                        }
+                      }}
+                      className="w-full px-2.5 py-1.5 text-xs rounded-lg border-2 border-[#8a5000]"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (newGalCatInput.trim()) {
+                          const val = newGalCatInput.trim().toLowerCase().replace(/\s+/g, "_");
+                          if (!customGalCategories.some((c) => c.value === val)) {
+                            setCustomGalCategories((prev) => [...prev, { value: val, label: newGalCatInput.trim() }]);
+                          }
+                          setEditCategory(val);
+                          setIsCreatingGalCat(false);
+                          setNewGalCatInput("");
+                        }
+                      }}
+                      className="px-2.5 py-1.5 rounded-lg bg-[#8a5000] text-white text-xs font-semibold"
+                    >
+                      Add
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => { setIsCreatingGalCat(false); setNewGalCatInput(""); }}
+                      className="px-2 py-1.5 rounded-lg bg-gray-100 text-gray-700 text-xs font-semibold"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                ) : (
+                  <select
+                    value={editCategory}
+                    onChange={(e) => {
+                      if (e.target.value === "__CREATE_NEW__") {
+                        setIsCreatingGalCat(true);
+                      } else {
+                        setEditCategory(e.target.value);
+                      }
+                    }}
+                    className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 bg-white focus:outline-none focus:border-[#8a5000]"
+                  >
+                    {DEFAULT_GAL_CATS.map((c) => (
+                      <option key={c.value} value={c.value}>{c.label}</option>
+                    ))}
+                    {customGalCategories.map((c) => (
+                      <option key={c.value} value={c.value}>{c.label}</option>
+                    ))}
+                    <option value="__CREATE_NEW__" className="font-bold text-[#8a5000]">+ Create New Category...</option>
+                  </select>
+                )}
+              </div>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={editFeatured}
+                  onChange={(e) => setEditFeatured(e.target.checked)}
+                  className="w-4 h-4 text-[#8a5000] rounded"
+                />
+                <span className="text-xs font-medium text-gray-700">Feature on Homepage showcase</span>
+              </label>
+              <div className="flex justify-end gap-2 pt-2">
+                <button type="button" onClick={() => setEditModalOpen(false)} className="px-4 py-2 rounded-lg text-xs font-semibold bg-gray-100 text-gray-700">Cancel</button>
+                <button type="submit" disabled={editing || !editUrl} className="px-4 py-2 rounded-lg text-xs font-semibold bg-[#8a5000] text-white disabled:opacity-50">Save Changes</button>
               </div>
             </form>
           </div>
