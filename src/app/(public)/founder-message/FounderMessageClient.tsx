@@ -16,10 +16,10 @@ export function FounderMessageClient({ initialFounders }: FounderMessageClientPr
       {/* Hero Section */}
       <ParallaxBg
         bgUrl="/images/banner.png"
-        className="min-h-[55vh] flex items-center justify-center pt-28 sm:pt-32 text-ethereal-white"
+        className="w-full h-[620px] min-h-[520px] flex items-center justify-center pt-28 sm:pt-32 text-ethereal-white"
         overlayClassName="bg-deep-forest/50 mix-blend-multiply"
       >
-        <ScrollReveal className="text-center max-w-4xl px-margin-mobile md:px-margin-desktop mx-auto py-16">
+        <ScrollReveal className="text-center max-w-4xl px-margin-mobile md:px-margin-desktop mx-auto py-20">
           <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl text-ethereal-white mb-6 font-bold drop-shadow-lg">
             A Message from Our Founders
           </h1>

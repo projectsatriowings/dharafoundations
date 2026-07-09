@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { ScrollReveal, RevealItem } from "@/components/motion/ScrollReveal";
+import { ParallaxBg } from "@/components/motion/ParallaxBg";
 import BorderGlow from "@/components/ui/BorderGlow";
 
 const REGISTRATIONS = [
@@ -41,29 +42,27 @@ const REGISTRATIONS = [
 export default function AboutPage() {
   return (
     <div className="flex flex-col relative w-full overflow-hidden bg-background text-on-background">
-      {/* Header / Banner Section (Sacred Flow Rebrand) */}
-      <header className="max-w-[1440px] mx-auto w-full pt-28 sm:pt-32 px-4 sm:px-8">
-        <div className="relative rounded-[40px] overflow-hidden bg-gradient-to-br from-surface-container-low to-secondary-container/20 h-[340px] sm:h-[380px] flex flex-col justify-center items-center px-4 sm:px-6 text-center border border-outline-variant/30 shadow-lg">
-          {/* Background Texture Overlay */}
-          <div
-            className="absolute inset-0 z-0 opacity-25 mix-blend-overlay bg-cover bg-center pointer-events-none"
-            style={{ backgroundImage: "url('/images/banner.png')" }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/80 via-deep-forest/40 to-transparent mix-blend-multiply" />
-          
-          <div className="relative z-10 space-y-6 max-w-3xl">
-            <div className="inline-flex items-center gap-2 bg-surface/80 dark:bg-deep-forest/80 backdrop-blur-md border border-outline-variant/30 px-5 py-2 rounded-full font-label-lg text-xs font-bold text-on-surface">
-              <Link href="/" className="hover:text-primary dark:hover:text-saffron-glow transition-colors">Home</Link>
-              <span className="material-symbols-outlined text-sm">chevron_right</span>
-              <span className="text-primary dark:text-saffron-glow font-bold">About Us</span>
-            </div>
-            <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-ethereal-white leading-tight drop-shadow-md">
-              Preserving Heritage, <br />
-              <span className="text-saffron-glow italic font-light">Empowering Future.</span>
-            </h1>
+      {/* Hero Section */}
+      <ParallaxBg
+        bgUrl="/images/banner.png"
+        className="w-full h-[620px] min-h-[520px] flex items-center justify-center pt-28 sm:pt-32 text-ethereal-white"
+        overlayClassName="bg-deep-forest/50 mix-blend-multiply"
+      >
+        <ScrollReveal className="text-center px-margin-mobile md:px-margin-desktop max-w-4xl mx-auto py-20 space-y-6">
+          <div className="inline-flex items-center gap-2 bg-surface/20 backdrop-blur-md border border-white/20 px-5 py-2 rounded-full font-label text-xs font-bold text-ethereal-white shadow-sm">
+            <Link href="/" className="hover:text-saffron-glow transition-colors">Home</Link>
+            <span className="material-symbols-outlined text-sm text-saffron-glow">chevron_right</span>
+            <span className="text-saffron-glow font-extrabold">About Us</span>
           </div>
-        </div>
-      </header>
+          <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl text-ethereal-white mb-6 font-bold drop-shadow-lg leading-tight">
+            Preserving Heritage, <br className="hidden sm:block" />
+            <span className="text-saffron-glow italic font-normal">Empowering Future.</span>
+          </h1>
+          <p className="font-body text-surface-container-low/90 max-w-2xl mx-auto leading-relaxed text-base sm:text-lg">
+            For over two decades, Dhara Foundation has stood as a sacred bridge between our timeless Vedic heritage and grassroots humanitarian progress across India.
+          </p>
+        </ScrollReveal>
+      </ParallaxBg>
 
       {/* Mission & Rooted Philosophy Section */}
       <section className="max-w-[1440px] mx-auto px-4 sm:px-8 md:px-12 py-24 w-full">
