@@ -51,9 +51,9 @@ export default function HomePage() {
     { stat_value: "80G", stat_label: "TAX EXEMPTION" },
   ]);
   const [config, setConfig] = useState({
-    hero_image_url: "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4",
-    intro_video_1_url: process.env.NEXT_PUBLIC_INTRO_VIDEO_1 || "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4",
-    intro_video_2_url: process.env.NEXT_PUBLIC_INTRO_VIDEO_2 || "https://res.cloudinary.com/woo94xq2/video/upload/v1783059473/dhara_foundations/videos/osokgojzgb0sdg1vlywr.mp4",
+    hero_image_url: "https://res.cloudinary.com/woo94xq2/video/upload/v1783578753/dhara_foundations/videos/eqhpq0vprlx7zbcmbg06.mp4",
+    intro_video_1_url: process.env.NEXT_PUBLIC_INTRO_VIDEO_1 || "https://res.cloudinary.com/woo94xq2/video/upload/v1783070154/dhara_foundations/videos/tlzrx2auihewy6bzfenb.mp4",
+    intro_video_2_url: process.env.NEXT_PUBLIC_INTRO_VIDEO_2 || "https://res.cloudinary.com/woo94xq2/video/upload/v1783070137/dhara_foundations/videos/f6px8rree2pc8rday0ke.mp4",
   });
   const [gallery, setGallery] = useState<any[] | undefined>(undefined);
   const [events, setEvents] = useState<any[]>([
@@ -97,8 +97,8 @@ export default function HomePage() {
         if (d.gallery && d.gallery.length > 0) setGallery(d.gallery);
         if (d.config) {
           let updatedHero = d.config.hero_image_url;
-          if (!updatedHero || updatedHero === "https://res.cloudinary.com/woo94xq2/video/upload/v1783348864/dhara_foundations/videos/injjcsbcbzokjavsswoc.mp4") {
-            updatedHero = "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4";
+          if (!updatedHero || updatedHero === "https://res.cloudinary.com/woo94xq2/video/upload/v1783348864/dhara_foundations/videos/injjcsbcbzokjavsswoc.mp4" || updatedHero === "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4") {
+            updatedHero = "https://res.cloudinary.com/woo94xq2/video/upload/v1783578753/dhara_foundations/videos/eqhpq0vprlx7zbcmbg06.mp4";
           }
           setConfig((prev) => ({ ...prev, ...d.config, hero_image_url: updatedHero }));
         }
@@ -245,7 +245,7 @@ export default function HomePage() {
                       el.play().catch(() => {});
                     }
                   }}
-                  src={config.hero_image_url || "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4"}
+                  src={config.hero_image_url || "https://res.cloudinary.com/woo94xq2/video/upload/v1783578753/dhara_foundations/videos/eqhpq0vprlx7zbcmbg06.mp4"}
                   autoPlay
                   loop
                   muted

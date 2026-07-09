@@ -14,16 +14,16 @@ export async function GET() {
         !configRow?.hero_image_url ||
         configRow.hero_image_url === "/images/about.png" ||
         configRow.hero_image_url === "/images/hero-devi.png"
-          ? "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4"
+          ? "https://res.cloudinary.com/woo94xq2/video/upload/v1783578753/dhara_foundations/videos/eqhpq0vprlx7zbcmbg06.mp4"
           : configRow.hero_image_url,
       intro_video_1_url:
         configRow?.intro_video_1_url ||
         process.env.NEXT_PUBLIC_INTRO_VIDEO_1 ||
-        "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4",
+        "https://res.cloudinary.com/woo94xq2/video/upload/v1783070154/dhara_foundations/videos/tlzrx2auihewy6bzfenb.mp4",
       intro_video_2_url:
         configRow?.intro_video_2_url ||
         process.env.NEXT_PUBLIC_INTRO_VIDEO_2 ||
-        "https://res.cloudinary.com/woo94xq2/video/upload/v1783059473/dhara_foundations/videos/osokgojzgb0sdg1vlywr.mp4",
+        "https://res.cloudinary.com/woo94xq2/video/upload/v1783070137/dhara_foundations/videos/f6px8rree2pc8rday0ke.mp4",
     };
 
     return NextResponse.json({ stats, config, gallery: galleryRows });
@@ -37,9 +37,9 @@ export async function GET() {
         { id: 4, label: "ACTIVE VOLUNTEERS", value: "500+", sort_order: 4 },
       ],
       config: {
-        hero_image_url: "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4",
-        intro_video_1_url: process.env.NEXT_PUBLIC_INTRO_VIDEO_1 || "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4",
-        intro_video_2_url: process.env.NEXT_PUBLIC_INTRO_VIDEO_2 || "https://res.cloudinary.com/woo94xq2/video/upload/v1783059473/dhara_foundations/videos/osokgojzgb0sdg1vlywr.mp4",
+        hero_image_url: "https://res.cloudinary.com/woo94xq2/video/upload/v1783578753/dhara_foundations/videos/eqhpq0vprlx7zbcmbg06.mp4",
+        intro_video_1_url: process.env.NEXT_PUBLIC_INTRO_VIDEO_1 || "https://res.cloudinary.com/woo94xq2/video/upload/v1783070154/dhara_foundations/videos/tlzrx2auihewy6bzfenb.mp4",
+        intro_video_2_url: process.env.NEXT_PUBLIC_INTRO_VIDEO_2 || "https://res.cloudinary.com/woo94xq2/video/upload/v1783070137/dhara_foundations/videos/f6px8rree2pc8rday0ke.mp4",
       },
       gallery: [
         { title: "Spiritualism", description: "Ceremony with spiritual leaders in saffron robes", image: "/images/gallery-1.png", sort_order: 0 },

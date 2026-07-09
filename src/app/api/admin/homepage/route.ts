@@ -17,14 +17,14 @@ export async function GET() {
         !configRow?.hero_image_url ||
         configRow.hero_image_url === "/images/about.png" ||
         configRow.hero_image_url === "/images/hero-devi.png"
-          ? "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4"
+          ? "https://res.cloudinary.com/woo94xq2/video/upload/v1783578753/dhara_foundations/videos/eqhpq0vprlx7zbcmbg06.mp4"
           : configRow.hero_image_url,
       intro_video_1_url:
         configRow?.intro_video_1_url ||
-        "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4",
+        "https://res.cloudinary.com/woo94xq2/video/upload/v1783070154/dhara_foundations/videos/tlzrx2auihewy6bzfenb.mp4",
       intro_video_2_url:
         configRow?.intro_video_2_url ||
-        "https://res.cloudinary.com/woo94xq2/video/upload/v1783059473/dhara_foundations/videos/osokgojzgb0sdg1vlywr.mp4",
+        "https://res.cloudinary.com/woo94xq2/video/upload/v1783070137/dhara_foundations/videos/f6px8rree2pc8rday0ke.mp4",
     };
 
     return NextResponse.json({ stats, config, gallery: galleryRows });
@@ -124,7 +124,7 @@ export async function PUT(req: NextRequest) {
       stats: updatedStats,
       gallery: updatedGallery,
       config: {
-        hero_image_url: (!updatedConfigRow?.hero_image_url || updatedConfigRow.hero_image_url === "https://res.cloudinary.com/woo94xq2/video/upload/v1783348864/dhara_foundations/videos/injjcsbcbzokjavsswoc.mp4") ? "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4" : updatedConfigRow.hero_image_url,
+        hero_image_url: (!updatedConfigRow?.hero_image_url || updatedConfigRow.hero_image_url === "https://res.cloudinary.com/woo94xq2/video/upload/v1783348864/dhara_foundations/videos/injjcsbcbzokjavsswoc.mp4" || updatedConfigRow.hero_image_url === "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4") ? "https://res.cloudinary.com/woo94xq2/video/upload/v1783578753/dhara_foundations/videos/eqhpq0vprlx7zbcmbg06.mp4" : updatedConfigRow.hero_image_url,
         intro_video_1_url: updatedConfigRow?.intro_video_1_url || "",
         intro_video_2_url: updatedConfigRow?.intro_video_2_url || "",
       },
