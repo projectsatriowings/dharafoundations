@@ -101,7 +101,7 @@ export default function ContactPage() {
                     <input
                       id="firstName"
                       type="text"
-                      placeholder="Ram"
+                      placeholder="First Name"
                       {...register("firstName")}
                       className={`w-full bg-white dark:bg-surface-container border px-4 py-3.5 font-body text-on-surface rounded-xl focus:outline-none transition-all duration-200 ${
                         errors.firstName
@@ -122,7 +122,7 @@ export default function ContactPage() {
                     <input
                       id="lastName"
                       type="text"
-                      placeholder="Kumar"
+                      placeholder="Last Name"
                       {...register("lastName")}
                       className={`w-full bg-white dark:bg-surface-container border px-4 py-3.5 font-body text-on-surface rounded-xl focus:outline-none transition-all duration-200 ${
                         errors.lastName
@@ -145,7 +145,7 @@ export default function ContactPage() {
                     <input
                       id="email"
                       type="email"
-                      placeholder="email@example.com"
+                      placeholder="Email ID"
                       {...register("email")}
                       className={`w-full bg-white dark:bg-surface-container border px-4 py-3.5 font-body text-on-surface rounded-xl focus:outline-none transition-all duration-200 ${
                         errors.email
@@ -166,7 +166,7 @@ export default function ContactPage() {
                     <input
                       id="phone"
                       type="tel"
-                      placeholder="+91 98765 43210"
+                      placeholder="Phone Number"
                       {...register("phone")}
                       className="w-full bg-white dark:bg-surface-container border border-outline-variant/60 px-4 py-3.5 font-body text-on-surface rounded-xl focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 shadow-sm"
                     />
