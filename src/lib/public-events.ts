@@ -75,7 +75,7 @@ export async function getPublicEvents(): Promise<Event[]> {
         },
         coverImage: cleanImg,
         description: descList,
-        galleryImages: staticMatch ? staticMatch.galleryImages : [cleanImg],
+        galleryImages: [],
       };
     });
   } catch (err) {
@@ -128,12 +128,8 @@ export async function getPublicEventBySlug(slug: string): Promise<Event | null> 
       descList.push("Join us for this community event.");
     }
 
-    const staticMatch = EVENTS_DATA.find((e) => e.id === r.slug || e.numericId === r.id.toString());
     const cleanImg = getCleanEventImage(`${r.title || ""} ${r.slug || ""} ${r.cover_image_url || ""}`, r.cover_image_url);
-    const galleryUrls = galleryRows.map((g) => g.image_url);
-    if (galleryUrls.length === 0 && r.cover_image_url) {
-      galleryUrls.push(cleanImg);
-    }
+    const galleryUrls = galleryRows.map((g) => g.image_url).filter(Boolean);
 
     const videoLinks = videoRows.map((v) => ({
       title: v.title || "Event Video",
@@ -153,7 +149,7 @@ export async function getPublicEventBySlug(slug: string): Promise<Event | null> 
       },
       coverImage: cleanImg,
       description: descList,
-      galleryImages: staticMatch ? staticMatch.galleryImages : galleryUrls,
+      galleryImages: galleryUrls,
       videoLinks: videoLinks.length > 0 ? videoLinks : undefined,
       socialLinks: {
         twitter: r.twitter_share_url || undefined,

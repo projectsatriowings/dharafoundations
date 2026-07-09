@@ -42,11 +42,7 @@ export const EVENTS_DATA: Event[] = [
     location: "Cuddalore",
     coordinates: { lat: 11.7480, lng: 79.7714 },
     coverImage: "/images/events/event-digitisation-women-shg.jpg",
-    galleryImages: [
-      "/images/events/event-digitisation-women-shg.jpg",
-      "/images/gallery-3.png",
-      "/images/event-3.png",
-    ],
+    galleryImages: [],
     description: [
       "[CONTENT TO BE GATHERED FROM SOURCE SITE / CLIENT] The Dhara Foundations initiated comprehensive digitisation training and financial literacy workshops for Women Self Help Group (SHG) societies in Cuddalore district.",
       "Empowering rural women with modern digital tools enables seamless record keeping, transparent micro-finance management, and greater economic independence for thousands of families across the region.",
@@ -63,11 +59,7 @@ export const EVENTS_DATA: Event[] = [
     location: "Vellore",
     coordinates: { lat: 12.5855, lng: 78.8687 },
     coverImage: "/images/events/event-tribal-welfare-javadhu.jpg",
-    galleryImages: [
-      "/images/events/event-tribal-welfare-javadhu.jpg",
-      "/images/gallery-2.png",
-      "/images/event-1.png",
-    ],
+    galleryImages: [],
     description: [
       "[CONTENT TO BE GATHERED FROM SOURCE SITE / CLIENT] A comprehensive tribal welfare outreach conducted across remote hamlets in the Javadhu Hills near Vellore, focusing on basic healthcare, nutrition, and warm clothing distribution.",
       "Volunteers hiked into interior tribal villages to deliver essential supplies, study kits for children, and conduct general medical screening camps.",
@@ -84,11 +76,7 @@ export const EVENTS_DATA: Event[] = [
     location: "Cuddalore",
     coordinates: { lat: 11.7480, lng: 79.7714 },
     coverImage: "/images/events/event-diwali-dresses.jpg",
-    galleryImages: [
-      "/images/events/event-diwali-dresses.jpg",
-      "/images/event-1.png",
-      "/images/gallery-1.png",
-    ],
+    galleryImages: [],
     description: [
       "[CONTENT TO BE GATHERED FROM SOURCE SITE / CLIENT] Celebrating the Festival of Lights by distributing brand new traditional Diwali dresses, festive sweets, and firecrackers to children residing in government care homes across Cuddalore.",
       "Bringing joy, warmth, and a festive family spirit to orphan and destitute children during the auspicious occasion of Deepavali.",
@@ -105,11 +93,7 @@ export const EVENTS_DATA: Event[] = [
     location: "Cuddalore",
     coordinates: { lat: 11.7480, lng: 79.7714 },
     coverImage: "/images/events/event-footwear-girl-children.jpg",
-    galleryImages: [
-      "/images/events/event-footwear-girl-children.jpg",
-      "/images/event-3.png",
-      "/images/gallery-2.png",
-    ],
+    galleryImages: [],
     description: [
       "[CONTENT TO BE GATHERED FROM SOURCE SITE / CLIENT] Dhara Foundations distributed high-quality, durable footwear to all girl children residing at the Annai Sathiya District Government Home in Cuddalore on Tamil New Year's Day.",
       "Ensuring health, hygiene, and dignity for young girls through daily essential supplies and continued mentorship.",
@@ -126,11 +110,7 @@ export const EVENTS_DATA: Event[] = [
     location: "Cuddalore",
     coordinates: { lat: 11.7480, lng: 79.7714 },
     coverImage: "/images/events/event-sports-pongal.jpg",
-    galleryImages: [
-      "/images/events/event-sports-pongal.jpg",
-      "/images/event-2.png",
-      "/images/gallery-3.png",
-    ],
+    galleryImages: [],
     description: [
       "[CONTENT TO BE GATHERED FROM SOURCE SITE / CLIENT] During the grand Pongal harvest festival celebrations, Dhara Foundations organized a special ceremony to felicitate outstanding young sports achievers from government schools and orphanages in Cuddalore.",
       "Recognizing athletic excellence and providing sports kits, trophies, and scholarships to inspire the youth to pursue healthy physical development.",
@@ -147,11 +127,7 @@ export const EVENTS_DATA: Event[] = [
     location: "Cuddalore",
     coordinates: { lat: 11.7480, lng: 79.7714 },
     coverImage: "/images/events/event-meal-food-carriers.jpg",
-    galleryImages: [
-      "/images/events/event-meal-food-carriers.jpg",
-      "/images/event-1.png",
-      "/images/gallery-1.png",
-    ],
+    galleryImages: [],
     description: [
       "[CONTENT TO BE GATHERED FROM SOURCE SITE / CLIENT] An Anna Daanam service providing wholesome festive meals along with stainless steel food carriers and water bottles to children at government welfare homes in Cuddalore.",
       "Nourishing the body and soul through traditional hospitality and selfless service.",
@@ -168,11 +144,7 @@ export const EVENTS_DATA: Event[] = [
     location: "Chennai",
     coordinates: { lat: 13.0827, lng: 80.2707 },
     coverImage: "/images/events/event-covid-relief.jpg",
-    galleryImages: [
-      "/images/events/event-covid-relief.jpg",
-      "/images/event-1.png",
-      "/images/event-2.png",
-    ],
+    galleryImages: [],
     description: [
       "[CONTENT TO BE GATHERED FROM SOURCE SITE / CLIENT] Extensive COVID-19 pandemic emergency relief operations conducted across Chennai, distributing grocery kits, medical supplies, masks, and daily cooked meals to stranded daily-wage laborers and vulnerable families.",
       "Working on the frontlines during national lockdowns to ensure no family went hungry during the crisis.",
