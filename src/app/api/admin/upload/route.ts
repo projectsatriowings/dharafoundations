@@ -18,87 +18,74 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    // Validate file type
-    const validTypes = [
-      "image/jpeg",
-      "image/png",
-      "image/webp",
-      "image/gif",
-      "video/mp4",
-      "video/webm",
-      "video/quicktime",
-    ];
-    if (!validTypes.includes(file.type)) {
+    const isVideo =
+      file.type.startsWith("video/") ||
+      /\.(mp4|webm|mov|avi|mkv|m4v)$/i.test(file.name);
+    const isImage =
+      file.type.startsWith("image/") ||
+      /\.(jpg|jpeg|png|webp|gif|svg)$/i.test(file.name);
+
+    if (!isVideo && !isImage) {
       return NextResponse.json(
         { error: "Invalid file type. Allowed: JPG, PNG, WEBP, GIF, MP4, WEBM, MOV." },
         { status: 400 }
       );
     }
 
-    const isVideo = file.type.startsWith("video/");
     const maxSize = isVideo ? 100 * 1024 * 1024 : 10 * 1024 * 1024; // 100MB for video, 10MB for image
 
     // Validate size
     if (file.size > maxSize) {
-      return NextResponse.json({ error: `File size exceeds limit (${isVideo ? "100MB" : "10MB"}).` }, { status: 400 });
+      return NextResponse.json(
+        { error: `File size exceeds limit (${isVideo ? "100MB" : "10MB"}).` },
+        { status: 400 }
+      );
     }
 
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    // Check if Cloudinary credentials are set
-    const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-    const apiKey = process.env.CLOUDINARY_API_KEY;
-    const apiSecret = process.env.CLOUDINARY_API_SECRET;
+    // Use Cloudinary credentials from env or fallback to project configuration
+    const cloudName = process.env.CLOUDINARY_CLOUD_NAME || "woo94xq2";
+    const apiKey = process.env.CLOUDINARY_API_KEY || "524114697455986";
+    const apiSecret = process.env.CLOUDINARY_API_SECRET || "6F64XOmg8ab7ZfLffRLC9muyuAQ";
 
-    if (cloudName && apiKey && apiSecret) {
-      // Upload directly to Cloudinary REST API
-      const timestamp = Math.floor(Date.now() / 1000).toString();
-      const folder = isVideo ? "dhara_foundations/videos" : "dhara_foundations";
-      const resourceType = isVideo ? "video" : "image";
+    const timestamp = Math.floor(Date.now() / 1000).toString();
+    const folder = isVideo ? "dhara_foundations/videos" : "dhara_foundations";
+    const resourceType = isVideo ? "video" : "image";
 
-      // Simple SHA1 signature for Cloudinary upload
-      const crypto = await import("crypto");
-      const strToSign = `folder=${folder}&timestamp=${timestamp}${apiSecret}`;
-      const signature = crypto.createHash("sha1").update(strToSign).digest("hex");
+    // Simple SHA1 signature for Cloudinary upload (folder & timestamp sorted alphabetically)
+    const crypto = await import("crypto");
+    const strToSign = `folder=${folder}&timestamp=${timestamp}${apiSecret}`;
+    const signature = crypto.createHash("sha1").update(strToSign).digest("hex");
 
-      const uploadForm = new FormData();
-      const blob = new Blob([buffer], { type: file.type });
-      uploadForm.append("file", blob, file.name);
-      uploadForm.append("api_key", apiKey);
-      uploadForm.append("timestamp", timestamp);
-      uploadForm.append("folder", folder);
-      uploadForm.append("signature", signature);
+    const mimeType = file.type || (isVideo ? "video/mp4" : "image/jpeg");
+    const cleanFilename = file.name || (isVideo ? "video.mp4" : "image.jpg");
 
-      const res = await fetch(
-        `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`,
-        { method: "POST", body: uploadForm }
-      );
+    const uploadForm = new FormData();
+    const fileObj = new File([buffer], cleanFilename, { type: mimeType });
+    uploadForm.append("file", fileObj);
+    uploadForm.append("api_key", apiKey);
+    uploadForm.append("timestamp", timestamp);
+    uploadForm.append("folder", folder);
+    uploadForm.append("signature", signature);
 
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error?.message || "Cloudinary upload failed");
-      }
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`,
+      { method: "POST", body: uploadForm }
+    );
 
-      return NextResponse.json({ url: data.secure_url });
-    } else {
-      // Fallback: Save to public/uploads/ for local dev and self-hosting
-      const uploadDir = path.join(process.cwd(), "public", "uploads");
-      if (!fs.existsSync(uploadDir)) {
-        fs.mkdirSync(uploadDir, { recursive: true });
-      }
-
-      const ext = path.extname(file.name) || (isVideo ? ".mp4" : ".jpg");
-      const filename = `${isVideo ? "vid" : "img"}_${Date.now()}_${Math.random().toString(36).substring(2, 8)}${ext}`;
-      const filePath = path.join(uploadDir, filename);
-
-      fs.writeFileSync(filePath, buffer);
-
-      const publicUrl = `/uploads/${filename}`;
-      return NextResponse.json({ url: publicUrl });
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.error?.message || "Cloudinary upload failed");
     }
-  } catch (err) {
+
+    return NextResponse.json({ url: data.secure_url });
+  } catch (err: any) {
     console.error("POST /api/admin/upload error:", err);
-    return NextResponse.json({ error: "Image upload failed" }, { status: 500 });
+    return NextResponse.json(
+      { error: err?.message || "File upload to Cloudinary failed" },
+      { status: 500 }
+    );
   }
 }

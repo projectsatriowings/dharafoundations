@@ -23,7 +23,7 @@ export function NeoMinimalFooter() {
               <img
                 src="/logo-stacked-dark.png?v=4"
                 alt="Dhara Foundations"
-                className="h-16 sm:h-20 md:h-24 w-auto object-contain drop-shadow-sm"
+                className="h-16 sm:h-20 md:h-24 w-auto object-contain"
               />
             </Link>
             <p className="text-sm text-secondary-fixed-dim leading-relaxed max-w-md font-body opacity-90">
@@ -72,7 +72,7 @@ export function NeoMinimalFooter() {
                 { name: "About Us", href: "/about" },
                 { name: "Sanatana Dharma", href: "/about" },
                 { name: "Events & Activities", href: "/events" },
-                { name: "Photo Gallery", href: "/gallery" }
+                { name: "Seva (Gallery)", href: "/gallery" }
               ] 
             },
             { 

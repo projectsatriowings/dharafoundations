@@ -55,8 +55,8 @@ const NAV_LINKS: NavLink[] = [
   },
   { 
     href: "/gallery", 
-    label: "Gallery",
-    popup: { badge: "Visual Chronicles", desc: "Witness ancient architectural revival & volunteer service." }
+    label: "Seva",
+    popup: { badge: "Divine & Social Seva", desc: "Witness ancient architectural revival & volunteer charity service." }
   },
   { 
     href: "/partnership", 
@@ -134,29 +134,18 @@ export function Header() {
       <div
         className={`pointer-events-auto mx-auto max-w-[1300px] rounded-full border flex justify-between items-center px-5 sm:px-6 py-2 transition-all duration-300 ${
           isScrolled
-            ? "bg-white/95 dark:bg-deep-forest/95 backdrop-blur-2xl shadow-xl border-outline-variant/30 text-on-surface"
-            : "bg-white/90 dark:bg-deep-forest/90 backdrop-blur-md shadow-md border-outline-variant/30 text-on-surface"
+            ? "bg-deep-forest/95 backdrop-blur-2xl shadow-2xl border-ethereal-white/15 text-ethereal-white"
+            : "bg-deep-forest/90 backdrop-blur-md shadow-xl border-ethereal-white/15 text-ethereal-white"
         }`}
       >
         <Link
           href="/"
-          className="flex items-center hover:scale-105 transition-transform duration-300 py-1 shrink-0 ml-4 sm:ml-6 mr-4"
+          className="flex items-center hover:opacity-90 transition-opacity shrink-0 ml-4 sm:ml-6 mr-4"
         >
-          {/* Light Mode Logo */}
           <img
-            src="/logo-horizontal.png?v=4"
+            src="/logo-stacked-dark.png?v=4"
             alt="Dhara Foundations"
-            className={`h-14 sm:h-16 md:h-18 w-auto object-contain transition-transform ${
-              isTransparentHero ? "hidden" : "block dark:hidden drop-shadow-sm"
-            }`}
-          />
-          {/* Dark Mode Logo */}
-          <img
-            src="/logo-horizontal-dark.png?v=4"
-            alt="Dhara Foundations"
-            className={`h-14 sm:h-16 md:h-18 w-auto object-contain transition-transform ${
-              isTransparentHero ? "block drop-shadow-md" : "hidden dark:block drop-shadow-sm"
-            }`}
+            className="h-14 sm:h-15 md:h-16 w-auto object-contain block"
           />
         </Link>
 
@@ -180,12 +169,8 @@ export function Header() {
                     href={link.href}
                     className={`relative inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full transition-all text-[15px] lg:text-[17px] ${
                       isTopActive
-                        ? isTransparentHero
-                          ? "bg-white/20 text-saffron-glow font-extrabold tracking-wide"
-                          : "bg-primary/10 dark:bg-saffron-glow/15 text-primary dark:text-saffron-glow font-extrabold tracking-wide"
-                        : isTransparentHero
-                        ? "text-white/90 hover:text-saffron-glow hover:bg-white/10 font-extrabold tracking-wide"
-                        : "text-on-surface dark:text-ethereal-white hover:text-primary dark:hover:text-saffron-glow hover:bg-surface-container/50 font-extrabold tracking-wide"
+                        ? "bg-saffron-glow/20 text-saffron-glow font-extrabold tracking-wide"
+                        : "text-ethereal-white/90 hover:text-saffron-glow hover:bg-white/10 font-extrabold tracking-wide"
                     }`}
                   >
                     <span>{link.label}</span>
@@ -201,7 +186,7 @@ export function Header() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 8, scale: 0.96 }}
                         transition={{ duration: 0.2, ease: "easeOut" }}
-                        className="absolute top-full left-0 mt-2 w-64 bg-surface-container-lowest/95 dark:bg-deep-forest/95 backdrop-blur-2xl rounded-2xl shadow-xl border border-outline-variant/25 p-2 z-50"
+                        className="absolute top-full left-0 mt-2 w-64 bg-deep-forest/98 backdrop-blur-2xl rounded-2xl shadow-2xl border border-ethereal-white/20 p-2 z-50"
                       >
                         {link.dropdown.map((subItem) => {
                           const isSubActive = pathname === subItem.href;
@@ -214,15 +199,15 @@ export function Header() {
                               rel={isExternal ? "noopener noreferrer" : undefined}
                               className={`block p-3 rounded-xl transition-all duration-200 group/sub ${
                                 isSubActive
-                                  ? "bg-primary text-ethereal-white dark:bg-saffron-glow dark:text-deep-forest font-extrabold shadow-sm"
-                                  : "hover:bg-surface-container/60 text-on-surface dark:text-ethereal-white"
+                                  ? "bg-saffron-glow text-deep-forest font-extrabold shadow-sm"
+                                  : "hover:bg-white/10 text-ethereal-white"
                               }`}
                             >
-                              <div className={`text-sm font-extrabold transition-colors ${!isSubActive && "group-hover/sub:text-primary dark:group-hover/sub:text-saffron-glow"}`}>
+                              <div className={`text-sm font-extrabold transition-colors ${!isSubActive && "group-hover/sub:text-saffron-glow"}`}>
                                 {subItem.label}
                               </div>
                               {subItem.desc && (
-                                <div className={`text-[11px] font-normal mt-0.5 leading-tight ${isSubActive ? "text-ethereal-white/90 dark:text-deep-forest/90" : "text-on-surface-variant/80 dark:text-surface-variant/80"}`}>
+                                <div className={`text-[11px] font-normal mt-0.5 leading-tight ${isSubActive ? "text-deep-forest/90" : "text-ethereal-white/80"}`}>
                                   {subItem.desc}
                                 </div>
                               )}
@@ -248,12 +233,8 @@ export function Header() {
                   href={link.href}
                   className={`relative inline-block px-3.5 py-1.5 rounded-full transition-all text-[15px] lg:text-[17px] hover:-translate-y-0.5 ${
                     isTopActive
-                      ? isTransparentHero
-                        ? "bg-white/20 text-saffron-glow font-extrabold tracking-wide"
-                        : "bg-primary/10 dark:bg-saffron-glow/15 text-primary dark:text-saffron-glow font-extrabold tracking-wide"
-                      : isTransparentHero
-                      ? "text-white/90 hover:text-saffron-glow hover:bg-white/10 font-extrabold tracking-wide"
-                      : "text-on-surface dark:text-ethereal-white hover:text-primary dark:hover:text-saffron-glow hover:bg-surface-container/50 font-extrabold tracking-wide"
+                      ? "bg-saffron-glow/20 text-saffron-glow font-extrabold tracking-wide"
+                      : "text-ethereal-white/90 hover:text-saffron-glow hover:bg-white/10 font-extrabold tracking-wide"
                   }`}
                 >
                   {link.label}
@@ -266,20 +247,20 @@ export function Header() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 8, scale: 0.94 }}
                       transition={{ type: "spring", stiffness: 380, damping: 25 }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-60 bg-surface-container-lowest/95 dark:bg-deep-forest/95 backdrop-blur-2xl rounded-2xl shadow-xl border border-outline-variant/30 p-3.5 z-50 pointer-events-none"
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-60 bg-deep-forest/98 backdrop-blur-2xl rounded-2xl shadow-2xl border border-ethereal-white/20 p-3.5 z-50 pointer-events-none"
                     >
                       <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-primary/10 text-primary dark:bg-saffron-glow/15 dark:text-saffron-glow">
+                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-saffron-glow/20 text-saffron-glow">
                           {link.popup.badge}
                         </span>
-                        <span className="material-symbols-outlined text-sm text-primary dark:text-saffron-glow">
+                        <span className="material-symbols-outlined text-sm text-saffron-glow">
                           arrow_forward
                         </span>
                       </div>
-                      <div className="text-xs font-bold text-on-surface dark:text-ethereal-white mb-1">
+                      <div className="text-xs font-bold text-ethereal-white mb-1">
                         {link.label}
                       </div>
-                      <div className="text-[11px] leading-relaxed text-on-surface-variant/90 dark:text-surface-variant/90 font-normal">
+                      <div className="text-[11px] leading-relaxed text-ethereal-white/80 font-normal">
                         {link.popup.desc}
                       </div>
                     </motion.div>
@@ -305,10 +286,10 @@ export function Header() {
               damping: 32,
             }}
           >
-            <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-8 h-1 bg-primary dark:bg-saffron-glow rounded-t-full">
-              <div className="absolute w-12 h-6 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-md -top-2 -left-2" />
-              <div className="absolute w-8 h-6 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-md -top-1" />
-              <div className="absolute w-4 h-4 bg-primary/30 dark:bg-saffron-glow/30 rounded-full blur-sm top-0 left-2" />
+            <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-8 h-1 bg-saffron-glow rounded-t-full">
+              <div className="absolute w-12 h-6 bg-saffron-glow/30 rounded-full blur-md -top-2 -left-2" />
+              <div className="absolute w-8 h-6 bg-saffron-glow/30 rounded-full blur-md -top-1" />
+              <div className="absolute w-4 h-4 bg-saffron-glow/30 rounded-full blur-sm top-0 left-2" />
             </div>
           </motion.div>
         </nav>
@@ -317,17 +298,17 @@ export function Header() {
         <div className="hidden sm:flex items-center gap-4 shrink-0">
           <div className="relative group/btn inline-flex items-center justify-center p-1.5 sm:p-2">
             {/* Top-Left Corner Bracket (Appears on Hover) */}
-            <span className="absolute top-0 left-0 w-3.5 h-3.5 sm:w-4 sm:h-4 border-t-2 border-l-2 border-amber-500 dark:border-saffron-glow rounded-tl-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
+            <span className="absolute top-0 left-0 w-3.5 h-3.5 sm:w-4 sm:h-4 border-t-2 border-l-2 border-saffron-glow rounded-tl-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
             {/* Top-Right Corner Bracket (Appears on Hover) */}
-            <span className="absolute top-0 right-0 w-3.5 h-3.5 sm:w-4 sm:h-4 border-t-2 border-r-2 border-amber-500 dark:border-saffron-glow rounded-tr-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
+            <span className="absolute top-0 right-0 w-3.5 h-3.5 sm:w-4 sm:h-4 border-t-2 border-r-2 border-saffron-glow rounded-tr-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
             {/* Bottom-Left Corner Bracket (Appears on Hover) */}
-            <span className="absolute bottom-0 left-0 w-3.5 h-3.5 sm:w-4 sm:h-4 border-b-2 border-l-2 border-amber-500 dark:border-saffron-glow rounded-bl-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
+            <span className="absolute bottom-0 left-0 w-3.5 h-3.5 sm:w-4 sm:h-4 border-b-2 border-l-2 border-saffron-glow rounded-bl-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
             {/* Bottom-Right Corner Bracket (Appears on Hover) */}
-            <span className="absolute bottom-0 right-0 w-3.5 h-3.5 sm:w-4 sm:h-4 border-b-2 border-r-2 border-amber-500 dark:border-saffron-glow rounded-br-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
+            <span className="absolute bottom-0 right-0 w-3.5 h-3.5 sm:w-4 sm:h-4 border-b-2 border-r-2 border-saffron-glow rounded-br-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
 
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center px-6 py-2.5 lg:px-7 lg:py-3 bg-gradient-to-r from-primary to-amber-600 dark:from-saffron-glow dark:to-amber-500 text-ethereal-white dark:text-deep-forest rounded-full shadow-md hover:shadow-lg transition-all duration-300 font-extrabold tracking-wide text-sm lg:text-base hover:scale-[1.02] active:scale-95"
+              className="inline-flex items-center justify-center px-6 py-2.5 lg:px-7 lg:py-3 bg-saffron-glow text-deep-forest rounded-full shadow-md hover:bg-white hover:text-deep-forest transition-all duration-300 font-extrabold tracking-wide text-sm lg:text-base hover:scale-[1.02] active:scale-95"
             >
               Donate Now
             </Link>
@@ -337,11 +318,7 @@ export function Header() {
         {/* Mobile menu button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className={`lg:hidden p-2 rounded-full transition-colors ${
-            isTransparentHero
-              ? "text-white hover:bg-white/10"
-              : "text-on-surface dark:text-ethereal-white hover:bg-surface-container"
-          }`}
+          className="lg:hidden p-2 rounded-full transition-colors text-ethereal-white hover:bg-white/10"
           aria-label="Toggle Navigation Menu"
         >
           <span className="material-symbols-outlined text-2xl">
@@ -358,7 +335,7 @@ export function Header() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="pointer-events-auto lg:hidden mt-3 mx-auto max-w-[1380px] bg-ethereal-white/95 dark:bg-deep-forest/95 backdrop-blur-2xl rounded-3xl border border-outline-variant/30 overflow-hidden shadow-2xl p-6"
+            className="pointer-events-auto lg:hidden mt-3 mx-auto max-w-[1380px] bg-deep-forest/95 backdrop-blur-2xl rounded-3xl border border-ethereal-white/20 overflow-hidden shadow-2xl p-6 text-ethereal-white"
           >
             <div className="flex flex-col space-y-3 max-h-[75vh] overflow-y-auto">
               {NAV_LINKS.map((link, i) => {
@@ -378,15 +355,15 @@ export function Header() {
                       href={link.href}
                       className={`flex items-center justify-between text-lg px-4 py-2.5 rounded-full transition-all ${
                         isTopActive
-                          ? "bg-primary text-ethereal-white dark:bg-saffron-glow dark:text-deep-forest font-extrabold shadow-sm"
-                          : "text-on-surface dark:text-ethereal-white font-bold hover:bg-surface-container/50"
+                          ? "bg-saffron-glow text-deep-forest font-extrabold shadow-sm"
+                          : "text-ethereal-white font-bold hover:bg-white/10"
                       }`}
                     >
                       <span>{link.label}</span>
                     </Link>
 
                     {link.dropdown && (
-                      <div className="pl-4 ml-3 border-l-2 border-outline-variant/30 flex flex-col gap-2 pt-1">
+                      <div className="pl-4 ml-3 border-l-2 border-ethereal-white/20 flex flex-col gap-2 pt-1">
                         {link.dropdown.map((sub) => {
                           const isSubActive = pathname === sub.href;
                           const isExternal = sub.href.startsWith("http");
@@ -398,8 +375,8 @@ export function Header() {
                               rel={isExternal ? "noopener noreferrer" : undefined}
                               className={`text-sm px-4 py-2 rounded-full transition-colors ${
                                 isSubActive
-                                  ? "bg-primary/20 text-primary dark:text-saffron-glow font-bold"
-                                  : "text-on-surface-variant dark:text-surface-variant hover:text-primary font-bold"
+                                  ? "bg-saffron-glow/20 text-saffron-glow font-bold"
+                                  : "text-ethereal-white/80 hover:text-saffron-glow font-bold"
                               }`}
                             >
                               {sub.label}
@@ -412,19 +389,15 @@ export function Header() {
                 );
               })}
 
-              <div className="pt-4 border-t border-outline-variant/20 flex flex-col gap-3 sm:hidden">
+              <div className="pt-4 border-t border-ethereal-white/20 flex flex-col gap-3 sm:hidden">
                 <div className="relative group/btn inline-flex items-center justify-center p-1.5 w-full">
-                  {/* Top-Left Corner Bracket (Appears on Hover) */}
-                  <span className="absolute top-0 left-0 w-3.5 h-3.5 border-t-2 border-l-2 border-amber-500 dark:border-saffron-glow rounded-tl-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
-                  {/* Top-Right Corner Bracket (Appears on Hover) */}
-                  <span className="absolute top-0 right-0 w-3.5 h-3.5 border-t-2 border-r-2 border-amber-500 dark:border-saffron-glow rounded-tr-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
-                  {/* Bottom-Left Corner Bracket (Appears on Hover) */}
-                  <span className="absolute bottom-0 left-0 w-3.5 h-3.5 border-b-2 border-l-2 border-amber-500 dark:border-saffron-glow rounded-bl-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
-                  {/* Bottom-Right Corner Bracket (Appears on Hover) */}
-                  <span className="absolute bottom-0 right-0 w-3.5 h-3.5 border-b-2 border-r-2 border-amber-500 dark:border-saffron-glow rounded-br-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
+                  <span className="absolute top-0 left-0 w-3.5 h-3.5 border-t-2 border-l-2 border-saffron-glow rounded-tl-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
+                  <span className="absolute top-0 right-0 w-3.5 h-3.5 border-t-2 border-r-2 border-saffron-glow rounded-tr-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
+                  <span className="absolute bottom-0 left-0 w-3.5 h-3.5 border-b-2 border-l-2 border-saffron-glow rounded-bl-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
+                  <span className="absolute bottom-0 right-0 w-3.5 h-3.5 border-b-2 border-r-2 border-saffron-glow rounded-br-[4px] opacity-0 scale-75 transition-all duration-300 ease-out group-hover/btn:opacity-100 group-hover/btn:scale-100" />
                   <Link
                     href="/contact"
-                    className="w-full text-center px-6 py-3 bg-gradient-to-r from-primary to-amber-600 dark:from-saffron-glow dark:to-amber-500 text-ethereal-white dark:text-deep-forest rounded-full font-extrabold tracking-wide text-base shadow-md"
+                    className="w-full text-center px-6 py-3 bg-saffron-glow text-deep-forest hover:bg-white rounded-full font-extrabold tracking-wide text-base shadow-md transition-all"
                   >
                     Donate Now
                   </Link>

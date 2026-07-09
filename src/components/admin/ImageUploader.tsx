@@ -73,26 +73,28 @@ export function ImageUploader({
       )}
 
       {value ? (
-        <div className="relative rounded-xl overflow-hidden border border-gray-200 bg-[#fbf9f4] max-w-md group">
+        <div className="relative rounded-2xl overflow-hidden border-2 border-gray-200/80 bg-gray-900/5 group w-full flex items-center justify-center min-h-[220px] max-h-[440px] p-3 shadow-inner">
           <img
             src={value}
             alt="Uploaded preview"
-            className="w-full h-48 object-cover"
+            className="max-h-[400px] w-auto max-w-full object-contain rounded-xl shadow-sm transition-transform duration-300 group-hover:scale-[1.01]"
           />
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-3 backdrop-blur-[2px]">
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="px-3 py-1.5 rounded-lg bg-white text-gray-800 text-xs font-medium shadow hover:bg-gray-100 transition-colors"
+              className="px-4 py-2.5 rounded-xl bg-white text-gray-900 text-xs font-bold shadow-xl hover:bg-gray-100 transition-all scale-95 group-hover:scale-100 flex items-center gap-2"
             >
-              Change
+              <Upload size={15} className="text-[#8a5000]" />
+              <span>Change Image</span>
             </button>
             <button
               type="button"
               onClick={() => onChange("")}
-              className="px-3 py-1.5 rounded-lg bg-red-600 text-white text-xs font-medium shadow hover:bg-red-700 transition-colors"
+              className="px-4 py-2.5 rounded-xl bg-red-600 text-white text-xs font-bold shadow-xl hover:bg-red-700 transition-all scale-95 group-hover:scale-100 flex items-center gap-2"
             >
-              Remove
+              <X size={15} />
+              <span>Remove</span>
             </button>
           </div>
         </div>

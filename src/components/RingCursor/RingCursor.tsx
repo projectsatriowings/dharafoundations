@@ -26,8 +26,9 @@ export default function RingCursor() {
     // Skip on touch/mobile — no cursor needed
     if (window.matchMedia('(pointer: coarse)').matches) return;
 
-    // Hide native cursor
-    document.documentElement.style.cursor = 'none';
+    // Keep native cursor as default
+    document.documentElement.style.cursor = 'auto';
+    return;
 
     // ── Mouse move ──────────────────────────────────────────
     const onMouseMove = (e: MouseEvent) => {

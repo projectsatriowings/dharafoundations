@@ -16,7 +16,7 @@ export default function AdminGalleryPage() {
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [newUrl, setNewUrl] = useState("");
   const [newCaption, setNewCaption] = useState("");
-  const [newCategory, setNewCategory] = useState("events");
+  const [newCategory, setNewCategory] = useState("charity");
   const [newFeatured, setNewFeatured] = useState(false);
   const [uploading, setUploading] = useState(false);
 
@@ -25,16 +25,13 @@ export default function AdminGalleryPage() {
   const [editingPhoto, setEditingPhoto] = useState<any | null>(null);
   const [editUrl, setEditUrl] = useState("");
   const [editCaption, setEditCaption] = useState("");
-  const [editCategory, setEditCategory] = useState("events");
+  const [editCategory, setEditCategory] = useState("charity");
   const [editFeatured, setEditFeatured] = useState(false);
   const [editing, setEditing] = useState(false);
 
   const DEFAULT_GAL_CATS = [
-    { value: "temple_heritage", label: "Temple Heritage" },
-    { value: "community_welfare", label: "Community Welfare" },
-    { value: "events", label: "Events" },
-    { value: "women_empowerment", label: "Women Empowerment" },
-    { value: "children_programs", label: "Children & Education" },
+    { value: "charity", label: "Charity" },
+    { value: "sanatana_dharma", label: "Sanatana Dharma" },
   ];
   const [customGalCategories, setCustomGalCategories] = useState<{ value: string; label: string }[]>([]);
   const [isCreatingGalCat, setIsCreatingGalCat] = useState(false);
@@ -151,8 +148,8 @@ export default function AdminGalleryPage() {
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Photo Gallery Management</h1>
-              <p className="text-sm text-gray-500 mt-0.5">Organize photos across categories for the public Gallery page.</p>
+              <h1 className="text-2xl font-bold text-gray-900">Seva (Visual Chronicles) Management</h1>
+              <p className="text-sm text-gray-500 mt-0.5">Organize photos across Charity and Sanatana Dharma categories for the public Seva page.</p>
             </div>
             <button
               onClick={() => setUploadModalOpen(true)}
@@ -167,11 +164,8 @@ export default function AdminGalleryPage() {
           <div className="flex flex-wrap items-center gap-2 mb-6">
             {[
               { id: "all", label: "All Photos" },
-              { id: "temple_heritage", label: "Temple Heritage" },
-              { id: "community_welfare", label: "Community Welfare" },
-              { id: "events", label: "Events" },
-              { id: "women_empowerment", label: "Women Empowerment" },
-              { id: "children_programs", label: "Children & Education" },
+              { id: "charity", label: "Charity" },
+              { id: "sanatana_dharma", label: "Sanatana Dharma" },
             ].map((cat) => (
               <button
                 key={cat.id}
@@ -247,37 +241,75 @@ export default function AdminGalleryPage() {
 
       {/* Upload Modal */}
       {uploadModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-100 space-y-4 relative">
-            <button onClick={() => setUploadModalOpen(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
-              <X size={18} />
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl border border-gray-100 space-y-6 relative max-h-[90vh] overflow-y-auto">
+            <button
+              onClick={() => setUploadModalOpen(false)}
+              className="absolute top-6 right-6 p-2 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-all"
+            >
+              <X size={20} />
             </button>
-            <h3 className="text-lg font-bold text-gray-900">Upload Gallery Photo</h3>
-            <form onSubmit={handleUploadSubmit} className="space-y-4">
-              <ImageUploader label="Select Image *" value={newUrl} onChange={setNewUrl} />
-              <div>
-                <label className="block text-xs font-semibold uppercase text-gray-700 mb-1">Caption</label>
-                <input
-                  type="text"
-                  placeholder="e.g. Annadhanam Seva at Cuddalore"
-                  value={newCaption}
-                  onChange={(e) => setNewCaption(e.target.value)}
-                  className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 focus:outline-none focus:border-[#8a5000]"
-                />
+
+            <div className="flex items-center gap-3 pb-2 border-b border-gray-100">
+              <div className="w-10 h-10 rounded-xl bg-[#8a5000]/10 text-[#8a5000] flex items-center justify-center font-bold">
+                <PlusCircle size={20} />
               </div>
               <div>
-                <label className="block text-xs font-semibold uppercase text-gray-700 mb-1">Category</label>
-                {isCreatingGalCat ? (
-                  <div className="flex items-center gap-1.5">
-                    <input
-                      type="text"
-                      autoFocus
-                      placeholder="New category..."
-                      value={newGalCatInput}
-                      onChange={(e) => setNewGalCatInput(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault();
+                <h3 className="text-xl font-bold text-gray-900 leading-tight">Upload Gallery Photo</h3>
+                <p className="text-xs text-gray-500">Add a new photo to your Seva chronicles</p>
+              </div>
+            </div>
+
+            <form onSubmit={handleUploadSubmit} className="space-y-6">
+              <div className="bg-gray-50/70 p-4 rounded-2xl border border-gray-200/60">
+                <ImageUploader label="Full Coverage Photo Preview *" value={newUrl} onChange={setNewUrl} />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">
+                    Caption / Title
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Annadhanam Seva at Cuddalore"
+                    value={newCaption}
+                    onChange={(e) => setNewCaption(e.target.value)}
+                    className="w-full px-4 py-3 text-sm rounded-xl border border-gray-200 focus:outline-none focus:border-[#8a5000] focus:ring-4 focus:ring-[#8a5000]/10 transition-all font-medium text-gray-800"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">
+                    Category Section
+                  </label>
+                  {isCreatingGalCat ? (
+                    <div className="flex items-center gap-1.5 pt-1">
+                      <input
+                        type="text"
+                        autoFocus
+                        placeholder="New category..."
+                        value={newGalCatInput}
+                        onChange={(e) => setNewGalCatInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            if (newGalCatInput.trim()) {
+                              const val = newGalCatInput.trim().toLowerCase().replace(/\s+/g, "_");
+                              if (!customGalCategories.some((c) => c.value === val)) {
+                                setCustomGalCategories((prev) => [...prev, { value: val, label: newGalCatInput.trim() }]);
+                              }
+                              setNewCategory(val);
+                              setIsCreatingGalCat(false);
+                              setNewGalCatInput("");
+                            }
+                          }
+                        }}
+                        className="w-full px-3 py-2 text-xs rounded-xl border-2 border-[#8a5000] font-medium"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
                           if (newGalCatInput.trim()) {
                             const val = newGalCatInput.trim().toLowerCase().replace(/\s+/g, "_");
                             if (!customGalCategories.some((c) => c.value === val)) {
@@ -287,69 +319,73 @@ export default function AdminGalleryPage() {
                             setIsCreatingGalCat(false);
                             setNewGalCatInput("");
                           }
+                        }}
+                        className="px-3 py-2 rounded-xl bg-[#8a5000] text-white text-xs font-bold shadow-sm"
+                      >
+                        Add
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => { setIsCreatingGalCat(false); setNewGalCatInput(""); }}
+                        className="px-3 py-2 rounded-xl bg-gray-100 text-gray-700 text-xs font-bold"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  ) : (
+                    <select
+                      value={newCategory}
+                      onChange={(e) => {
+                        if (e.target.value === "__CREATE_NEW__") {
+                          setIsCreatingGalCat(true);
+                        } else {
+                          setNewCategory(e.target.value);
                         }
                       }}
-                      className="w-full px-2.5 py-1.5 text-xs rounded-lg border-2 border-[#8a5000]"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (newGalCatInput.trim()) {
-                          const val = newGalCatInput.trim().toLowerCase().replace(/\s+/g, "_");
-                          if (!customGalCategories.some((c) => c.value === val)) {
-                            setCustomGalCategories((prev) => [...prev, { value: val, label: newGalCatInput.trim() }]);
-                          }
-                          setNewCategory(val);
-                          setIsCreatingGalCat(false);
-                          setNewGalCatInput("");
-                        }
-                      }}
-                      className="px-2.5 py-1.5 rounded-lg bg-[#8a5000] text-white text-xs font-semibold"
+                      className="w-full px-4 py-3 text-sm rounded-xl border border-gray-200 bg-white focus:outline-none focus:border-[#8a5000] focus:ring-4 focus:ring-[#8a5000]/10 transition-all font-medium text-gray-800"
                     >
-                      Add
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => { setIsCreatingGalCat(false); setNewGalCatInput(""); }}
-                      className="px-2 py-1.5 rounded-lg bg-gray-100 text-gray-700 text-xs font-semibold"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                ) : (
-                  <select
-                    value={newCategory}
-                    onChange={(e) => {
-                      if (e.target.value === "__CREATE_NEW__") {
-                        setIsCreatingGalCat(true);
-                      } else {
-                        setNewCategory(e.target.value);
-                      }
-                    }}
-                    className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 bg-white focus:outline-none focus:border-[#8a5000]"
-                  >
-                    {DEFAULT_GAL_CATS.map((c) => (
-                      <option key={c.value} value={c.value}>{c.label}</option>
-                    ))}
-                    {customGalCategories.map((c) => (
-                      <option key={c.value} value={c.value}>{c.label}</option>
-                    ))}
-                    <option value="__CREATE_NEW__" className="font-bold text-[#8a5000]">+ Create New Category...</option>
-                  </select>
-                )}
+                      {DEFAULT_GAL_CATS.map((c) => (
+                        <option key={c.value} value={c.value}>{c.label}</option>
+                      ))}
+                      {customGalCategories.map((c) => (
+                        <option key={c.value} value={c.value}>{c.label}</option>
+                      ))}
+                      <option value="__CREATE_NEW__" className="font-bold text-[#8a5000]">+ Create New Category...</option>
+                    </select>
+                  )}
+                </div>
               </div>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={newFeatured}
-                  onChange={(e) => setNewFeatured(e.target.checked)}
-                  className="w-4 h-4 text-[#8a5000] rounded"
-                />
-                <span className="text-xs font-medium text-gray-700">Feature on Homepage showcase</span>
-              </label>
-              <div className="flex justify-end gap-2 pt-2">
-                <button type="button" onClick={() => setUploadModalOpen(false)} className="px-4 py-2 rounded-lg text-xs font-semibold bg-gray-100 text-gray-700">Cancel</button>
-                <button type="submit" disabled={uploading || !newUrl} className="px-4 py-2 rounded-lg text-xs font-semibold bg-[#8a5000] text-white disabled:opacity-50">Upload</button>
+
+              <div className="pt-2">
+                <label className="inline-flex items-center gap-3 cursor-pointer p-3.5 rounded-xl bg-amber-50/50 border border-amber-200/50 w-full transition-colors hover:bg-amber-50">
+                  <input
+                    type="checkbox"
+                    checked={newFeatured}
+                    onChange={(e) => setNewFeatured(e.target.checked)}
+                    className="w-4 h-4 text-[#8a5000] rounded focus:ring-[#8a5000]"
+                  />
+                  <span className="text-sm font-semibold text-gray-800">
+                    Feature on Homepage showcase (Highlighted Item)
+                  </span>
+                </label>
+              </div>
+
+              <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                <button
+                  type="button"
+                  onClick={() => setUploadModalOpen(false)}
+                  className="px-6 py-3 rounded-xl text-sm font-bold bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={uploading || !newUrl}
+                  className="px-6 py-3 rounded-xl text-sm font-bold bg-[#8a5000] text-white shadow-lg hover:bg-[#6e4000] disabled:opacity-50 transition-all flex items-center gap-2"
+                >
+                  {uploading && <Loader2 size={16} className="animate-spin" />}
+                  <span>Upload Photo</span>
+                </button>
               </div>
             </form>
           </div>
@@ -358,37 +394,75 @@ export default function AdminGalleryPage() {
 
       {/* Edit Modal */}
       {editModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-100 space-y-4 relative">
-            <button onClick={() => setEditModalOpen(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
-              <X size={18} />
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl border border-gray-100 space-y-6 relative max-h-[90vh] overflow-y-auto">
+            <button
+              onClick={() => setEditModalOpen(false)}
+              className="absolute top-6 right-6 p-2 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-all"
+            >
+              <X size={20} />
             </button>
-            <h3 className="text-lg font-bold text-gray-900">Edit Photo Details</h3>
-            <form onSubmit={handleEditSubmit} className="space-y-4">
-              <ImageUploader label="Change Image (Optional)" value={editUrl} onChange={setEditUrl} />
-              <div>
-                <label className="block text-xs font-semibold uppercase text-gray-700 mb-1">Caption</label>
-                <input
-                  type="text"
-                  placeholder="e.g. Annadhanam Seva at Cuddalore"
-                  value={editCaption}
-                  onChange={(e) => setEditCaption(e.target.value)}
-                  className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 focus:outline-none focus:border-[#8a5000]"
-                />
+
+            <div className="flex items-center gap-3 pb-2 border-b border-gray-100">
+              <div className="w-10 h-10 rounded-xl bg-[#8a5000]/10 text-[#8a5000] flex items-center justify-center font-bold">
+                <Edit2 size={20} />
               </div>
               <div>
-                <label className="block text-xs font-semibold uppercase text-gray-700 mb-1">Category</label>
-                {isCreatingGalCat ? (
-                  <div className="flex items-center gap-1.5">
-                    <input
-                      type="text"
-                      autoFocus
-                      placeholder="New category..."
-                      value={newGalCatInput}
-                      onChange={(e) => setNewGalCatInput(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault();
+                <h3 className="text-xl font-bold text-gray-900 leading-tight">Edit Photo Details</h3>
+                <p className="text-xs text-gray-500">Update image coverage, caption, or category categorization</p>
+              </div>
+            </div>
+
+            <form onSubmit={handleEditSubmit} className="space-y-6">
+              <div className="bg-gray-50/70 p-4 rounded-2xl border border-gray-200/60">
+                <ImageUploader label="Full Coverage Photo Preview / Change Image" value={editUrl} onChange={setEditUrl} />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">
+                    Caption / Title
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Annadhanam Seva at Cuddalore"
+                    value={editCaption}
+                    onChange={(e) => setEditCaption(e.target.value)}
+                    className="w-full px-4 py-3 text-sm rounded-xl border border-gray-200 focus:outline-none focus:border-[#8a5000] focus:ring-4 focus:ring-[#8a5000]/10 transition-all font-medium text-gray-800"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">
+                    Category Section
+                  </label>
+                  {isCreatingGalCat ? (
+                    <div className="flex items-center gap-1.5 pt-1">
+                      <input
+                        type="text"
+                        autoFocus
+                        placeholder="New category..."
+                        value={newGalCatInput}
+                        onChange={(e) => setNewGalCatInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            if (newGalCatInput.trim()) {
+                              const val = newGalCatInput.trim().toLowerCase().replace(/\s+/g, "_");
+                              if (!customGalCategories.some((c) => c.value === val)) {
+                                setCustomGalCategories((prev) => [...prev, { value: val, label: newGalCatInput.trim() }]);
+                              }
+                              setEditCategory(val);
+                              setIsCreatingGalCat(false);
+                              setNewGalCatInput("");
+                            }
+                          }
+                        }}
+                        className="w-full px-3 py-2 text-xs rounded-xl border-2 border-[#8a5000] font-medium"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
                           if (newGalCatInput.trim()) {
                             const val = newGalCatInput.trim().toLowerCase().replace(/\s+/g, "_");
                             if (!customGalCategories.some((c) => c.value === val)) {
@@ -398,69 +472,73 @@ export default function AdminGalleryPage() {
                             setIsCreatingGalCat(false);
                             setNewGalCatInput("");
                           }
+                        }}
+                        className="px-3 py-2 rounded-xl bg-[#8a5000] text-white text-xs font-bold shadow-sm"
+                      >
+                        Add
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => { setIsCreatingGalCat(false); setNewGalCatInput(""); }}
+                        className="px-3 py-2 rounded-xl bg-gray-100 text-gray-700 text-xs font-bold"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  ) : (
+                    <select
+                      value={editCategory}
+                      onChange={(e) => {
+                        if (e.target.value === "__CREATE_NEW__") {
+                          setIsCreatingGalCat(true);
+                        } else {
+                          setEditCategory(e.target.value);
                         }
                       }}
-                      className="w-full px-2.5 py-1.5 text-xs rounded-lg border-2 border-[#8a5000]"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (newGalCatInput.trim()) {
-                          const val = newGalCatInput.trim().toLowerCase().replace(/\s+/g, "_");
-                          if (!customGalCategories.some((c) => c.value === val)) {
-                            setCustomGalCategories((prev) => [...prev, { value: val, label: newGalCatInput.trim() }]);
-                          }
-                          setEditCategory(val);
-                          setIsCreatingGalCat(false);
-                          setNewGalCatInput("");
-                        }
-                      }}
-                      className="px-2.5 py-1.5 rounded-lg bg-[#8a5000] text-white text-xs font-semibold"
+                      className="w-full px-4 py-3 text-sm rounded-xl border border-gray-200 bg-white focus:outline-none focus:border-[#8a5000] focus:ring-4 focus:ring-[#8a5000]/10 transition-all font-medium text-gray-800"
                     >
-                      Add
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => { setIsCreatingGalCat(false); setNewGalCatInput(""); }}
-                      className="px-2 py-1.5 rounded-lg bg-gray-100 text-gray-700 text-xs font-semibold"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                ) : (
-                  <select
-                    value={editCategory}
-                    onChange={(e) => {
-                      if (e.target.value === "__CREATE_NEW__") {
-                        setIsCreatingGalCat(true);
-                      } else {
-                        setEditCategory(e.target.value);
-                      }
-                    }}
-                    className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 bg-white focus:outline-none focus:border-[#8a5000]"
-                  >
-                    {DEFAULT_GAL_CATS.map((c) => (
-                      <option key={c.value} value={c.value}>{c.label}</option>
-                    ))}
-                    {customGalCategories.map((c) => (
-                      <option key={c.value} value={c.value}>{c.label}</option>
-                    ))}
-                    <option value="__CREATE_NEW__" className="font-bold text-[#8a5000]">+ Create New Category...</option>
-                  </select>
-                )}
+                      {DEFAULT_GAL_CATS.map((c) => (
+                        <option key={c.value} value={c.value}>{c.label}</option>
+                      ))}
+                      {customGalCategories.map((c) => (
+                        <option key={c.value} value={c.value}>{c.label}</option>
+                      ))}
+                      <option value="__CREATE_NEW__" className="font-bold text-[#8a5000]">+ Create New Category...</option>
+                    </select>
+                  )}
+                </div>
               </div>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={editFeatured}
-                  onChange={(e) => setEditFeatured(e.target.checked)}
-                  className="w-4 h-4 text-[#8a5000] rounded"
-                />
-                <span className="text-xs font-medium text-gray-700">Feature on Homepage showcase</span>
-              </label>
-              <div className="flex justify-end gap-2 pt-2">
-                <button type="button" onClick={() => setEditModalOpen(false)} className="px-4 py-2 rounded-lg text-xs font-semibold bg-gray-100 text-gray-700">Cancel</button>
-                <button type="submit" disabled={editing || !editUrl} className="px-4 py-2 rounded-lg text-xs font-semibold bg-[#8a5000] text-white disabled:opacity-50">Save Changes</button>
+
+              <div className="pt-2">
+                <label className="inline-flex items-center gap-3 cursor-pointer p-3.5 rounded-xl bg-amber-50/50 border border-amber-200/50 w-full transition-colors hover:bg-amber-50">
+                  <input
+                    type="checkbox"
+                    checked={editFeatured}
+                    onChange={(e) => setEditFeatured(e.target.checked)}
+                    className="w-4 h-4 text-[#8a5000] rounded focus:ring-[#8a5000]"
+                  />
+                  <span className="text-sm font-semibold text-gray-800">
+                    Feature on Homepage showcase (Highlighted Item)
+                  </span>
+                </label>
+              </div>
+
+              <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                <button
+                  type="button"
+                  onClick={() => setEditModalOpen(false)}
+                  className="px-6 py-3 rounded-xl text-sm font-bold bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={editing || !editUrl}
+                  className="px-6 py-3 rounded-xl text-sm font-bold bg-[#8a5000] text-white shadow-lg hover:bg-[#6e4000] disabled:opacity-50 transition-all flex items-center gap-2"
+                >
+                  {editing && <Loader2 size={16} className="animate-spin" />}
+                  <span>Save Changes</span>
+                </button>
               </div>
             </form>
           </div>

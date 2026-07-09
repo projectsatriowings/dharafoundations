@@ -45,7 +45,6 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning className="bg-background text-on-background font-body antialiased overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
-        <RingCursor />
         <LenisProvider>
           <Header />
           <main className="min-h-screen">{children}</main>

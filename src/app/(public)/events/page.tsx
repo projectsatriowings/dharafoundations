@@ -426,70 +426,38 @@ export default function EventsPage() {
               </motion.p>
             </div>
 
-            {/* Edition Cards (2026 Upcoming vs 2025 Past) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-              {/* 2026 Completed Edition */}
+            {/* Unified Dhara Divine Awards Spotlight Card */}
+            <div className="pt-6 max-w-4xl mx-auto">
               <motion.div 
-                whileHover={shouldReduceMotion ? {} : { scale: 1.02, y: -4 }}
-                className="bg-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-8 border border-white/20 flex flex-col justify-between space-y-6 hover:bg-white/15 transition-all group"
+                whileHover={shouldReduceMotion ? {} : { scale: 1.015, y: -4 }}
+                className="bg-white/10 backdrop-blur-md rounded-3xl p-8 sm:p-10 lg:p-12 border border-white/25 flex flex-col md:flex-row items-center justify-between gap-8 hover:bg-white/15 transition-all group shadow-2xl relative overflow-hidden"
               >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="px-3 py-1 rounded-full bg-saffron-glow/20 text-saffron-glow font-bold text-xs uppercase tracking-wider border border-saffron-glow/30">
-                      Completed • 24 Jan 2026
+                <div className="absolute top-0 right-0 w-72 h-72 bg-saffron-glow/10 rounded-full blur-3xl pointer-events-none" />
+
+                <div className="space-y-4 flex-1 relative z-10 text-left">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="px-3.5 py-1 rounded-full bg-saffron-glow/20 text-saffron-glow font-bold text-xs uppercase tracking-wider border border-saffron-glow/40 shadow-sm">
+                      Annual Flagship Ceremony
                     </span>
                     <span className="text-xs font-mono text-ethereal-white/80">Chetpet, Chennai</span>
                   </div>
-                  <h3 className="text-2xl font-bold text-white group-hover:text-saffron-glow transition-colors">
-                    Dhara Divine Awards 2026
+                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white group-hover:text-saffron-glow transition-colors">
+                    Dhara Divine Awards
                   </h3>
-                  <p className="text-xs sm:text-sm text-ethereal-white/80 leading-relaxed">
-                    Over 500 distinguished guests, CSR leaders, and NGO changemakers assembled for an extraordinary evening of honor, cultural tribute, and community upliftment.
+                  <p className="text-sm sm:text-base text-ethereal-white/80 leading-relaxed max-w-2xl">
+                    Over 500 distinguished guests, CSR leaders, retired high court judges, spiritual leaders, and grassroots service champions assemble for an extraordinary celebration of honor, cultural tribute, and community upliftment.
                   </p>
                 </div>
 
-                <div className="pt-2">
+                <div className="shrink-0 w-full md:w-auto relative z-10">
                   <Link 
                     href="https://dhara-devineawards.vercel.app"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center w-full py-3 px-6 rounded-xl bg-saffron-glow hover:bg-amber-400 text-deep-forest font-bold text-sm transition-all shadow-md gap-2"
+                    className="inline-flex items-center justify-center w-full md:w-auto py-4 px-8 rounded-2xl bg-saffron-glow hover:bg-amber-400 text-deep-forest font-bold text-base transition-all shadow-xl gap-3 group-hover:scale-105"
                   >
-                    <span>View 2026 Awardees & Highlights</span>
-                    <ArrowRight size={16} />
-                  </Link>
-                </div>
-              </motion.div>
-
-              {/* 2025 Past Edition */}
-              <motion.div 
-                whileHover={shouldReduceMotion ? {} : { scale: 1.02, y: -4 }}
-                className="bg-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-8 border border-white/20 flex flex-col justify-between space-y-6 hover:bg-white/15 transition-all group"
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="px-3 py-1 rounded-full bg-white/20 text-white font-bold text-xs uppercase tracking-wider">
-                      Completed • 24 Jan 2025
-                    </span>
-                    <span className="text-xs font-mono text-ethereal-white/80">Chetpet, Chennai</span>
-                  </div>
-                  <h3 className="text-2xl font-bold text-white group-hover:text-saffron-glow transition-colors">
-                    Dhara Divine Awards 2025
-                  </h3>
-                  <p className="text-xs sm:text-sm text-ethereal-white/80 leading-relaxed">
-                    Explore the memorable felicitation speeches from retired high court judges, spiritual music directors, and grassroots service champions from our 2025 ceremony.
-                  </p>
-                </div>
-
-                <div className="pt-2">
-                  <Link 
-                    href="https://dhara-devineawards.vercel.app"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center w-full py-3 px-6 rounded-xl bg-white/20 hover:bg-white/30 text-white font-bold text-sm transition-all shadow-md gap-2 border border-white/30"
-                  >
-                    <span>Watch 2025 Video Archives</span>
-                    <Play size={16} className="fill-white" />
+                    <span>Explore Divine Awards Portal</span>
+                    <ArrowRight size={18} />
                   </Link>
                 </div>
               </motion.div>

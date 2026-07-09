@@ -24,7 +24,7 @@ const NAV_ITEMS = [
   { label: "Dashboard",           href: "/admin",             icon: LayoutDashboard },
   { label: "Events",              href: "/admin/events",      icon: Calendar },
   { label: "News & Media",        href: "/admin/news",        icon: Newspaper },
-  { label: "Gallery",             href: "/admin/gallery",     icon: ImageIcon },
+  { label: "Seva",                href: "/admin/gallery",     icon: ImageIcon },
   { label: "Home Page",           href: "/admin/homepage",    icon: Home },
   { label: "About / Founders",    href: "/admin/about",       icon: Users },
   { label: "Sponsorship",         href: "/admin/sponsorship", icon: Handshake },

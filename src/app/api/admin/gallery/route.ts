@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const body = await req.json();
-    const { image_url, caption = "", category = "events", is_featured = false } = body;
+    const { image_url, caption = "", category = "charity", is_featured = false } = body;
 
     if (!image_url) {
       return NextResponse.json({ error: "Image URL is required" }, { status: 400 });
