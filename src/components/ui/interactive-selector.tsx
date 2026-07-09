@@ -77,6 +77,7 @@ const InteractiveSelector: React.FC<InteractiveSelectorProps> = ({
 
   useEffect(() => {
     const timers: NodeJS.Timeout[] = [];
+    setAnimatedOptions([]);
 
     options.forEach((_, i) => {
       const timer = setTimeout(() => {

@@ -202,6 +202,25 @@ INSERT INTO homepage_stats (stat_value, stat_label, sort_order) VALUES
   ('50+',  'Temples Restored',  2);
 
 -- ─────────────────────────────────
+-- HOMEPAGE INTERACTIVE GALLERY
+-- ─────────────────────────────────
+CREATE TABLE homepage_interactive_gallery (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title       TEXT NOT NULL,
+  description TEXT NOT NULL,
+  image_url   TEXT NOT NULL,
+  sort_order  INTEGER NOT NULL DEFAULT 0,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+INSERT INTO homepage_interactive_gallery (title, description, image_url, sort_order) VALUES
+  ('Spiritualism', 'Ceremony with spiritual leaders in saffron robes', '/images/gallery-1.png', 0),
+  ('Temple Restoration', 'Traditional prayers & architectural renovation', '/images/gallery-2.png', 1),
+  ('Community Welfare', 'Festive temple processions & rural support', '/images/gallery-3.png', 2),
+  ('Sacred Heritage', 'Sacred ash and rudraksha devotional offerings', '/images/about.png', 3),
+  ('Vedic Traditions', 'Timeless rituals preserving ancient wisdom', 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80', 4);
+
+-- ─────────────────────────────────
 -- SPONSOR TIERS
 -- ─────────────────────────────────
 CREATE TABLE sponsor_tiers (

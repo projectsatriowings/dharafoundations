@@ -7,6 +7,7 @@ import { Save, PlusCircle, Trash2, Loader2, Sparkles, Upload, Image as ImageIcon
 
 export default function AdminHomepagePage() {
   const [stats, setStats] = useState<any[]>([]);
+  const [gallery, setGallery] = useState<any[]>([]);
   const [config, setConfig] = useState({
     hero_image_url: "",
     intro_video_1_url: "",
@@ -17,12 +18,14 @@ export default function AdminHomepagePage() {
   const [msg, setMsg] = useState<string | null>(null);
 
   const [uploadingHero, setUploadingHero] = useState(false);
+  const [uploadingGalleryIdx, setUploadingGalleryIdx] = useState<number | null>(null);
 
   useEffect(() => {
     fetch("/api/admin/homepage")
       .then((res) => res.json())
       .then((d) => {
         setStats(d.stats || []);
+        if (d.gallery) setGallery(d.gallery);
         if (d.config) {
           setConfig(d.config);
         }
@@ -44,6 +47,52 @@ export default function AdminHomepagePage() {
     const next = [...stats];
     next[idx][field] = val;
     setStats(next);
+  };
+
+  const handleAddGalleryItem = () => {
+    setGallery([...gallery, { title: "", description: "", image: "", sort_order: gallery.length }]);
+  };
+
+  const handleRemoveGalleryItem = (idx: number) => {
+    const next = [...gallery];
+    next.splice(idx, 1);
+    setGallery(next);
+  };
+
+  const handleUpdateGalleryItem = (idx: number, field: string, val: any) => {
+    const next = [...gallery];
+    next[idx][field] = val;
+    setGallery(next);
+  };
+
+  const handleMoveGalleryItem = (idx: number, direction: "up" | "down") => {
+    if (direction === "up" && idx === 0) return;
+    if (direction === "down" && idx === gallery.length - 1) return;
+    const targetIdx = direction === "up" ? idx - 1 : idx + 1;
+    const next = [...gallery];
+    const temp = next[idx];
+    next[idx] = next[targetIdx];
+    next[targetIdx] = temp;
+    setGallery(next);
+  };
+
+  const handleUploadGalleryImage = async (file: File, idx: number) => {
+    setUploadingGalleryIdx(idx);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        handleUpdateGalleryItem(idx, "image", data.url);
+      } else {
+        alert(data.error || "Upload failed");
+      }
+    } catch (e) {
+      alert("Error uploading file");
+    } finally {
+      setUploadingGalleryIdx(null);
+    }
   };
 
   const handleUploadFile = async (
@@ -77,10 +126,10 @@ export default function AdminHomepagePage() {
       const res = await fetch("/api/admin/homepage", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ stats, config }),
+        body: JSON.stringify({ stats, config, gallery }),
       });
       if (res.ok) {
-        setMsg("Home page content (Banner, Videos & Numbers) saved successfully!");
+        setMsg("Home page content (Banner, Impact Counters & Interactive Photo Gallery) saved successfully!");
         setTimeout(() => setMsg(null), 5000);
       } else {
         alert("Failed to save home page settings.");
@@ -99,7 +148,7 @@ export default function AdminHomepagePage() {
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-gray-900">Home Page Content Management</h1>
             <p className="text-sm text-gray-500 mt-0.5">
-              Customize the live hero banner photograph, floating introduction videos, and impact statistics displayed on the public Home page.
+              Customize the live hero banner photograph, impact statistics, and interactive photo gallery showcased on the public Home page.
             </p>
           </div>
 
@@ -249,6 +298,128 @@ export default function AdminHomepagePage() {
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+
+              {/* 3. INTERACTIVE PHOTO GALLERY */}
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-6">
+                  <div>
+                    <h2 className="text-base font-bold text-gray-900">Interactive Photo Gallery</h2>
+                    <p className="text-xs text-gray-400">Manage the expandable photo gallery cards displayed on the Home page.</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleAddGalleryItem}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-xs font-semibold text-gray-700"
+                  >
+                    <PlusCircle size={15} /> Add Gallery Card
+                  </button>
+                </div>
+
+                <div className="space-y-4">
+                  {gallery.map((gItem, idx) => (
+                    <div key={idx} className="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 bg-[#fbf9f4] rounded-xl border border-gray-200 items-center">
+                      <div className="md:col-span-3 flex flex-col items-center justify-center bg-white border border-gray-200 rounded-lg p-2 h-28 overflow-hidden relative group">
+                        {gItem.image || gItem.image_url ? (
+                          /* eslint-disable-next-line @next/next/no-img-element */
+                          <img
+                            src={gItem.image || gItem.image_url}
+                            alt={gItem.title || "Gallery Preview"}
+                            className="w-full h-full object-cover rounded"
+                          />
+                        ) : (
+                          <div className="text-xs text-gray-400">No Image</div>
+                        )}
+                        <label className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-xs font-bold cursor-pointer transition-opacity">
+                          {uploadingGalleryIdx === idx ? <Loader2 size={16} className="animate-spin" /> : "Upload Image"}
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            disabled={uploadingGalleryIdx === idx}
+                            onChange={(e) => {
+                              if (e.target.files?.[0]) {
+                                handleUploadGalleryImage(e.target.files[0], idx);
+                              }
+                            }}
+                          />
+                        </label>
+                      </div>
+
+                      <div className="md:col-span-7 space-y-2">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          <div>
+                            <label className="block text-[11px] font-semibold text-gray-500 uppercase mb-1">Card Title</label>
+                            <input
+                              type="text"
+                              required
+                              placeholder="e.g. Spiritualism"
+                              value={gItem.title || ""}
+                              onChange={(e) => handleUpdateGalleryItem(idx, "title", e.target.value)}
+                              className="w-full px-3 py-1.5 text-sm font-bold bg-white border border-gray-200 rounded-lg"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[11px] font-semibold text-gray-500 uppercase mb-1">Image URL</label>
+                            <input
+                              type="text"
+                              required
+                              placeholder="/images/gallery-1.png or URL"
+                              value={gItem.image || gItem.image_url || ""}
+                              onChange={(e) => handleUpdateGalleryItem(idx, "image", e.target.value)}
+                              className="w-full px-3 py-1.5 text-sm bg-white border border-gray-200 rounded-lg"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-[11px] font-semibold text-gray-500 uppercase mb-1">Caption / Subtitle</label>
+                          <input
+                            type="text"
+                            required
+                            placeholder="e.g. Ceremony with spiritual leaders in saffron robes"
+                            value={gItem.description || ""}
+                            onChange={(e) => handleUpdateGalleryItem(idx, "description", e.target.value)}
+                            className="w-full px-3 py-1.5 text-sm bg-white border border-gray-200 rounded-lg"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="md:col-span-2 flex items-center justify-end gap-1">
+                        <button
+                          type="button"
+                          onClick={() => handleMoveGalleryItem(idx, "up")}
+                          disabled={idx === 0}
+                          className="p-2 text-gray-400 hover:text-gray-700 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-30"
+                          title="Move Up"
+                        >
+                          ↑
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleMoveGalleryItem(idx, "down")}
+                          disabled={idx === gallery.length - 1}
+                          className="p-2 text-gray-400 hover:text-gray-700 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-30"
+                          title="Move Down"
+                        >
+                          ↓
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveGalleryItem(idx)}
+                          className="p-2 text-gray-400 hover:text-red-600 rounded-lg hover:bg-red-50 transition-colors ml-1"
+                          title="Delete Card"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  {gallery.length === 0 && (
+                    <div className="text-center py-6 text-sm text-gray-400 bg-gray-50 rounded-xl border border-dashed border-gray-300">
+                      No gallery cards yet. Click &quot;Add Gallery Card&quot; above to create one.
+                    </div>
+                  )}
                 </div>
               </div>
 

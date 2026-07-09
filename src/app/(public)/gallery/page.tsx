@@ -120,22 +120,21 @@ const GALLERY_ITEMS = [
 const PHOTO_FILTERS = ["All Seva", "Charity", "Sanatana Dharma"];
 
 export default function GalleryPage() {
-  const [photoItems, setPhotoItems] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [photoItems, setPhotoItems] = useState<any[]>(GALLERY_ITEMS);
+  const [loading, setLoading] = useState(false);
   const [activePhotoTab, setActivePhotoTab] = useState("All Seva");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [visibleCharityCount, setVisibleCharityCount] = useState(6);
   const [visibleDharmaCount, setVisibleDharmaCount] = useState(6);
 
   useEffect(() => {
-    setLoading(true);
     fetch(`/api/public/gallery?t=${Date.now()}`, {
       cache: "no-store",
       headers: { "Cache-Control": "no-cache" },
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data && Array.isArray(data.photos)) {
+        if (data && Array.isArray(data.photos) && data.photos.length > 0) {
           const dbPhotos = data.photos.map((p: any) => {
             const rawCat = (p.category || "").toLowerCase();
             const isDharma =
@@ -162,8 +161,7 @@ export default function GalleryPage() {
           setPhotoItems(dbPhotos);
         }
       })
-      .catch((err) => console.error("Error fetching gallery:", err))
-      .finally(() => setLoading(false));
+      .catch((err) => console.error("Error fetching gallery:", err));
   }, []);
 
   const charityPhotos = photoItems.filter((item) => item.category === "Charity");

@@ -6,6 +6,7 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     const stats = await sql`SELECT * FROM homepage_stats ORDER BY sort_order ASC`;
+    const galleryRows = await sql`SELECT id, title, description, image_url AS image, sort_order FROM homepage_interactive_gallery ORDER BY sort_order ASC`;
     const [configRow] = await sql`SELECT hero_image_url, intro_video_1_url, intro_video_2_url FROM site_settings WHERE id = 1`;
 
     const config = {
@@ -25,7 +26,7 @@ export async function GET() {
         "https://res.cloudinary.com/woo94xq2/video/upload/v1783059473/dhara_foundations/videos/osokgojzgb0sdg1vlywr.mp4",
     };
 
-    return NextResponse.json({ stats, config });
+    return NextResponse.json({ stats, config, gallery: galleryRows });
   } catch (err) {
     console.warn("GET /api/public/homepage DB timeout/error, returning static fallback:", err);
     return NextResponse.json({
@@ -39,7 +40,14 @@ export async function GET() {
         hero_image_url: "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4",
         intro_video_1_url: process.env.NEXT_PUBLIC_INTRO_VIDEO_1 || "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4",
         intro_video_2_url: process.env.NEXT_PUBLIC_INTRO_VIDEO_2 || "https://res.cloudinary.com/woo94xq2/video/upload/v1783059473/dhara_foundations/videos/osokgojzgb0sdg1vlywr.mp4",
-      }
+      },
+      gallery: [
+        { title: "Spiritualism", description: "Ceremony with spiritual leaders in saffron robes", image: "/images/gallery-1.png", sort_order: 0 },
+        { title: "Temple Restoration", description: "Traditional prayers & architectural renovation", image: "/images/gallery-2.png", sort_order: 1 },
+        { title: "Community Welfare", description: "Festive temple processions & rural support", image: "/images/gallery-3.png", sort_order: 2 },
+        { title: "Sacred Heritage", description: "Sacred ash and rudraksha devotional offerings", image: "/images/about.png", sort_order: 3 },
+        { title: "Vedic Traditions", description: "Timeless rituals preserving ancient wisdom", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80", sort_order: 4 }
+      ]
     });
   }
 }

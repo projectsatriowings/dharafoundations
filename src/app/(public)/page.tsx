@@ -55,6 +55,36 @@ export default function HomePage() {
     intro_video_1_url: process.env.NEXT_PUBLIC_INTRO_VIDEO_1 || "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4",
     intro_video_2_url: process.env.NEXT_PUBLIC_INTRO_VIDEO_2 || "https://res.cloudinary.com/woo94xq2/video/upload/v1783059473/dhara_foundations/videos/osokgojzgb0sdg1vlywr.mp4",
   });
+  const [gallery, setGallery] = useState<any[] | undefined>(undefined);
+  const [events, setEvents] = useState<any[]>([
+    {
+      id: "digitisation-activities-wshg",
+      date: "01 Jan, 2026",
+      time: "01:00 PM",
+      location: "Cuddalore",
+      title: "In Digitisation activities for Women Self Help Group society",
+      img: "/images/events/event-digitisation-women-shg.jpg",
+      tag: "Women's Empowerment",
+    },
+    {
+      id: "tribal-welfare-javadhu-hills",
+      date: "06 Nov, 2025",
+      time: "02:00 PM",
+      location: "Vellore",
+      title: "In Tribal welfare activities at Javadhu hills",
+      img: "/images/events/event-tribal-welfare-javadhu.jpg",
+      tag: "Welfare Drives",
+    },
+    {
+      id: "felicitation-sports-children-pongal",
+      date: "14 Jan, 2025",
+      time: "06:00 PM",
+      location: "Cuddalore",
+      title: "Felicitation of Sports children during Pongal festival celebration",
+      img: "/images/events/event-sports-pongal.jpg",
+      tag: "Children & Education",
+    },
+  ]);
 
   useEffect(() => {
     fetch(`/api/public/homepage?t=${Date.now()}`, {
@@ -64,12 +94,36 @@ export default function HomePage() {
       .then((res) => res.json())
       .then((d) => {
         if (d.stats && d.stats.length > 0) setStats(d.stats);
+        if (d.gallery && d.gallery.length > 0) setGallery(d.gallery);
         if (d.config) {
           let updatedHero = d.config.hero_image_url;
           if (!updatedHero || updatedHero === "https://res.cloudinary.com/woo94xq2/video/upload/v1783348864/dhara_foundations/videos/injjcsbcbzokjavsswoc.mp4") {
             updatedHero = "https://res.cloudinary.com/woo94xq2/video/upload/v1783059459/dhara_foundations/videos/viqfipyzkvrkvumsuksg.mp4";
           }
           setConfig((prev) => ({ ...prev, ...d.config, hero_image_url: updatedHero }));
+        }
+      })
+      .catch(console.error);
+
+    fetch(`/api/public/events?t=${Date.now()}`, {
+      cache: "no-store",
+      headers: { "Cache-Control": "no-cache" },
+    })
+      .then((res) => res.json())
+      .then((d) => {
+        if (d && Array.isArray(d.events) && d.events.length > 0) {
+          const dbEvents = d.events.slice(0, 3).map((ev: any) => ({
+            id: ev.slug || String(ev.id),
+            date: ev.event_date
+              ? new Date(ev.event_date).toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" })
+              : "Recent",
+            time: ev.event_time || "10:00 AM",
+            location: ev.location_name || "Tamil Nadu",
+            title: ev.title,
+            img: ev.cover_image_url || "/images/event-1.png",
+            tag: ev.category || "Events",
+          }));
+          setEvents(dbEvents);
         }
       })
       .catch(console.error);
@@ -460,10 +514,10 @@ export default function HomePage() {
         <ScrollReveal className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
           <div className="max-w-2xl space-y-2">
             <span className="font-label-lg text-primary dark:text-saffron-glow uppercase tracking-widest font-bold block text-xs">
-              Upcoming &amp; Recent Initiatives
+              Impact Archive
             </span>
             <h2 className="font-heading text-3xl sm:text-4xl font-bold text-on-surface">
-              View Our All Events
+              Recent Events
             </h2>
           </div>
           <Link
@@ -475,80 +529,54 @@ export default function HomePage() {
         </ScrollReveal>
 
         <ScrollReveal staggerChildren={0.12} className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            {
-              date: "01 Jan, 2026",
-              time: "01:00 PM",
-              location: "Cuddalore",
-              title: "In Digitisation activities for Women Self Help Group society",
-              img: "/images/event-1.png",
-              tag: "Empowerment",
-            },
-            {
-              date: "06 Nov, 2025",
-              time: "02:00 PM",
-              location: "Javadhu Hills",
-              title: "In Tribal welfare activities at Javadhu hills communities",
-              img: "/images/event-2.png",
-              tag: "Tribal Welfare",
-            },
-            {
-              date: "14 Jan, 2025",
-              time: "06:00 PM",
-              location: "Cuddalore",
-              title: "Felicitation of Sports children during Pongal festival celebration",
-              img: "/images/event-3.png",
-              tag: "Youth Development",
-            },
-          ].map((ev, idx) => (
+          {events.map((ev, idx) => (
             <RevealItem
               key={idx}
               className="bg-surface-container-lowest rounded-[24px] shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group flex flex-col justify-between overflow-hidden cursor-pointer h-full border-0 p-0 m-0"
             >
-              <div className="relative w-full h-[240px] sm:h-[260px] overflow-hidden shrink-0 rounded-t-[24px] m-0 p-0">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={ev.img}
-                  alt={ev.title}
-                  className="w-full h-full object-cover rounded-t-[24px] group-hover:scale-105 transition-transform duration-700 ease-out block m-0 p-0"
-                  loading="lazy"
-                />
-                {/* Tight 15-20% bottom gradient dissolve ending at exact card background color */}
-                <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/90 to-transparent pointer-events-none z-10" />
+              <Link href={`/events/${ev.id}`} className="flex flex-col justify-between h-full block">
+                <div className="relative w-full h-[240px] sm:h-[260px] overflow-hidden shrink-0 rounded-t-[24px] m-0 p-0">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={ev.img}
+                    alt={ev.title}
+                    className="w-full h-full object-cover rounded-t-[24px] group-hover:scale-105 transition-transform duration-700 ease-out block m-0 p-0"
+                    loading="lazy"
+                  />
+                  {/* Tight 15-20% bottom gradient dissolve ending at exact card background color */}
+                  <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/90 to-transparent pointer-events-none z-10" />
 
-                {/* True frosted glass date badge with transparency and blur */}
-                <div className="absolute top-4 left-4 z-20 bg-white/45 dark:bg-black/45 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-bold text-primary dark:text-saffron-glow shadow-sm border border-white/50 tracking-wider">
-                  {ev.date}
+                  {/* True frosted glass date badge with transparency and blur */}
+                  <div className="absolute top-4 left-4 z-20 bg-white/60 dark:bg-black/60 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-bold text-primary dark:text-saffron-glow shadow-sm border border-white/50 tracking-wider">
+                    {ev.date}
+                  </div>
                 </div>
-              </div>
 
-              <div className="p-6 pt-0 flex flex-col justify-between flex-grow relative z-20 bg-surface-container-lowest">
-                <div>
-                  <span className="font-label-lg text-secondary text-xs font-bold uppercase tracking-widest mb-2 block">
-                    {ev.tag}
-                  </span>
-                  <h3 className="font-heading text-lg sm:text-xl font-bold text-on-surface group-hover:text-primary transition-colors mb-3 leading-snug line-clamp-2">
-                    {ev.title}
-                  </h3>
-                  <div className="flex items-center gap-5 text-on-surface-variant/80 text-xs mb-6 font-medium">
-                    <span className="flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-sm">location_on</span> {ev.location}
+                <div className="p-6 pt-0 flex flex-col justify-between flex-grow relative z-20 bg-surface-container-lowest">
+                  <div>
+                    <span className="font-label-lg text-secondary text-xs font-bold uppercase tracking-widest mb-2 block">
+                      {ev.tag}
                     </span>
-                    <span className="flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-sm">schedule</span> {ev.time}
+                    <h3 className="font-heading text-lg sm:text-xl font-bold text-on-surface group-hover:text-primary transition-colors mb-3 leading-snug line-clamp-2">
+                      {ev.title}
+                    </h3>
+                    <div className="flex items-center gap-5 text-on-surface-variant/80 text-xs mb-6 font-medium">
+                      <span className="flex items-center gap-1.5">
+                        <span className="material-symbols-outlined text-sm">location_on</span> {ev.location}
+                      </span>
+                      <span className="flex items-center gap-1.5">
+                        <span className="material-symbols-outlined text-sm">schedule</span> {ev.time}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="mt-auto pt-2">
+                    <span className="inline-flex items-center gap-1.5 font-label-lg font-bold text-primary group-hover:text-primary-container text-sm transition-all">
+                      Read Event Report
+                      <span className="material-symbols-outlined text-base transition-transform duration-300 group-hover:translate-x-1.5">arrow_forward</span>
                     </span>
                   </div>
                 </div>
-                <div className="mt-auto pt-2">
-                  <Link
-                    href="/events"
-                    className="inline-flex items-center gap-1.5 font-label-lg font-bold text-primary hover:text-primary-container text-sm transition-all group/btn"
-                  >
-                    Read Event Report
-                    <span className="material-symbols-outlined text-base transition-transform duration-300 group-hover:translate-x-1.5">arrow_forward</span>
-                  </Link>
-                </div>
-              </div>
+              </Link>
             </RevealItem>
           ))}
         </ScrollReveal>
@@ -569,6 +597,7 @@ export default function HomePage() {
           colors={["#FFD27F", "#f49b33", "#8a5000"]}
         >
           <InteractiveSelector
+            options={gallery}
             onOptionClick={(opt) =>
               setActiveModalItem({
                 src: opt.image,
