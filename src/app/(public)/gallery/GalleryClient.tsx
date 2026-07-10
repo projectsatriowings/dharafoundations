@@ -26,7 +26,9 @@ const isDharmaCategory = (rawCat: string) => {
     cat.includes("welfare") ||
     cat.includes("livelihood") ||
     cat.includes("shg") ||
-    cat.includes("anna daanam")
+    cat.includes("anna daanam") ||
+    cat.includes("women") ||
+    cat.includes("empowerment")
   ) {
     return false;
   }
