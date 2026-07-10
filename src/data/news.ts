@@ -17,7 +17,7 @@ export const SIX_MODERN_CARDS: NewsArticle[] = [
   {
     id: "dhara-gifts-children-cuddalore",
     slug: "dhara-gifts-children-cuddalore",
-    title: "Dhara Foundation Distributes Gifts to Children at Welfare Home",
+    title: "Dhara Foundation News Coverage in Dhinamalar Part 1",
     date: "15 Sep, 2025",
     img: "/images/news/dhara-gifts-children.jpg",
     category: "Community Welfare",
@@ -30,7 +30,7 @@ export const SIX_MODERN_CARDS: NewsArticle[] = [
   {
     id: "dhara-diwali-clothes-distribution",
     slug: "dhara-diwali-clothes-distribution",
-    title: "Dhara Foundations Distributes New Clothes to Children Ahead of Diwali",
+    title: "Dhara Foundation News Coverage in Dhinamalar Part 2",
     date: "18 Oct, 2025",
     img: "/images/news/dhara-diwali-clothes.jpg",
     category: "Community Welfare",

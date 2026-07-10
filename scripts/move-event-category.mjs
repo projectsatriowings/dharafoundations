@@ -5,9 +5,11 @@ import { neon } from '@neondatabase/serverless';
 const sql = neon(process.env.DATABASE_URL);
 
 async function run() {
-  await sql`UPDATE events SET category = ${"Women's Empowerment"} WHERE slug = 'digitisation-activities-wshg'`;
-  const r = await sql`SELECT id, slug, title, category FROM events WHERE slug = 'digitisation-activities-wshg'`;
-  console.log("Updated:", JSON.stringify(r, null, 2));
+  await sql`UPDATE news_articles SET headline = 'Dhara Foundation News Coverage in Dhinamalar Part 1' WHERE slug = 'dhara-gifts-children-cuddalore'`;
+  await sql`UPDATE news_articles SET headline = 'Dhara Foundation News Coverage in Dhinamalar Part 2' WHERE slug = 'dhara-diwali-clothes-distribution'`;
+
+  const rows = await sql`SELECT slug, headline FROM news_articles WHERE slug IN ('dhara-gifts-children-cuddalore', 'dhara-diwali-clothes-distribution')`;
+  console.log("Updated:", JSON.stringify(rows, null, 2));
 }
 
 run();
