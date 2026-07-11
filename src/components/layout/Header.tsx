@@ -52,7 +52,7 @@ const NAV_LINKS: NavLink[] = [
     label: "Events",
     dropdown: [
       { href: "/events", label: "All Events Overview", desc: "Browse all upcoming & past gatherings" },
-      { href: "https://dhara-devineawards.vercel.app", label: "Dhara Divine Awards", desc: "Awardees, highlights & video archives" },
+      { href: "https://dhara-divine-awards.vercel.app", label: "Dhara Divine Awards", desc: "Awardees, highlights & video archives" },
     ],
     popup: { badge: "Complete Schedule", desc: "Discover upcoming heritage discourses & community gatherings." }
   },

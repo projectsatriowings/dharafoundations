@@ -294,7 +294,7 @@ export default function EventsPage() {
 
                 <div className="shrink-0 w-full md:w-auto relative z-10">
                   <Link 
-                    href="https://dhara-devineawards.vercel.app"
+                    href="https://dhara-divine-awards.vercel.app"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center w-full md:w-auto py-4 px-8 rounded-2xl bg-saffron-glow hover:bg-amber-400 text-deep-forest font-bold text-base transition-all shadow-xl gap-3 group-hover:scale-105"
@@ -367,7 +367,7 @@ export default function EventsPage() {
                 className="lg:col-span-8 space-y-5"
               >
                 <Link
-                  href="https://dhara-devineawards.vercel.app"
+                  href="https://dhara-divine-awards.vercel.app"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group block relative aspect-video w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.6)] border-2 border-saffron-glow/40 bg-deep-forest"
@@ -496,7 +496,7 @@ export default function EventsPage() {
                       &quot;Recognizing those who serve the divine by serving humanity without seeking fame or reward.&quot;
                     </p>
                     <Link
-                      href="https://dhara-devineawards.vercel.app"
+                      href="https://dhara-divine-awards.vercel.app"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-saffron-glow hover:bg-amber-400 text-deep-forest font-bold text-sm transition-all shadow-lg hover:scale-[1.02]"
