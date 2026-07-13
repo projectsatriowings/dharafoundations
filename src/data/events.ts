@@ -117,12 +117,12 @@ export const EVENTS_DATA: Event[] = [
     time: "01:00 PM",
     location: "Cuddalore",
     coordinates: { lat: 11.7480, lng: 79.7714 },
-    coverImage: "/images/activities images/activity 1/img 1.jpg",
+    coverImage: "https://res.cloudinary.com/woo94xq2/image/upload/v1783997177/dhara_foundations/activities/digitisation-activities-wshg/img_1.jpg",
     galleryImages: [
-      "/images/activities images/activity 1/img 1.jpg",
-      "/images/activities images/activity 1/img 2.jpg",
-      "/images/activities images/activity 1/img 3.jpg",
-      "/images/activities images/activity 1/img 4.jpg",
+      "https://res.cloudinary.com/woo94xq2/image/upload/v1783997177/dhara_foundations/activities/digitisation-activities-wshg/img_1.jpg",
+      "https://res.cloudinary.com/woo94xq2/image/upload/v1783997178/dhara_foundations/activities/digitisation-activities-wshg/img_2.jpg",
+      "https://res.cloudinary.com/woo94xq2/image/upload/v1783997180/dhara_foundations/activities/digitisation-activities-wshg/img_3.jpg",
+      "https://res.cloudinary.com/woo94xq2/image/upload/v1783997182/dhara_foundations/activities/digitisation-activities-wshg/img_4.jpg",
     ],
     description: [
       "Conducting digitisation activities for Women Self Help Group societies as part of a community empowerment and rural development initiative aimed at improving digital literacy, financial inclusion, and administrative efficiency among women members.",
@@ -139,12 +139,12 @@ export const EVENTS_DATA: Event[] = [
     time: "02:00 PM",
     location: "Javadhu Hills, Vellore",
     coordinates: { lat: 12.5855, lng: 78.8687 },
-    coverImage: "/images/activities images/activity 2/img 1.jpg",
+    coverImage: "https://res.cloudinary.com/woo94xq2/image/upload/v1783997186/dhara_foundations/activities/tribal-welfare-javadhu-hills/img_1.jpg",
     galleryImages: [
-      "/images/activities images/activity 2/img 1.jpg",
-      "/images/activities images/activity 2/img 2.jpg",
-      "/images/activities images/activity 2/img 3.jpg",
-      "/images/activities images/activity 2/img 4.jpg",
+      "https://res.cloudinary.com/woo94xq2/image/upload/v1783997186/dhara_foundations/activities/tribal-welfare-javadhu-hills/img_1.jpg",
+      "https://res.cloudinary.com/woo94xq2/image/upload/v1783997187/dhara_foundations/activities/tribal-welfare-javadhu-hills/img_2.jpg",
+      "https://res.cloudinary.com/woo94xq2/image/upload/v1783997189/dhara_foundations/activities/tribal-welfare-javadhu-hills/img_3.jpg",
+      "https://res.cloudinary.com/woo94xq2/image/upload/v1783997190/dhara_foundations/activities/tribal-welfare-javadhu-hills/img_4.jpg",
     ],
     description: [
       "Conducting tribal welfare activities in Javadhu Hills as part of a social development and community upliftment initiative aimed at improving the living conditions and well-being of tribal communities residing in remote hill areas.",
@@ -160,10 +160,10 @@ export const EVENTS_DATA: Event[] = [
     time: "01:00 PM",
     location: "Cuddalore",
     coordinates: { lat: 11.7480, lng: 79.7714 },
-    coverImage: "/images/activities images/activity 3/img 1.jpg",
+    coverImage: "https://res.cloudinary.com/woo94xq2/image/upload/v1783997194/dhara_foundations/activities/diwali-dresses-home-children/img_1.jpg",
     galleryImages: [
-      "/images/activities images/activity 3/img 1.jpg",
-      "/images/activities images/activity 3/img 2.jpg",
+      "https://res.cloudinary.com/woo94xq2/image/upload/v1783997194/dhara_foundations/activities/diwali-dresses-home-children/img_1.jpg",
+      "https://res.cloudinary.com/woo94xq2/image/upload/v1783997195/dhara_foundations/activities/diwali-dresses-home-children/img_2.jpg",
     ],
     description: [
       "Providing Diwali dresses to home children in Cuddalore as part of a festive welfare and child support initiative aimed at spreading happiness, care, and celebration among underprivileged children during the occasion of Diwali.",
@@ -181,12 +181,12 @@ export const EVENTS_DATA: Event[] = [
     time: "01:00 PM",
     location: "Cuddalore",
     coordinates: { lat: 11.7480, lng: 79.7714 },
-    coverImage: "/images/activities images/activity 4/img 1.jpg",
+    coverImage: "https://res.cloudinary.com/woo94xq2/image/upload/v1783997199/dhara_foundations/activities/footwear-girl-children-annai-sathiya/img_1.jpg",
     galleryImages: [
-      "/images/activities images/activity 4/img 1.jpg",
-      "/images/activities images/activity 4/img 2.jpg",
-      "/images/activities images/activity 4/img 3.jpg",
-      "/images/activities images/activity 4/img 4.jpg",
+      "https://res.cloudinary.com/woo94xq2/image/upload/v1783997199/dhara_foundations/activities/footwear-girl-children-annai-sathiya/img_1.jpg",
+      "https://res.cloudinary.com/woo94xq2/image/upload/v1783997200/dhara_foundations/activities/footwear-girl-children-annai-sathiya/img_2.jpg",
+      "https://res.cloudinary.com/woo94xq2/image/upload/v1783997202/dhara_foundations/activities/footwear-girl-children-annai-sathiya/img_3.jpg",
+      "https://res.cloudinary.com/woo94xq2/image/upload/v1783997203/dhara_foundations/activities/footwear-girl-children-annai-sathiya/img_4.jpg",
     ],
     description: [
       "Providing footwear to all the girl children at Annai Sathiya District Government Home as part of a social welfare and child support initiative aimed at ensuring comfort, hygiene, and well-being for the children residing in the government home.",
@@ -202,10 +202,10 @@ export const EVENTS_DATA: Event[] = [
     time: "06:00 PM",
     location: "Cuddalore",
     coordinates: { lat: 11.7480, lng: 79.7714 },
-    coverImage: "/images/activities images/activity 5/img 1.jpg",
+    coverImage: "https://res.cloudinary.com/woo94xq2/image/upload/v1783997207/dhara_foundations/activities/felicitation-sports-children-pongal/img_1.jpg",
     galleryImages: [
-      "/images/activities images/activity 5/img 1.jpg",
-      "/images/activities images/activity 5/img 2.jpg",
+      "https://res.cloudinary.com/woo94xq2/image/upload/v1783997207/dhara_foundations/activities/felicitation-sports-children-pongal/img_1.jpg",
+      "https://res.cloudinary.com/woo94xq2/image/upload/v1783997208/dhara_foundations/activities/felicitation-sports-children-pongal/img_2.jpg",
     ],
     description: [
       "Felicitation of young sports achievers in Cuddalore during the festive occasion of Pongal as part of a community encouragement and youth development initiative. The event was organized to recognize and honor talented children who have excelled in various sports and athletic activities through their hard work, dedication, and achievements.",
@@ -221,11 +221,11 @@ export const EVENTS_DATA: Event[] = [
     time: "01:00 PM",
     location: "Cuddalore",
     coordinates: { lat: 11.7480, lng: 79.7714 },
-    coverImage: "/images/activities images/activity 6/img 1.jpg",
+    coverImage: "https://res.cloudinary.com/woo94xq2/image/upload/v1783997211/dhara_foundations/activities/meal-food-carriers-govt-home/img_1.jpg",
     galleryImages: [
-      "/images/activities images/activity 6/img 1.jpg",
-      "/images/activities images/activity 6/img 2.jpg",
-      "/images/activities images/activity 6/img 3.jpg",
+      "https://res.cloudinary.com/woo94xq2/image/upload/v1783997211/dhara_foundations/activities/meal-food-carriers-govt-home/img_1.jpg",
+      "https://res.cloudinary.com/woo94xq2/image/upload/v1783997213/dhara_foundations/activities/meal-food-carriers-govt-home/img_2.jpg",
+      "https://res.cloudinary.com/woo94xq2/image/upload/v1783997214/dhara_foundations/activities/meal-food-carriers-govt-home/img_3.jpg",
     ],
     description: [
       "Providing nutritious meals and food carriers to the children of Annai Sathiya District Government Home as part of a social welfare and community support initiative. This activity aims to support the health, well-being, and daily nutritional needs of the children residing in the government home by ensuring the availability of safe, hygienic, and wholesome food.",
@@ -242,10 +242,10 @@ export const EVENTS_DATA: Event[] = [
     time: "09:00 AM",
     location: "Chennai",
     coordinates: { lat: 13.0827, lng: 80.2707 },
-    coverImage: "/images/activities images/activity 7/img 1.jpg",
+    coverImage: "https://res.cloudinary.com/woo94xq2/image/upload/v1783997218/dhara_foundations/activities/covid-19-relief/img_1.jpg",
     galleryImages: [
-      "/images/activities images/activity 7/img 1.jpg",
-      "/images/activities images/activity 7/img 2.jpg",
+      "https://res.cloudinary.com/woo94xq2/image/upload/v1783997218/dhara_foundations/activities/covid-19-relief/img_1.jpg",
+      "https://res.cloudinary.com/woo94xq2/image/upload/v1783997219/dhara_foundations/activities/covid-19-relief/img_2.jpg",
     ],
     description: [
       "COVID-19 Relief activities were carried out as part of a humanitarian and community welfare initiative to support poor and economically affected families during the coronavirus pandemic and lockdown period. The initiative focused on providing essential food items such as rice, vegetables, groceries, and other daily necessities to needy people who faced financial difficulties and food shortages during the crisis.",
@@ -265,18 +265,18 @@ export function getCleanEventImage(text?: string, fallbackImg?: string): string 
   }
   if (!text) return fallbackImg || "/images/event-1.png";
   const lower = text.toLowerCase();
-  if (lower.includes("digitisation") || lower.includes("shg")) return "/images/activities images/activity 1/img 1.jpg";
+  if (lower.includes("digitisation") || lower.includes("shg")) return "https://res.cloudinary.com/woo94xq2/image/upload/v1783997177/dhara_foundations/activities/digitisation-activities-wshg/img_1.jpg";
   if (lower.includes("raghavendra") || lower.includes("bhoomi pooja")) return "/images/events/raghavendra-bhoomi-pooja.jpg";
   if (lower.includes("girivalam") || lower.includes("masi pournami")) return "/images/events/masi-pournami-girivalam.jpg";
   if (lower.includes("kodai") || lower.includes("devotional offering")) return "/images/events/devotional-offering-kodai.jpg";
   if (lower.includes("kumbabhishekam") || lower.includes("brindavana")) return "/images/events/brindavana-kumbabhishekam.jpg";
   if (lower.includes("adheenam") || lower.includes("madurai adheenam")) return "/images/events/madurai-adheenam.jpg";
-  if (lower.includes("javadhu") || lower.includes("tribal")) return "/images/activities images/activity 2/img 1.jpg";
-  if (lower.includes("diwali") || lower.includes("dresses")) return "/images/activities images/activity 3/img 1.jpg";
-  if (lower.includes("footwear") || lower.includes("annai sathiya") || lower.includes("girl children")) return "/images/activities images/activity 4/img 1.jpg";
-  if (lower.includes("pongal") || lower.includes("sports")) return "/images/activities images/activity 5/img 1.jpg";
-  if (lower.includes("meal") || lower.includes("carriers") || lower.includes("food")) return "/images/activities images/activity 6/img 1.jpg";
-  if (lower.includes("covid") || lower.includes("relief")) return "/images/activities images/activity 7/img 1.jpg";
+  if (lower.includes("javadhu") || lower.includes("tribal")) return "https://res.cloudinary.com/woo94xq2/image/upload/v1783997186/dhara_foundations/activities/tribal-welfare-javadhu-hills/img_1.jpg";
+  if (lower.includes("diwali") || lower.includes("dresses")) return "https://res.cloudinary.com/woo94xq2/image/upload/v1783997194/dhara_foundations/activities/diwali-dresses-home-children/img_1.jpg";
+  if (lower.includes("footwear") || lower.includes("annai sathiya") || lower.includes("girl children")) return "https://res.cloudinary.com/woo94xq2/image/upload/v1783997199/dhara_foundations/activities/footwear-girl-children-annai-sathiya/img_1.jpg";
+  if (lower.includes("pongal") || lower.includes("sports")) return "https://res.cloudinary.com/woo94xq2/image/upload/v1783997207/dhara_foundations/activities/felicitation-sports-children-pongal/img_1.jpg";
+  if (lower.includes("meal") || lower.includes("carriers") || lower.includes("food")) return "https://res.cloudinary.com/woo94xq2/image/upload/v1783997211/dhara_foundations/activities/meal-food-carriers-govt-home/img_1.jpg";
+  if (lower.includes("covid") || lower.includes("relief")) return "https://res.cloudinary.com/woo94xq2/image/upload/v1783997218/dhara_foundations/activities/covid-19-relief/img_1.jpg";
   if (lower.includes("2025")) return "/Event images/18.jpg";
   if (lower.includes("divine") || lower.includes("award") || lower.includes("2026")) return "/Event images/05.jpg";
   return fallbackImg || "/images/event-1.png";
