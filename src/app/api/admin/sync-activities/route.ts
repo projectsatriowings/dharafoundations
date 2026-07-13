@@ -149,8 +149,10 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   const logs: string[] = [];
   try {
-    try { await sql`ALTER TABLE events ALTER COLUMN id TYPE VARCHAR(255);`; } catch (e: any) { logs.push(`Alter events.id note: ${e.message}`); }
-    try { await sql`ALTER TABLE event_gallery_images ALTER COLUMN event_id TYPE VARCHAR(255);`; } catch (e: any) { logs.push(`Alter gallery note: ${e.message}`); }
+    try { await sql`ALTER TABLE event_gallery_images DROP CONSTRAINT IF EXISTS event_gallery_images_event_id_fkey;`; logs.push("Dropped gallery fkey"); } catch (e: any) {}
+    try { await sql`ALTER TABLE event_videos DROP CONSTRAINT IF EXISTS event_videos_event_id_fkey;`; logs.push("Dropped video fkey"); } catch (e: any) {}
+    try { await sql`ALTER TABLE events ALTER COLUMN id TYPE VARCHAR(255);`; logs.push("Altered events.id to VARCHAR(255)"); } catch (e: any) { logs.push(`events.id note: ${e.message}`); }
+    try { await sql`ALTER TABLE event_gallery_images ALTER COLUMN event_id TYPE VARCHAR(255);`; logs.push("Altered gallery event_id to VARCHAR(255)"); } catch (e: any) { logs.push(`gallery event_id note: ${e.message}`); }
 
     for (const act of ACTIVITIES) {
       try {
@@ -194,22 +196,32 @@ export async function GET() {
 
         const allIds = Array.from(new Set([String(targetId), act.slug, act.numericId, act.legacyId, act.uuid]));
         for (const idStr of allIds) {
-          await sql`DELETE FROM event_gallery_images WHERE event_id::text = ${idStr}`;
-          for (let i = 0; i < act.gallery.length; i++) {
+          try {
+            await sql`DELETE FROM event_gallery_images WHERE event_id::text = ${idStr}`;
+          } catch (delErr) {}
+        }
+
+        let insertedCount = 0;
+        for (let i = 0; i < act.gallery.length; i++) {
+          try {
             await sql`
               INSERT INTO event_gallery_images (event_id, image_url, sort_order)
-              VALUES (${idStr}, ${act.gallery[i]}, ${i})
+              VALUES (${String(targetId)}, ${act.gallery[i]}, ${i})
             `;
+            insertedCount++;
+          } catch (insErr: any) {
+            logs.push(`Gallery insert note for ${act.slug}: ${insErr.message}`);
           }
         }
-        logs.push(`SUCCESS: Synchronized ${act.gallery.length} gallery images for ${act.slug}`);
+        logs.push(`SUCCESS: Synchronized ${insertedCount} gallery images for ${act.slug} (Target ID: ${targetId})`);
       } catch (actErr: any) {
         logs.push(`ERROR on ${act.slug}: ${actErr.message || actErr}`);
       }
     }
 
-    const rows = await sql`SELECT id, slug, title, status, cover_image_url FROM events`;
-    return NextResponse.json({ success: true, logs, rowsCount: rows.length, rows });
+    const rows = await sql`SELECT id, slug, title, status, cover_image_url, full_description FROM events`;
+    const galleryCount = await sql`SELECT count(*) FROM event_gallery_images`;
+    return NextResponse.json({ success: true, logs, rowsCount: rows.length, rows, galleryCount });
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error?.message || String(error), logs }, { status: 500 });
   }
