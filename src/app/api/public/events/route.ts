@@ -43,9 +43,10 @@ export async function GET(req: NextRequest) {
 
     const existingSlugs = new Set(cleanEvents.map((e: any) => (e.slug || String(e.id || "")).toLowerCase()));
     const existingTitles = new Set(cleanEvents.map((e: any) => (e.title || "").toLowerCase().trim()));
+    const existingImages = new Set(cleanEvents.map((e: any) => (e.cover_image_url || "").toLowerCase().trim()));
 
     const staticMapped = EVENTS_DATA.filter(
-      (e) => !existingSlugs.has(e.id.toLowerCase()) && !existingTitles.has(e.title.toLowerCase().trim())
+      (e) => !existingSlugs.has(e.id.toLowerCase()) && !existingTitles.has(e.title.toLowerCase().trim()) && !existingImages.has((e.coverImage || "").toLowerCase().trim())
     ).map((e) => ({
       id: e.numericId || e.id,
       slug: e.id,

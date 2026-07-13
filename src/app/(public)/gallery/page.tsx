@@ -145,9 +145,10 @@ export default async function GalleryPage() {
 
   const existingSlugs = new Set(initialEvents.map((e: any) => String(e.id || "").toLowerCase()));
   const existingTitles = new Set(initialEvents.map((e: any) => (e.title || "").toLowerCase().trim()));
+  const existingImages = new Set(initialEvents.map((e: any) => (e.img || e.cover_image_url || "").toLowerCase().trim()));
 
   const staticEventsMapped = EVENTS_DATA.filter(
-    (ev) => !existingSlugs.has(ev.id.toLowerCase()) && !existingTitles.has(ev.title.toLowerCase().trim())
+    (ev) => !existingSlugs.has(ev.id.toLowerCase()) && !existingTitles.has(ev.title.toLowerCase().trim()) && !existingImages.has((ev.coverImage || "").toLowerCase().trim())
   ).map((ev) => ({
     id: ev.id,
     title: ev.title,

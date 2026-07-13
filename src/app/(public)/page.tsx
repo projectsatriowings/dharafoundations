@@ -63,16 +63,16 @@ export default function HomePage() {
       time: "01:00 PM",
       location: "Cuddalore",
       title: "In Digitisation activities for Women Self Help Group society",
-      img: "/images/events/event-digitisation-women-shg.jpg",
+      img: "/images/activities images/activity 1/img 1.jpg",
       tag: "Women's Empowerment",
     },
     {
       id: "tribal-welfare-javadhu-hills",
       date: "06 Nov, 2025",
       time: "02:00 PM",
-      location: "Vellore",
+      location: "Javadhu Hills, Vellore",
       title: "In Tribal welfare activities at Javadhu hills",
-      img: "/images/events/event-tribal-welfare-javadhu.jpg",
+      img: "/images/activities images/activity 2/img 1.jpg",
       tag: "Welfare Drives",
     },
     {
@@ -80,8 +80,8 @@ export default function HomePage() {
       date: "14 Jan, 2025",
       time: "06:00 PM",
       location: "Cuddalore",
-      title: "Felicitation of Sports children during Pongal festival celebration",
-      img: "/images/events/event-sports-pongal.jpg",
+      title: "Felicitation of Sports children at Cuddalore during Pongal festival",
+      img: "/images/activities images/activity 5/img 1.jpg",
       tag: "Children & Education",
     },
   ]);
@@ -112,7 +112,7 @@ export default function HomePage() {
       .then((res) => res.json())
       .then((d) => {
         if (d && Array.isArray(d.events) && d.events.length > 0) {
-          const dbEvents = d.events.slice(0, 3).map((ev: any) => ({
+          const dbEvents = d.events.slice(0, 6).map((ev: any) => ({
             id: ev.slug || String(ev.id),
             date: ev.event_date
               ? new Date(ev.event_date).toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" })
@@ -123,7 +123,17 @@ export default function HomePage() {
             img: ev.cover_image_url || "/images/event-1.png",
             tag: ev.category || "Events",
           }));
-          setEvents(dbEvents);
+          const seenImg = new Set<string>();
+          const seenId = new Set<string>();
+          const uniqueEvents = dbEvents.filter((ev: any) => {
+            const imgKey = (ev.img || "").toLowerCase().trim();
+            const idKey = String(ev.id || "").toLowerCase().trim();
+            if (seenImg.has(imgKey) || seenId.has(idKey)) return false;
+            if (imgKey) seenImg.add(imgKey);
+            if (idKey) seenId.add(idKey);
+            return true;
+          });
+          setEvents(uniqueEvents.slice(0, 3));
         }
       })
       .catch(console.error);

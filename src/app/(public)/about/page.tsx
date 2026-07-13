@@ -8,34 +8,22 @@ import BorderGlow from "@/components/ui/BorderGlow";
 
 const REGISTRATIONS = [
   {
-    title: "Section 8 Company",
-    desc: "Registered under Indian Trust Act 1882 & Companies Act ensuring non-profit operations.",
-    icon: "gavel",
-    isHeavy: true,
-  },
-  {
     title: "12A Registration",
     desc: "Income Tax exemption granted under IT Act 1961 for legitimate charitable activities.",
     icon: "assured_workload",
-    isHeavy: false,
+    href: "/registrations/12a-registration",
   },
   {
     title: "80G Certificate",
     desc: "Qualify deduction U/S 80G of I.T Act 1961 Vide AAETD8857AE20241 (11.12.2024).",
     icon: "receipt_long",
-    isHeavy: false,
+    href: "/registrations/80g-certificate",
   },
   {
     title: "CSR Activities",
     desc: "Registered with Ministry of Corporate Affairs for CSR (CSR00086947 on 20.02.2025).",
     icon: "corporate_fare",
-    isHeavy: false,
-  },
-  {
-    title: "NGO–DARPAN",
-    desc: "Registered with NGO–DARPAN vide Regn No. TN/2024/0473120 dated 06.12.2024.",
-    icon: "verified",
-    isHeavy: false,
+    href: "/registrations/csr-activities",
   },
 ];
 
@@ -149,13 +137,12 @@ export default function AboutPage() {
             </p>
           </ScrollReveal>
 
-          <ScrollReveal staggerChildren={0.12} className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6">
-            {REGISTRATIONS.map((reg, i) => {
-              const colSpan = i >= 3 ? "md:col-span-3 lg:col-span-3" : "md:col-span-1 lg:col-span-2";
-              return (
-                <RevealItem
-                  key={i}
-                  className={`bg-surface/80 dark:bg-surface-container/50 backdrop-blur-md border border-outline-variant/30 p-8 rounded-[32px] flex flex-col justify-between h-[270px] sm:h-[290px] shadow-sm hover:shadow-2xl hover:bg-deep-forest hover:text-ethereal-white hover:border-ethereal-white/10 hover:-translate-y-2 transition-all duration-500 group relative overflow-hidden cursor-pointer ${colSpan}`}
+          <ScrollReveal staggerChildren={0.12} className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {REGISTRATIONS.map((reg, i) => (
+              <RevealItem key={i}>
+                <Link
+                  href={reg.href}
+                  className="bg-surface/80 dark:bg-surface-container/50 backdrop-blur-md border border-outline-variant/30 p-8 rounded-[32px] flex flex-col justify-between h-[270px] sm:h-[290px] shadow-sm hover:shadow-2xl hover:bg-deep-forest hover:text-ethereal-white hover:border-ethereal-white/10 hover:-translate-y-2 transition-all duration-500 group relative overflow-hidden cursor-pointer block"
                 >
                   <div className="absolute -top-12 -right-12 w-48 h-48 bg-saffron-glow/20 rounded-full blur-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <div className="relative z-10">
@@ -166,10 +153,13 @@ export default function AboutPage() {
                       {reg.title}
                     </h3>
                   </div>
-                  <p className="font-body-md text-on-surface-variant group-hover:text-ethereal-white/80 text-sm leading-relaxed transition-colors duration-500 relative z-10">{reg.desc}</p>
-                </RevealItem>
-              );
-            })}
+                  <div className="relative z-10 flex items-end justify-between">
+                    <p className="font-body-md text-on-surface-variant group-hover:text-ethereal-white/80 text-sm leading-relaxed transition-colors duration-500">{reg.desc}</p>
+                    <span className="material-symbols-outlined text-xl text-primary/50 group-hover:text-saffron-glow group-hover:translate-x-1 transition-all duration-300 shrink-0 ml-3">arrow_forward</span>
+                  </div>
+                </Link>
+              </RevealItem>
+            ))}
           </ScrollReveal>
         </div>
       </section>

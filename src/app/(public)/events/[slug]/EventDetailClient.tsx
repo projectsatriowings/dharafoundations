@@ -117,10 +117,11 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
       </section>
 
       {/* Main Two-Column Content Layout */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <section className="max-w-[1440px] mx-auto px-4 sm:px-8 md:px-12 py-16 w-full -mt-12 relative z-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
-        {/* LEFT COLUMN: Main Description & Gallery (~65% width) */}
-        <div className="lg:col-span-8 space-y-12">
+          {/* LEFT COLUMN: Main Description & Gallery (8 cols) */}
+          <div className="lg:col-span-8 space-y-12">
           
           {/* Main Hero Cover Image (Uncropped, Full Visibility) */}
           <div className="rounded-3xl overflow-hidden shadow-2xl border border-outline-variant/30 bg-surface-container-low dark:bg-surface-container relative p-3 sm:p-6 flex flex-col items-center justify-center">
@@ -162,19 +163,22 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
           </div>
 
           {/* Image Gallery Grid */}
-          {event.galleryImages.length > 0 && (
-            <div className="space-y-6 pt-6 border-t border-outline-variant/30">
-              <div className="space-y-1">
-                <h2 className="font-heading text-2xl sm:text-3xl font-bold text-deep-forest">
-                  Event Gallery
-                </h2>
-                <p className="text-xs sm:text-sm text-on-surface-variant font-medium">
-                  Click any photo to inspect high-resolution moment archives.
-                </p>
-              </div>
+          {(() => {
+            const uniqueGalleryImages = Array.from(new Set(event.galleryImages || []));
+            if (uniqueGalleryImages.length === 0) return null;
+            return (
+              <div className="space-y-6 pt-6 border-t border-outline-variant/30">
+                <div className="space-y-1">
+                  <h2 className="font-heading text-2xl sm:text-3xl font-bold text-deep-forest">
+                    Event Gallery
+                  </h2>
+                  <p className="text-xs sm:text-sm text-on-surface-variant font-medium">
+                    Click any photo to inspect high-resolution moment archives.
+                  </p>
+                </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                {event.galleryImages.map((imgSrc, idx) => (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                  {uniqueGalleryImages.map((imgSrc, idx) => (
                   <motion.div
                     key={idx}
                     whileHover={{ scale: 1.03 }}
@@ -200,9 +204,10 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
                     </div>
                   </motion.div>
                 ))}
+                </div>
               </div>
-            </div>
-          )}
+            );
+          })()}
 
           {/* Closing CTA Box */}
           <div className="p-8 sm:p-10 rounded-3xl bg-surface-container border border-outline-variant/40 shadow-xl space-y-6 relative overflow-hidden">
@@ -393,6 +398,7 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
         </div>
 
       </div>
+      </section>
 
       {/* Lightbox Modal for Gallery */}
       {(() => {

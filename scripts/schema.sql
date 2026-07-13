@@ -251,6 +251,9 @@ CREATE TABLE site_settings (
   meta_title_suffix     TEXT NOT NULL DEFAULT '| Dhara Foundations',
   default_meta_desc     TEXT,
   maintenance_mode      BOOLEAN NOT NULL DEFAULT FALSE,
+  hero_image_url        TEXT,
+  intro_video_1_url     TEXT,
+  intro_video_2_url     TEXT,
   updated_at            TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 
   CONSTRAINT singleton CHECK (id = 1)

@@ -92,32 +92,53 @@ export async function getPublicEvents(): Promise<Event[]> {
  */
 export async function getPublicEventBySlug(slug: string): Promise<Event | null> {
   try {
+    const aliasMap: Record<string, string> = {
+      "50": "digitisation-activities-wshg",
+      "51": "tribal-welfare-javadhu-hills",
+      "52": "diwali-dresses-home-children",
+      "53": "footwear-girl-children-annai-sathiya",
+      "54": "felicitation-sports-children-pongal",
+      "55": "meal-food-carriers-govt-home",
+      "56": "covid-19-relief",
+    };
+    const lookupSlug = aliasMap[slug] || slug;
+
     const rows = await sql`
       SELECT * FROM events
-      WHERE slug = ${slug} OR id::text = ${slug} OR (slug = 'dhara-divine-awards' AND ${slug} = 'dhara-divine-awards-2026')
+      WHERE slug = ${lookupSlug} OR id::text = ${lookupSlug} OR (slug = 'dhara-divine-awards' AND ${lookupSlug} = 'dhara-divine-awards-2026')
       LIMIT 1
     `;
 
     if (!rows || rows.length === 0) {
-      const staticEvent = EVENTS_DATA.find((e) => e.id === slug || e.numericId === slug);
+      const staticEvent = EVENTS_DATA.find((e) => e.id === lookupSlug || e.numericId === lookupSlug);
       return staticEvent || null;
     }
 
     const r = rows[0];
 
-    const galleryRows = await sql`
-      SELECT image_url
-      FROM event_gallery_images
-      WHERE event_id = ${r.id}
-      ORDER BY sort_order ASC
-    `;
+    let galleryRows: any[] = [];
+    try {
+      galleryRows = await sql`
+        SELECT image_url
+        FROM event_gallery_images
+        WHERE event_id::text = ${String(r.id)} OR event_id::text = ${String(r.slug || '')}
+        ORDER BY sort_order ASC
+      `;
+    } catch (gErr) {
+      console.warn("Could not fetch gallery images for event:", gErr);
+    }
 
-    const videoRows = await sql`
-      SELECT title, video_url
-      FROM event_videos
-      WHERE event_id = ${r.id}
-      ORDER BY sort_order ASC
-    `;
+    let videoRows: any[] = [];
+    try {
+      videoRows = await sql`
+        SELECT title, video_url
+        FROM event_videos
+        WHERE event_id::text = ${String(r.id)} OR event_id::text = ${String(r.slug || '')}
+        ORDER BY sort_order ASC
+      `;
+    } catch (vErr) {
+      console.warn("Could not fetch video rows for event:", vErr);
+    }
 
     const descList: string[] = [];
     if (r.full_description) {
@@ -132,7 +153,7 @@ export async function getPublicEventBySlug(slug: string): Promise<Event | null> 
     }
 
     const cleanImg = getCleanEventImage(`${r.title || ""} ${r.slug || ""} ${r.cover_image_url || ""}`, r.cover_image_url);
-    const galleryUrls = galleryRows.map((g) => g.image_url).filter(Boolean);
+    const galleryUrls = Array.from(new Set(galleryRows.map((g) => g.image_url).filter(Boolean)));
 
     const videoLinks = videoRows.map((v) => ({
       title: v.title || "Event Video",

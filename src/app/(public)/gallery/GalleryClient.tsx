@@ -225,8 +225,21 @@ export default function GalleryClient({ initialPhotos, initialEvents = [] }: Gal
   const charityPhotos = photoItems.filter((item) => !isDharmaCategory(item.category));
   const dharmaPhotos = photoItems.filter((item) => isDharmaCategory(item.category));
 
-  const charityEvents = eventItems.filter((ev) => !isDharmaCategory(ev.category));
-  const dharmaEvents = eventItems.filter((ev) => isDharmaCategory(ev.category));
+  const deduplicateEvents = (list: any[]) => {
+    const seenImages = new Set<string>();
+    const seenIds = new Set<string>();
+    return (list || []).filter((ev) => {
+      const img = (ev.img || ev.coverImage || ev.cover_image_url || "").toLowerCase().trim();
+      const id = String(ev.id || ev.slug || "").toLowerCase().trim();
+      if (seenImages.has(img) || (id && seenIds.has(id))) return false;
+      if (img) seenImages.add(img);
+      if (id) seenIds.add(id);
+      return true;
+    });
+  };
+
+  const charityEvents = deduplicateEvents(eventItems.filter((ev) => !isDharmaCategory(ev.category)));
+  const dharmaEvents = deduplicateEvents(eventItems.filter((ev) => isDharmaCategory(ev.category)));
 
   const displayedCharityPhotos = charityPhotos.slice(0, visibleCharityCount);
   const displayedDharmaPhotos = dharmaPhotos.slice(0, visibleDharmaCount);
@@ -578,7 +591,7 @@ export default function GalleryClient({ initialPhotos, initialEvents = [] }: Gal
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {dharmaEvents.map((ev, idx) => (
-                  <EventCard key={`dharma-ev-${ev.id || idx}`} ev={ev} router={router} />
+                  <EventCard key={`dharma-ev-${ev.id || 'id'}-${idx}`} ev={ev} router={router} />
                 ))}
               </div>
             )}
