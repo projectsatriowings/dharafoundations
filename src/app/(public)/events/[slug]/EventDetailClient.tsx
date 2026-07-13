@@ -156,7 +156,7 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
           {/* Description Paragraphs */}
           <div className="space-y-6 text-base sm:text-lg text-on-surface leading-relaxed font-body">
             {event.description.map((para, idx) => (
-              <p key={idx} className={idx === 0 ? "font-medium text-deep-forest text-lg sm:text-xl leading-relaxed" : "text-on-surface-variant"}>
+              <p key={idx} className="text-on-surface text-base sm:text-lg leading-relaxed">
                 {para}
               </p>
             ))}
