@@ -11,17 +11,33 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const category = searchParams.get("category");
 
-    const photos = await sql`
-      SELECT id, image_url, caption, category, is_featured, sort_order, created_at
-      FROM gallery_photos
-      WHERE (${!category || category === "all"}::boolean OR category = ${category})
-      ORDER BY sort_order ASC, created_at DESC
-    `;
+    let photos: any[] = [];
+    try {
+      photos = await sql`
+        SELECT id, image_url, caption, category, is_featured, sort_order, created_at
+        FROM gallery_photos
+        WHERE (${!category || category === "all"}::boolean OR category = ${category})
+        ORDER BY sort_order ASC, created_at DESC
+      `;
+    } catch (dbErr) {
+      console.warn("GET /api/admin/gallery: sort_order query failed, retrying without sort_order:", dbErr);
+      try {
+        photos = await sql`
+          SELECT id, image_url, caption, category, is_featured, created_at
+          FROM gallery_photos
+          WHERE (${!category || category === "all"}::boolean OR category = ${category})
+          ORDER BY created_at DESC
+        `;
+      } catch (fallbackErr) {
+        console.warn("GET /api/admin/gallery: table query failed, returning empty photos list:", fallbackErr);
+        photos = [];
+      }
+    }
 
     return NextResponse.json({ photos });
   } catch (err) {
-    console.error("GET /api/admin/gallery error:", err);
-    return NextResponse.json({ error: "Failed to fetch gallery photos" }, { status: 500 });
+    console.error("GET /api/admin/gallery outer error:", err);
+    return NextResponse.json({ photos: [] });
   }
 }
 

@@ -22,12 +22,28 @@ export async function GET(req: NextRequest) {
     const limit = Number(searchParams.get("limit") || "10");
     const offset = (page - 1) * limit;
 
-    const dbEvents = await sql`
-      SELECT id, slug, title, event_date, event_time, location_name,
-             cover_image_url, status, category, updated_at, sort_order
-      FROM events
-      ORDER BY sort_order ASC, event_date DESC
-    `;
+    let dbEvents: any[] = [];
+    try {
+      dbEvents = await sql`
+        SELECT id, slug, title, event_date, event_time, location_name,
+               cover_image_url, status, category, updated_at, sort_order
+        FROM events
+        ORDER BY sort_order ASC, event_date DESC
+      `;
+    } catch (dbErr) {
+      console.warn("GET /api/admin/events: query with sort_order failed, trying without sort_order:", dbErr);
+      try {
+        dbEvents = await sql`
+          SELECT id, slug, title, event_date, event_time, location_name,
+                 cover_image_url, status, category, updated_at
+          FROM events
+          ORDER BY event_date DESC
+        `;
+      } catch (fallbackErr) {
+        console.warn("GET /api/admin/events: events table query failed completely, using static fallback only:", fallbackErr);
+        dbEvents = [];
+      }
+    }
 
     const existingSlugs = new Set((dbEvents || []).map((e: any) => (e.slug || "").toLowerCase()));
     const existingIds = new Set((dbEvents || []).map((e: any) => String(e.id || "").toLowerCase()));
@@ -83,8 +99,38 @@ export async function GET(req: NextRequest) {
       },
     });
   } catch (err) {
-    console.error("GET /api/admin/events error:", err);
-    return NextResponse.json({ error: "Failed to fetch events" }, { status: 500 });
+    console.error("GET /api/admin/events outer error, returning static events fallback:", err);
+    const fallbackEvents = EVENTS_DATA.map((e) => {
+      const cleanImg = getCleanEventImage(`${e.title || ""} ${e.id || ""} ${e.coverImage || ""}`, e.coverImage);
+      const isSanatana =
+        e.category === "Sanatana Dharma" ||
+        (e.title && e.title.toLowerCase().includes("temple")) ||
+        (e.title && e.title.toLowerCase().includes("girivalam")) ||
+        (e.title && e.title.toLowerCase().includes("pooja"));
+
+      return {
+        id: e.id,
+        slug: e.id,
+        title: e.title,
+        event_date: e.date,
+        event_time: e.time || "09:00",
+        location_name: e.location || "Cuddalore / Tamil Nadu",
+        cover_image_url: cleanImg,
+        status: "published",
+        category: e.category || (isSanatana ? "Sanatana Dharma" : "Welfare Drives"),
+        updated_at: new Date().toISOString(),
+      };
+    });
+
+    return NextResponse.json({
+      events: fallbackEvents,
+      pagination: {
+        total: fallbackEvents.length,
+        page: 1,
+        limit: fallbackEvents.length,
+        totalPages: 1,
+      },
+    });
   }
 }
 

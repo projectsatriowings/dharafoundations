@@ -15,17 +15,33 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const pillar = searchParams.get("pillar");
 
-    const highlights = await sql`
-      SELECT id, pillar, badge, title, description, image_url, link_url, sort_order
-      FROM seva_highlights
-      WHERE (${!pillar || pillar === "all"}::boolean OR pillar = ${pillar})
-      ORDER BY sort_order ASC, id ASC
-    `;
+    let highlights: any[] = [];
+    try {
+      highlights = await sql`
+        SELECT id, pillar, badge, title, description, image_url, link_url, sort_order
+        FROM seva_highlights
+        WHERE (${!pillar || pillar === "all"}::boolean OR pillar = ${pillar})
+        ORDER BY sort_order ASC, id ASC
+      `;
+    } catch (dbErr) {
+      console.warn("GET /api/admin/highlights: sort_order query failed, retrying without sort_order:", dbErr);
+      try {
+        highlights = await sql`
+          SELECT id, pillar, badge, title, description, image_url, link_url
+          FROM seva_highlights
+          WHERE (${!pillar || pillar === "all"}::boolean OR pillar = ${pillar})
+          ORDER BY id ASC
+        `;
+      } catch (fallbackErr) {
+        console.warn("GET /api/admin/highlights: table query failed, returning empty highlights list:", fallbackErr);
+        highlights = [];
+      }
+    }
 
     return NextResponse.json({ highlights });
   } catch (err: any) {
-    console.error("GET /api/admin/highlights error:", err);
-    return NextResponse.json({ error: "Failed to fetch highlights" }, { status: 500 });
+    console.error("GET /api/admin/highlights outer error:", err);
+    return NextResponse.json({ highlights: [] });
   }
 }
 

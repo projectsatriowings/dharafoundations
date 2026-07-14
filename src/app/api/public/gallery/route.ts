@@ -10,22 +10,49 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const category = searchParams.get("category");
 
-    const photos = await sql`
-      SELECT id, image_url, caption, category, is_featured, sort_order, created_at
-      FROM gallery_photos
-      WHERE (${!category || category === "all" || category === "photos"}::boolean OR category = ${category})
-      ORDER BY sort_order ASC, created_at DESC
-    `;
+    let photos: any[] = [];
+    let videos: any[] = [];
+    try {
+      photos = await sql`
+        SELECT id, image_url, caption, category, is_featured, sort_order, created_at
+        FROM gallery_photos
+        WHERE (${!category || category === "all" || category === "photos"}::boolean OR category = ${category})
+        ORDER BY sort_order ASC, created_at DESC
+      `;
+    } catch (dbErr) {
+      try {
+        photos = await sql`
+          SELECT id, image_url, caption, category, is_featured, created_at
+          FROM gallery_photos
+          WHERE (${!category || category === "all" || category === "photos"}::boolean OR category = ${category})
+          ORDER BY created_at DESC
+        `;
+      } catch (fallbackErr) {
+        photos = [];
+      }
+    }
 
-    const videos = await sql`
-      SELECT id, title, video_url, created_at
-      FROM event_videos
-      ORDER BY sort_order ASC, created_at DESC
-    `;
+    try {
+      videos = await sql`
+        SELECT id, title, video_url, created_at
+        FROM event_videos
+        ORDER BY sort_order ASC, created_at DESC
+      `;
+    } catch (vidErr) {
+      try {
+        videos = await sql`
+          SELECT id, title, video_url, created_at
+          FROM event_videos
+          ORDER BY created_at DESC
+        `;
+      } catch (fallbackVidErr) {
+        videos = [];
+      }
+    }
 
     return NextResponse.json({ photos, videos });
   } catch (err) {
-    console.error("GET /api/public/gallery error:", err);
-    return NextResponse.json({ error: "Failed to fetch gallery photos" }, { status: 500 });
+    console.error("GET /api/public/gallery outer error:", err);
+    return NextResponse.json({ photos: [], videos: [] });
   }
 }
