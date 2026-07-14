@@ -6,9 +6,7 @@ import { useRouter } from "next/navigation";
 import { Calendar, Clock, MapPin, ArrowRight, ExternalLink, Sparkles } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
-import { LightboxModal } from "@/components/ui/LightboxModal";
 import { PillButton } from "@/components/ui/PillButton";
-import ImageGallery from "@/components/ui/image-gallery";
 
 const PHOTO_FILTERS = ["All Seva", "Charity", "Sanatana Dharma"];
 
@@ -130,14 +128,9 @@ function EventCard({ ev, router }: { ev: any; router: any }) {
 
 export default function GalleryClient({ initialPhotos, initialEvents = [] }: GalleryClientProps) {
   const router = useRouter();
-  const [photoItems, setPhotoItems] = useState<any[]>(initialPhotos);
   const [eventItems, setEventItems] = useState<any[]>(initialEvents);
   const [highlightItems, setHighlightItems] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
   const [activePhotoTab, setActivePhotoTab] = useState("All Seva");
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const [visibleCharityCount, setVisibleCharityCount] = useState(6);
-  const [visibleDharmaCount, setVisibleDharmaCount] = useState(6);
 
   useEffect(() => {
     // Check URL search parameters for automatic tab selection when clicking navbar dropdowns
@@ -165,33 +158,6 @@ export default function GalleryClient({ initialPhotos, initialEvents = [] }: Gal
         }
       })
       .catch((err) => console.error("Error fetching highlights:", err));
-
-    // Fetch latest gallery photos
-    fetch(`/api/public/gallery?t=${Date.now()}`, {
-      cache: "no-store",
-      headers: { "Cache-Control": "no-cache" },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data && Array.isArray(data.photos) && data.photos.length > 0) {
-          const dbPhotos = data.photos.map((p: any) => {
-            const isDharma = isDharmaCategory(p.category || "");
-            return {
-              id: String(p.id),
-              title: p.caption || "Sacred Seva",
-              category: isDharma ? "Sanatana Dharma" : "Charity",
-              desc: p.caption || "",
-              src: p.image_url,
-              pillBg: isDharma
-                ? "bg-saffron-glow/90 text-deep-forest"
-                : "bg-tertiary-container text-on-tertiary-container",
-              type: "photo" as const,
-            };
-          });
-          setPhotoItems(dbPhotos);
-        }
-      })
-      .catch((err) => console.error("Error fetching gallery:", err));
 
     // Fetch latest events
     fetch(`/api/public/events?t=${Date.now()}`, {
@@ -240,9 +206,6 @@ export default function GalleryClient({ initialPhotos, initialEvents = [] }: Gal
       .catch((err) => console.error("Error fetching events for seva page:", err));
   }, []);
 
-  const charityPhotos = photoItems.filter((item) => !isDharmaCategory(item.category));
-  const dharmaPhotos = photoItems.filter((item) => isDharmaCategory(item.category));
-
   const deduplicateEvents = (list: any[]) => {
     const seenImages = new Set<string>();
     const seenIds = new Set<string>();
@@ -259,18 +222,8 @@ export default function GalleryClient({ initialPhotos, initialEvents = [] }: Gal
   const charityEvents = deduplicateEvents(eventItems.filter((ev) => !isDharmaCategory(ev.category)));
   const dharmaEvents = deduplicateEvents(eventItems.filter((ev) => isDharmaCategory(ev.category)));
 
-  const displayedCharityPhotos = charityPhotos.slice(0, visibleCharityCount);
-  const displayedDharmaPhotos = dharmaPhotos.slice(0, visibleDharmaCount);
-
   const charityHighlights = highlightItems.filter((h) => h.pillar === "charity" || !h.pillar);
   const dharmaHighlights = highlightItems.filter((h) => h.pillar === "sanatana_dharma");
-
-  const handleSelectPhoto = (selectedItem: any) => {
-    if (selectedItem) {
-      const originalIdx = photoItems.findIndex((x) => x.id === selectedItem.id);
-      if (originalIdx !== -1) setLightboxIndex(originalIdx);
-    }
-  };
 
   return (
     <div className="flex flex-col relative w-full overflow-hidden bg-surface text-on-surface">
@@ -304,8 +257,6 @@ export default function GalleryClient({ initialPhotos, initialEvents = [] }: Gal
               key={f}
               onClick={() => {
                 setActivePhotoTab(f);
-                setVisibleCharityCount(6);
-                setVisibleDharmaCount(6);
               }}
               className={`px-7 py-3 rounded-full font-label transition-all duration-300 cursor-pointer select-none active:scale-95 text-sm sm:text-base ${
                 activePhotoTab === f
@@ -346,74 +297,26 @@ export default function GalleryClient({ initialPhotos, initialEvents = [] }: Gal
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {(charityHighlights.length > 0 ? charityHighlights : [
-                { id: 1, badge: "Anna Daanam", title: "Anna Daanam Mega Food Drive", description: "Nourishing thousands of rural families and pilgrims with freshly prepared sacred meals.", image_url: "/images/events/event-meal-food-carriers.jpg", link_url: "/sevas/meal-food-carriers-govt-home" },
-                { id: 2, badge: "Rural Education", title: "Tribal School Support & Supplies", description: "Providing essential footwear, notebooks, and learning materials to remote Javadhu Hills schools.", image_url: "/images/events/event-tribal-welfare-javadhu.jpg", link_url: "/sevas/tribal-welfare-javadhu-hills" },
-                { id: 3, badge: "Livelihood Aid", title: "Women Empowerment Circle", description: "Supporting Self-Help Groups (SHGs) and traditional artisan women with sustainable livelihood training.", image_url: "/images/events/event-digitisation-women-shg.jpg", link_url: "/sevas/digitisation-activities-wshg" }
+                { id: 1, badge: "Welfare Drives", title: "Providing meal and food carriers to Govt Home Children", description: "Providing nutritious meals and food carriers to the children of Annai Sathiya District Government Home as part of a social welfare and community support initiative.", image_url: "https://res.cloudinary.com/woo94xq2/image/upload/v1783997211/dhara_foundations/activities/meal-food-carriers-govt-home/img_1.jpg", link_url: "/sevas/meal-food-carriers-govt-home" },
+                { id: 2, badge: "Welfare Drives", title: "In Tribal welfare activities at Javadhu hills", description: "Conducting tribal welfare activities in Javadhu Hills as part of a social development and community upliftment initiative aimed at improving the living conditions of tribal communities.", image_url: "https://res.cloudinary.com/woo94xq2/image/upload/v1783997186/dhara_foundations/activities/tribal-welfare-javadhu-hills/img_1.jpg", link_url: "/sevas/tribal-welfare-javadhu-hills" },
+                { id: 3, badge: "Women's Empowerment", title: "In Digitisation activities for Women Self Help Group society", description: "Conducting digitisation activities for Women Self Help Group societies as part of a community empowerment initiative aimed at improving digital literacy and financial inclusion.", image_url: "https://res.cloudinary.com/woo94xq2/image/upload/v1783997177/dhara_foundations/activities/digitisation-activities-wshg/img_1.jpg", link_url: "/sevas/digitisation-activities-wshg" }
               ]).map((h, idx) => (
                 <motion.div
                   key={h.id || idx}
                   whileHover={{ scale: 1.03, y: -4 }}
                   transition={{ duration: 0.3 }}
                   onClick={() => { if (h.link_url) router.push(h.link_url); }}
-                  className="relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl group cursor-pointer h-72"
+                  className="relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl group cursor-pointer h-[380px] sm:h-[430px]"
                 >
                   <img src={h.image_url || "/images/event-1.png"} alt={h.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/95 via-deep-forest/30 to-transparent p-6 flex flex-col justify-end text-white">
-                    <span className="text-xs font-mono font-bold text-saffron-glow uppercase">{h.badge || "Highlight"}</span>
-                    <span className="font-bold text-lg mt-1">{h.title}</span>
-                    <p className="text-xs text-ethereal-white/80 mt-1 line-clamp-2">{h.description}</p>
+                  <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/95 via-deep-forest/30 to-transparent p-6 sm:p-7 flex flex-col justify-end text-white">
+                    <span className="text-xs font-mono font-bold text-saffron-glow uppercase tracking-wider">{h.badge || "Highlight"}</span>
+                    <span className="font-bold text-xl sm:text-2xl mt-1.5 leading-snug">{h.title}</span>
+                    <p className="text-xs sm:text-sm text-ethereal-white/90 mt-1.5 line-clamp-2 leading-relaxed">{h.description}</p>
                   </div>
                 </motion.div>
               ))}
             </div>
-          </div>
-
-          {/* 1B. Charity Photo Chronicles */}
-          <div className="space-y-6 pt-4">
-            <div className="flex items-center justify-between">
-              <h3 className="font-headline-sm text-2xl font-bold text-deep-forest">
-                Charity Photo Chronicles
-              </h3>
-              <span className="text-xs font-mono text-on-surface-variant font-bold">
-                {charityPhotos.length} Photos Published
-              </span>
-            </div>
-
-            {loading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 py-4 animate-pulse">
-                <div className="h-72 bg-gray-200/60 rounded-2xl"></div>
-                <div className="h-72 bg-gray-200/60 rounded-2xl"></div>
-                <div className="h-72 bg-gray-200/60 rounded-2xl"></div>
-              </div>
-            ) : displayedCharityPhotos.length === 0 ? (
-              <div className="text-center py-12 text-sm text-gray-500 bg-white/40 rounded-2xl border border-gray-200/60">
-                No photos currently published in the Charity section.
-              </div>
-            ) : (
-              <>
-                <ImageGallery
-                  items={displayedCharityPhotos}
-                  onSelect={(idx) => handleSelectPhoto(displayedCharityPhotos[idx])}
-                />
-                <div className="mt-8 text-center">
-                  {visibleCharityCount < charityPhotos.length ? (
-                    <div onClick={() => setVisibleCharityCount((prev) => prev + 6)} className="inline-block">
-                      <PillButton variant="secondary" className="!inline-flex gap-2 items-center cursor-pointer hover:scale-105 transition-transform shadow-md">
-                        <span>Load More Charity Photos ({charityPhotos.length - visibleCharityCount} remaining)</span>
-                        <span className="material-symbols-outlined text-lg">expand_more</span>
-                      </PillButton>
-                    </div>
-                  ) : charityPhotos.length > 6 ? (
-                    <div onClick={() => setVisibleCharityCount(6)} className="inline-block">
-                      <PillButton variant="secondary" className="!inline-flex gap-2 items-center cursor-pointer hover:scale-105 transition-transform opacity-80">
-                        <span>Show Less</span>
-                        <span className="material-symbols-outlined text-lg">expand_less</span>
-                      </PillButton>
-                    </div>
-                  ) : null}
-                </div>
-              </>
-            )}
           </div>
 
           {/* 1C. Charity Recent Events & Welfare Drives */}
@@ -479,74 +382,26 @@ export default function GalleryClient({ initialPhotos, initialEvents = [] }: Gal
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {(dharmaHighlights.length > 0 ? dharmaHighlights : [
-                { id: 1, badge: "Spiritual Service", title: "Tiruvannamalai Girivalam Seva Camp", description: "Assisting Sadhus and lakhs of pilgrims during sacred full-moon circumambulation.", image_url: "/images/gallery-3.png", link_url: "/sevas/masi-pournami-girivalam" },
-                { id: 2, badge: "Heritage Revival", title: "Ancient Temple Consecration & Restoration", description: "Reviving centuries-old rural temples with traditional Kumbabhishekam and architectural care.", image_url: "/images/gallery-2.png", link_url: "/sevas/brindavana-kumbabhishekam" },
-                { id: 3, badge: "Vedic Heritage", title: "Sacred Deity Worship & Vedic Revival", description: "Preserving ancient spiritual traditions, deity adornments, and community pooja observances.", image_url: "/images/event-1.png", link_url: "/sevas/devotional-offering-kodai" }
+                { id: 4, badge: "Sanatana Dharma", title: "Masi Pournami Maha Girivalam", description: "A religious awareness procession organized to promote the Masi Pournami Maha Girivalam at Thirupparankundram with devotees and spiritual devotion.", image_url: "/images/events/masi-pournami-girivalam.jpg", link_url: "/sevas/masi-pournami-girivalam" },
+                { id: 5, badge: "Sanatana Dharma", title: "Brindavana Kumbabhishekam ceremony", description: "The Maha Kumbabhishekam Vaibhavam of Shri Raghavendra Swamigal Dakshina Bikshalaya Brindavanam celebrated in a grand spiritual manner at Anaikuppam, Cuddalore.", image_url: "/images/events/brindavana-kumbabhishekam.jpg", link_url: "/sevas/brindavana-kumbabhishekam" },
+                { id: 6, badge: "Sanatana Dharma", title: "Devotional offering presented to the temple", description: "As a mark of faith and devotion, the Kodai was respectfully presented to the temple as a devotional contribution symbolizing spiritual dedication and support.", image_url: "/images/events/devotional-offering-kodai.jpg", link_url: "/sevas/devotional-offering-kodai" }
               ]).map((h, idx) => (
                 <motion.div
                   key={h.id || idx}
                   whileHover={{ scale: 1.03, y: -4 }}
                   transition={{ duration: 0.3 }}
                   onClick={() => { if (h.link_url) router.push(h.link_url); }}
-                  className="relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl group cursor-pointer h-72"
+                  className="relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl group cursor-pointer h-[380px] sm:h-[430px]"
                 >
                   <img src={h.image_url || "/images/event-1.png"} alt={h.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/95 via-deep-forest/30 to-transparent p-6 flex flex-col justify-end text-white">
-                    <span className="text-xs font-mono font-bold text-saffron-glow uppercase">{h.badge || "Highlight"}</span>
-                    <span className="font-bold text-lg mt-1">{h.title}</span>
-                    <p className="text-xs text-ethereal-white/80 mt-1 line-clamp-2">{h.description}</p>
+                  <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/95 via-deep-forest/30 to-transparent p-6 sm:p-7 flex flex-col justify-end text-white">
+                    <span className="text-xs font-mono font-bold text-saffron-glow uppercase tracking-wider">{h.badge || "Highlight"}</span>
+                    <span className="font-bold text-xl sm:text-2xl mt-1.5 leading-snug">{h.title}</span>
+                    <p className="text-xs sm:text-sm text-ethereal-white/90 mt-1.5 line-clamp-2 leading-relaxed">{h.description}</p>
                   </div>
                 </motion.div>
               ))}
             </div>
-          </div>
-
-          {/* 2B. Sanatana Dharma Photo Chronicles */}
-          <div className="space-y-6 pt-4">
-            <div className="flex items-center justify-between">
-              <h3 className="font-headline-sm text-2xl font-bold text-deep-forest">
-                Sanatana Dharma Photo Chronicles
-              </h3>
-              <span className="text-xs font-mono text-on-surface-variant font-bold">
-                {dharmaPhotos.length} Photos Published
-              </span>
-            </div>
-
-            {loading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 py-4 animate-pulse">
-                <div className="h-72 bg-gray-200/60 rounded-2xl"></div>
-                <div className="h-72 bg-gray-200/60 rounded-2xl"></div>
-                <div className="h-72 bg-gray-200/60 rounded-2xl"></div>
-              </div>
-            ) : displayedDharmaPhotos.length === 0 ? (
-              <div className="text-center py-12 text-sm text-gray-500 bg-white/40 rounded-2xl border border-gray-200/60">
-                No photos currently published in the Sanatana Dharma section.
-              </div>
-            ) : (
-              <>
-                <ImageGallery
-                  items={displayedDharmaPhotos}
-                  onSelect={(idx) => handleSelectPhoto(displayedDharmaPhotos[idx])}
-                />
-                <div className="mt-8 text-center">
-                  {visibleDharmaCount < dharmaPhotos.length ? (
-                    <div onClick={() => setVisibleDharmaCount((prev) => prev + 6)} className="inline-block">
-                      <PillButton variant="secondary" className="!inline-flex gap-2 items-center cursor-pointer hover:scale-105 transition-transform shadow-md">
-                        <span>Load More Sanatana Dharma Photos ({dharmaPhotos.length - visibleDharmaCount} remaining)</span>
-                        <span className="material-symbols-outlined text-lg">expand_more</span>
-                      </PillButton>
-                    </div>
-                  ) : dharmaPhotos.length > 6 ? (
-                    <div onClick={() => setVisibleDharmaCount(6)} className="inline-block">
-                      <PillButton variant="secondary" className="!inline-flex gap-2 items-center cursor-pointer hover:scale-105 transition-transform opacity-80">
-                        <span>Show Less</span>
-                        <span className="material-symbols-outlined text-lg">expand_less</span>
-                      </PillButton>
-                    </div>
-                  ) : null}
-                </div>
-              </>
-            )}
           </div>
 
           {/* 2C. Sanatana Dharma Recent Events & Heritage Drives */}
@@ -577,33 +432,6 @@ export default function GalleryClient({ initialPhotos, initialEvents = [] }: Gal
           </div>
         </section>
       )}
-
-      {/* Lightbox Modal for Photos */}
-      <LightboxModal
-        item={
-          lightboxIndex !== null && photoItems[lightboxIndex]
-            ? {
-                src: photoItems[lightboxIndex].src,
-                alt: photoItems[lightboxIndex].title,
-                caption: photoItems[lightboxIndex].desc,
-                category: photoItems[lightboxIndex].category,
-              }
-            : null
-        }
-        onClose={() => setLightboxIndex(null)}
-        onPrev={() =>
-          setLightboxIndex((prev) =>
-            prev !== null ? (prev > 0 ? prev - 1 : photoItems.length - 1) : null
-          )
-        }
-        onNext={() =>
-          setLightboxIndex((prev) =>
-            prev !== null ? (prev < photoItems.length - 1 ? prev + 1 : 0) : null
-          )
-        }
-        currentIndex={lightboxIndex !== null ? lightboxIndex : undefined}
-        totalCount={photoItems.length}
-      />
     </div>
   );
 }
