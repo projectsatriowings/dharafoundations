@@ -383,10 +383,10 @@ export default function AdminGalleryPage() {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
             <div>
               <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-[#8a5000]/10 text-[#8a5000] text-xs font-bold mb-2 uppercase tracking-wider">
-                <Sparkles size={13} /> Complete Seva Management
+                <Sparkles size={13} /> Complete Sevas Management
               </div>
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 font-heading">
-                Seva Page & Visual Chronicles
+                Sevas Page & Visual Chronicles
               </h1>
               <p className="text-sm text-gray-600 mt-1">
                 Full administration for the public <span className="font-semibold text-gray-800">/sevas</span> website — manage detail pages, 3-paragraph writeups, Charity & Sanatana Dharma categories, and high-res photo archives.

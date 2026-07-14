@@ -19,12 +19,20 @@ export function NeoMinimalFooter() {
           
           {/* Brand Column (Span 5) */}
           <div className="col-span-1 sm:col-span-2 md:col-span-5 flex flex-col gap-6">
-            <Link href="/" className="inline-block hover:opacity-90 transition-opacity w-fit">
+            <Link href="/" className="flex items-center gap-3.5 hover:opacity-95 transition-transform hover:scale-[1.02] w-fit group/logo">
               <img
-                src="/logo-stacked-dark.png?v=4"
-                alt="Dhara Foundations"
-                className="h-16 sm:h-20 md:h-24 w-auto object-contain"
+                src="/logo-icon-only.png?v=10"
+                alt="Dhara Foundations Emblem"
+                className="h-14 w-14 sm:h-16 sm:w-16 object-contain block shrink-0"
               />
+              <div className="flex flex-col justify-center">
+                <span className="font-heading font-black text-2xl sm:text-3xl tracking-[0.12em] text-ethereal-white group-hover/logo:text-saffron-glow transition-colors leading-none drop-shadow-[0_2px_6px_rgba(0,0,0,0.85)]">
+                  DHARA
+                </span>
+                <span className="font-title font-extrabold text-[11px] sm:text-[13px] tracking-[0.34em] text-saffron-glow uppercase leading-tight mt-1.5 drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
+                  FOUNDATIONS
+                </span>
+              </div>
             </Link>
             <p className="text-sm text-secondary-fixed-dim leading-relaxed max-w-md font-body opacity-90">
               A non-profit organization dedicated to transforming lives and protecting traditions through compassionate service and cultural revival.
@@ -72,7 +80,7 @@ export function NeoMinimalFooter() {
                 { name: "About Us", href: "/about" },
                 { name: "Sanatana Dharma", href: "/about" },
                 { name: "Events & Activities", href: "/events" },
-                { name: "Seva (Gallery)", href: "/gallery" }
+                { name: "Sevas", href: "/gallery" }
               ] 
             },
             { 

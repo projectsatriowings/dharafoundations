@@ -142,13 +142,21 @@ export function Header() {
       >
         <Link
           href="/"
-          className="flex items-center hover:opacity-95 transition-transform hover:scale-105 shrink-0 ml-2 sm:ml-4 mr-5 group/logo"
+          className="flex items-center gap-2.5 sm:gap-3 hover:opacity-95 transition-all hover:scale-[1.03] shrink-0 ml-2 sm:ml-4 mr-4 group/logo"
         >
           <img
-            src="/logo-stacked-dark.png?v=6"
-            alt="Dhara Foundations"
-            className="h-16 sm:h-18 w-auto object-contain block drop-shadow-[0_2px_12px_rgba(255,255,255,0.25)] brightness-110"
+            src="/logo-icon-only.png?v=10"
+            alt="Dhara Foundations Emblem"
+            className="h-11 w-11 sm:h-13 sm:w-13 object-contain block shrink-0"
           />
+          <div className="flex flex-col justify-center py-0.5">
+            <span className="font-heading font-black text-lg sm:text-xl tracking-[0.12em] text-ethereal-white group-hover/logo:text-saffron-glow transition-colors leading-none drop-shadow-[0_2px_6px_rgba(0,0,0,0.85)]">
+              DHARA
+            </span>
+            <span className="font-title font-extrabold text-[9px] sm:text-[10.5px] tracking-[0.34em] text-saffron-glow uppercase leading-tight mt-1 drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
+              FOUNDATIONS
+            </span>
+          </div>
         </Link>
 
         {/* Desktop Navigation */}
