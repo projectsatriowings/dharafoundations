@@ -155,11 +155,11 @@ export function Header() {
 
   return (
     <header
-      className="sticky top-4 left-0 right-0 w-full font-label-lg z-50 px-4 sm:px-6 pointer-events-none transition-all duration-300"
+      className="sticky top-4 left-0 right-0 w-full font-label-lg z-50 px-3 sm:px-6 lg:px-8 xl:px-12 pointer-events-none transition-all duration-300"
       id="main-nav"
     >
       <div
-        className={`pointer-events-auto mx-auto max-w-[1340px] rounded-full border flex justify-between items-center px-5 sm:px-7 py-2.5 sm:py-3 transition-all duration-300 ${
+        className={`pointer-events-auto mx-auto w-full max-w-[1540px] rounded-full border flex justify-between items-center px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3 transition-all duration-300 ${
           isScrolled
             ? "bg-deep-forest/95 backdrop-blur-2xl shadow-2xl border-ethereal-white/20 text-ethereal-white"
             : "bg-deep-forest/90 backdrop-blur-md shadow-xl border-ethereal-white/20 text-ethereal-white"
@@ -167,20 +167,20 @@ export function Header() {
       >
         <Link
           href="/"
-          className="flex items-center gap-2.5 sm:gap-3 hover:opacity-95 transition-all hover:scale-[1.03] shrink-0 ml-2 sm:ml-4 mr-4 group/logo"
+          className="flex items-center gap-2.5 sm:gap-3 hover:opacity-95 transition-all hover:scale-[1.03] shrink-0 ml-1 sm:ml-2 mr-3 lg:mr-5 group/logo"
         >
           <img
             src="/logo-icon-only.png?v=10"
             alt="Dhara Foundations Emblem"
             className="h-11 w-11 sm:h-13 sm:w-13 object-contain block shrink-0"
           />
-          <div className="flex flex-col justify-center py-0.5 w-[102px] sm:w-[116px]">
-            <div className="flex justify-between items-center w-full font-heading font-black text-[15.5px] sm:text-[17.5px] text-ethereal-white group-hover/logo:text-saffron-glow transition-colors leading-none drop-shadow-[0_2px_6px_rgba(0,0,0,0.85)]">
+          <div className="flex flex-col justify-center py-0.5 w-[114px] sm:w-[134px]">
+            <div className="flex justify-between items-center w-full font-heading font-black text-[16.5px] sm:text-[19.5px] text-ethereal-white group-hover/logo:text-saffron-glow transition-colors leading-none drop-shadow-[0_2px_6px_rgba(0,0,0,0.85)]">
               {"DHARA".split("").map((char, idx) => (
                 <span key={idx}>{char}</span>
               ))}
             </div>
-            <div className="flex justify-between items-center w-full font-title font-extrabold text-[7.2px] sm:text-[8.2px] text-saffron-glow uppercase leading-tight mt-1 drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
+            <div className="flex justify-between items-center w-full font-title font-black text-[9px] sm:text-[11px] text-saffron-glow uppercase leading-tight mt-0.5 drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
               {"FOUNDATIONS".split("").map((char, idx) => (
                 <span key={idx}>{char}</span>
               ))}
@@ -189,7 +189,7 @@ export function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav ref={navRef} className="hidden lg:flex items-center gap-0.5 xl:gap-1.5 relative">
+        <nav ref={navRef} className="hidden lg:flex items-center gap-1 xl:gap-2.5 relative shrink-0">
           {dynamicLinks.map((link) => {
             const isTopActive =
               pathname === link.href ||
@@ -200,19 +200,19 @@ export function Header() {
                 <div
                   key={link.label}
                   data-nav-active={isTopActive ? "true" : "false"}
-                  className="relative py-1 group/drop"
+                  className="relative py-1 group/drop shrink-0"
                   onMouseEnter={() => setHoveredDropdown(link.label)}
                   onMouseLeave={() => setHoveredDropdown(null)}
                 >
                   <Link
                     href={link.href}
-                    className={`relative inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full transition-all text-[15px] lg:text-[17px] ${
+                    className={`relative inline-flex items-center gap-1 px-3.5 lg:px-4 py-1.5 rounded-full transition-all text-[15px] lg:text-[16.5px] whitespace-nowrap shrink-0 ${
                       isTopActive
                         ? "bg-saffron-glow/20 text-saffron-glow font-extrabold tracking-wide"
                         : "text-ethereal-white/90 hover:text-saffron-glow hover:bg-white/10 font-extrabold tracking-wide"
                     }`}
                   >
-                    <span>{link.label}</span>
+                    <span className="whitespace-nowrap">{link.label}</span>
                     <span className="material-symbols-outlined text-sm transition-transform duration-300 group-hover/drop:rotate-180">
                       expand_more
                     </span>
@@ -270,13 +270,13 @@ export function Header() {
               >
                 <Link
                   href={link.href}
-                  className={`relative inline-block px-3.5 py-1.5 rounded-full transition-all text-[15px] lg:text-[17px] hover:-translate-y-0.5 ${
+                  className={`relative inline-block px-3.5 lg:px-4 py-1.5 rounded-full transition-all text-[15px] lg:text-[16.5px] whitespace-nowrap shrink-0 hover:-translate-y-0.5 ${
                     isTopActive
                       ? "bg-saffron-glow/20 text-saffron-glow font-extrabold tracking-wide"
                       : "text-ethereal-white/90 hover:text-saffron-glow hover:bg-white/10 font-extrabold tracking-wide"
                   }`}
                 >
-                  {link.label}
+                  <span className="whitespace-nowrap">{link.label}</span>
                 </Link>
 
                 <AnimatePresence>

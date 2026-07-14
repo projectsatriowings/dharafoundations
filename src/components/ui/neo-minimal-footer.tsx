@@ -25,13 +25,13 @@ export function NeoMinimalFooter() {
                 alt="Dhara Foundations Emblem"
                 className="h-14 w-14 sm:h-16 sm:w-16 object-contain block shrink-0"
               />
-              <div className="flex flex-col justify-center w-[126px] sm:w-[144px]">
-                <div className="flex justify-between items-center w-full font-heading font-black text-[18px] sm:text-[21px] text-ethereal-white group-hover/logo:text-saffron-glow transition-colors leading-none drop-shadow-[0_2px_6px_rgba(0,0,0,0.85)]">
+              <div className="flex flex-col justify-center w-[138px] sm:w-[162px]">
+                <div className="flex justify-between items-center w-full font-heading font-black text-[19.5px] sm:text-[23px] text-ethereal-white group-hover/logo:text-saffron-glow transition-colors leading-none drop-shadow-[0_2px_6px_rgba(0,0,0,0.85)]">
                   {"DHARA".split("").map((char, idx) => (
                     <span key={idx}>{char}</span>
                   ))}
                 </div>
-                <div className="flex justify-between items-center w-full font-title font-extrabold text-[8.5px] sm:text-[10px] text-saffron-glow uppercase leading-tight mt-1.5 drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
+                <div className="flex justify-between items-center w-full font-title font-black text-[10.5px] sm:text-[12.5px] text-saffron-glow uppercase leading-tight mt-1 drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
                   {"FOUNDATIONS".split("").map((char, idx) => (
                     <span key={idx}>{char}</span>
                   ))}

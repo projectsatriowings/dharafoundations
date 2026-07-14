@@ -5,6 +5,7 @@ import { LenisProvider } from "@/components/motion/LenisProvider";
 import RingCursor from "@/components/RingCursor/RingCursor";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { PwaRegistry } from "@/components/pwa/PwaRegistry";
 
 const robotoSlab = Roboto_Slab({
   subsets: ["latin"],
@@ -39,6 +40,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`${robotoSlab.variable} ${montserrat.variable} scroll-smooth`}>
       <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#00322B" />
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
           rel="stylesheet"
@@ -46,6 +49,7 @@ export default function RootLayout({
       </head>
       <body suppressHydrationWarning className="bg-background text-on-background font-body antialiased overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
         <LenisProvider>
+          <PwaRegistry />
           <Header />
           <main className="min-h-screen">{children}</main>
           <Footer />
