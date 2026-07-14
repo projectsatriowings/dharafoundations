@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
       SELECT id, image_url, caption, category, is_featured, sort_order, created_at
       FROM gallery_photos
       WHERE (${!category || category === "all"}::boolean OR category = ${category})
-      ORDER BY is_featured DESC, created_at DESC
+      ORDER BY sort_order ASC, created_at DESC
     `;
 
     return NextResponse.json({ photos });

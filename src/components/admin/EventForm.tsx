@@ -48,9 +48,10 @@ export interface EventFormData {
 interface EventFormProps {
   initialData?: EventFormData;
   isEdit?: boolean;
+  isSeva?: boolean;
 }
 
-export function EventForm({ initialData, isEdit = false }: EventFormProps) {
+export function EventForm({ initialData, isEdit = false, isSeva = false }: EventFormProps) {
   const router = useRouter();
   const [formData, setFormData] = useState<EventFormData>({
     title: initialData?.title || "",
@@ -147,7 +148,7 @@ export function EventForm({ initialData, isEdit = false }: EventFormProps) {
       if (isAutoSave) {
         setAutoSaveStatus(`Draft auto-saved at ${new Date().toLocaleTimeString()}`);
       } else {
-        router.push("/admin/events");
+        router.push(isSeva ? "/admin/gallery" : "/admin/events");
         router.refresh();
       }
     } catch (err: any) {
@@ -156,7 +157,7 @@ export function EventForm({ initialData, isEdit = false }: EventFormProps) {
     } finally {
       if (!isAutoSave) setSaving(false);
     }
-  }, [formData, isEdit, initialData, router]);
+  }, [formData, isEdit, isSeva, initialData, router]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -426,7 +427,7 @@ export function EventForm({ initialData, isEdit = false }: EventFormProps) {
           {/* Card 3: Gallery */}
           <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
             <h2 className="text-base font-bold text-gray-900 border-b border-gray-100 pb-4 mb-4">
-              Event Photo Gallery
+              {isSeva ? "Seva Photo Gallery (Visual Chronicles)" : "Event Photo Gallery"}
             </h2>
             <GalleryUploader
               items={formData.gallery_images || []}
@@ -437,7 +438,7 @@ export function EventForm({ initialData, isEdit = false }: EventFormProps) {
           {/* Card 4: Video Links */}
           <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
             <h2 className="text-base font-bold text-gray-900 border-b border-gray-100 pb-4 mb-4">
-              Event Video Gallery (YouTube Links)
+              {isSeva ? "Seva Video Gallery (YouTube Links)" : "Event Video Gallery (YouTube Links)"}
             </h2>
             <VideoLinksUploader
               items={formData.video_links || []}
@@ -605,7 +606,7 @@ export function EventForm({ initialData, isEdit = false }: EventFormProps) {
             ) : (
               <>
                 <Save size={16} />
-                Publish Event
+                {isSeva ? "Publish Seva Activity" : "Publish Event"}
               </>
             )}
           </button>

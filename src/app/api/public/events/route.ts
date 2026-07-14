@@ -10,10 +10,10 @@ export async function GET(req: NextRequest) {
   try {
     const events = await sql`
       SELECT id, slug, title, event_date, event_time, location_name,
-             cover_image_url, status, category, updated_at
+             cover_image_url, status, category, updated_at, sort_order
       FROM events
       WHERE status = 'published' OR status IS NULL
-      ORDER BY event_date DESC
+      ORDER BY sort_order ASC, event_date DESC
     `;
 
     const formatDisplayDate = (val: any): string => {

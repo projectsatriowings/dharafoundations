@@ -18,8 +18,12 @@ export interface GalleryClientProps {
 }
 
 const isDharmaCategory = (rawCat: string) => {
-  const cat = (rawCat || "").toLowerCase();
+  const cat = (rawCat || "").toLowerCase().trim();
+  if (cat === "sanatana_dharma" || cat === "sanatana dharma" || cat.includes("temple") || cat.includes("dharma") || cat.includes("girivalam") || cat.includes("pooja") || cat.includes("sanatana")) {
+    return true;
+  }
   if (
+    cat === "charity" ||
     cat.includes("children") ||
     cat.includes("education") ||
     cat.includes("charity") ||
@@ -128,6 +132,7 @@ export default function GalleryClient({ initialPhotos, initialEvents = [] }: Gal
   const router = useRouter();
   const [photoItems, setPhotoItems] = useState<any[]>(initialPhotos);
   const [eventItems, setEventItems] = useState<any[]>(initialEvents);
+  const [highlightItems, setHighlightItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [activePhotoTab, setActivePhotoTab] = useState("All Seva");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -147,6 +152,19 @@ export default function GalleryClient({ initialPhotos, initialEvents = [] }: Gal
         }
       }
     }
+
+    // Fetch latest highlights
+    fetch(`/api/public/highlights?t=${Date.now()}`, {
+      cache: "no-store",
+      headers: { "Cache-Control": "no-cache" },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && Array.isArray(data.highlights)) {
+          setHighlightItems(data.highlights);
+        }
+      })
+      .catch((err) => console.error("Error fetching highlights:", err));
 
     // Fetch latest gallery photos
     fetch(`/api/public/gallery?t=${Date.now()}`, {
@@ -244,6 +262,9 @@ export default function GalleryClient({ initialPhotos, initialEvents = [] }: Gal
   const displayedCharityPhotos = charityPhotos.slice(0, visibleCharityCount);
   const displayedDharmaPhotos = dharmaPhotos.slice(0, visibleDharmaCount);
 
+  const charityHighlights = highlightItems.filter((h) => h.pillar === "charity" || !h.pillar);
+  const dharmaHighlights = highlightItems.filter((h) => h.pillar === "sanatana_dharma");
+
   const handleSelectPhoto = (selectedItem: any) => {
     if (selectedItem) {
       const originalIdx = photoItems.findIndex((x) => x.id === selectedItem.id);
@@ -324,47 +345,26 @@ export default function GalleryClient({ initialPhotos, initialEvents = [] }: Gal
               </h3>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* Highlight Card 1 */}
-              <motion.div
-                whileHover={{ scale: 1.03, y: -4 }}
-                transition={{ duration: 0.3 }}
-                className="relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl group cursor-pointer h-72"
-              >
-                <img src="/images/events/event-meal-food-carriers.jpg" alt="Anna Daanam Drive" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/95 via-deep-forest/30 to-transparent p-6 flex flex-col justify-end text-white">
-                  <span className="text-xs font-mono font-bold text-saffron-glow uppercase">Anna Daanam</span>
-                  <span className="font-bold text-lg mt-1">Anna Daanam Mega Food Drive</span>
-                  <p className="text-xs text-ethereal-white/80 mt-1 line-clamp-2">Nourishing thousands of rural families and pilgrims with freshly prepared sacred meals.</p>
-                </div>
-              </motion.div>
-
-              {/* Highlight Card 2 */}
-              <motion.div
-                whileHover={{ scale: 1.03, y: -4 }}
-                transition={{ duration: 0.3 }}
-                className="relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl group cursor-pointer h-72"
-              >
-                <img src="/images/events/event-tribal-welfare-javadhu.jpg" alt="Tribal School Support" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/95 via-deep-forest/30 to-transparent p-6 flex flex-col justify-end text-white">
-                  <span className="text-xs font-mono font-bold text-saffron-glow uppercase">Rural Education</span>
-                  <span className="font-bold text-lg mt-1">Tribal School Support & Supplies</span>
-                  <p className="text-xs text-ethereal-white/80 mt-1 line-clamp-2">Providing essential footwear, notebooks, and learning materials to remote Javadhu Hills schools.</p>
-                </div>
-              </motion.div>
-
-              {/* Highlight Card 3 */}
-              <motion.div
-                whileHover={{ scale: 1.03, y: -4 }}
-                transition={{ duration: 0.3 }}
-                className="relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl group cursor-pointer h-72"
-              >
-                <img src="/images/events/event-digitisation-women-shg.jpg" alt="Women Empowerment" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/95 via-deep-forest/30 to-transparent p-6 flex flex-col justify-end text-white">
-                  <span className="text-xs font-mono font-bold text-saffron-glow uppercase">Livelihood Aid</span>
-                  <span className="font-bold text-lg mt-1">Women Empowerment Circle</span>
-                  <p className="text-xs text-ethereal-white/80 mt-1 line-clamp-2">Supporting Self-Help Groups (SHGs) and traditional artisan women with sustainable livelihood training.</p>
-                </div>
-              </motion.div>
+              {(charityHighlights.length > 0 ? charityHighlights : [
+                { id: 1, badge: "Anna Daanam", title: "Anna Daanam Mega Food Drive", description: "Nourishing thousands of rural families and pilgrims with freshly prepared sacred meals.", image_url: "/images/events/event-meal-food-carriers.jpg", link_url: "/sevas/meal-food-carriers-govt-home" },
+                { id: 2, badge: "Rural Education", title: "Tribal School Support & Supplies", description: "Providing essential footwear, notebooks, and learning materials to remote Javadhu Hills schools.", image_url: "/images/events/event-tribal-welfare-javadhu.jpg", link_url: "/sevas/tribal-welfare-javadhu-hills" },
+                { id: 3, badge: "Livelihood Aid", title: "Women Empowerment Circle", description: "Supporting Self-Help Groups (SHGs) and traditional artisan women with sustainable livelihood training.", image_url: "/images/events/event-digitisation-women-shg.jpg", link_url: "/sevas/digitisation-activities-wshg" }
+              ]).map((h, idx) => (
+                <motion.div
+                  key={h.id || idx}
+                  whileHover={{ scale: 1.03, y: -4 }}
+                  transition={{ duration: 0.3 }}
+                  onClick={() => { if (h.link_url) router.push(h.link_url); }}
+                  className="relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl group cursor-pointer h-72"
+                >
+                  <img src={h.image_url || "/images/event-1.png"} alt={h.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/95 via-deep-forest/30 to-transparent p-6 flex flex-col justify-end text-white">
+                    <span className="text-xs font-mono font-bold text-saffron-glow uppercase">{h.badge || "Highlight"}</span>
+                    <span className="font-bold text-lg mt-1">{h.title}</span>
+                    <p className="text-xs text-ethereal-white/80 mt-1 line-clamp-2">{h.description}</p>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
 
@@ -478,47 +478,26 @@ export default function GalleryClient({ initialPhotos, initialEvents = [] }: Gal
               </h3>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* Highlight Card 1 */}
-              <motion.div
-                whileHover={{ scale: 1.03, y: -4 }}
-                transition={{ duration: 0.3 }}
-                className="relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl group cursor-pointer h-72"
-              >
-                <img src="/images/gallery-3.png" alt="Girivalam Seva Camp" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/95 via-deep-forest/30 to-transparent p-6 flex flex-col justify-end text-white">
-                  <span className="text-xs font-mono font-bold text-saffron-glow uppercase">Spiritual Service</span>
-                  <span className="font-bold text-lg mt-1">Tiruvannamalai Girivalam Seva Camp</span>
-                  <p className="text-xs text-ethereal-white/80 mt-1 line-clamp-2">Assisting Sadhus and lakhs of pilgrims during sacred full-moon circumambulation.</p>
-                </div>
-              </motion.div>
-
-              {/* Highlight Card 2 */}
-              <motion.div
-                whileHover={{ scale: 1.03, y: -4 }}
-                transition={{ duration: 0.3 }}
-                className="relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl group cursor-pointer h-72"
-              >
-                <img src="/images/gallery-2.png" alt="Temple Consecration" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/95 via-deep-forest/30 to-transparent p-6 flex flex-col justify-end text-white">
-                  <span className="text-xs font-mono font-bold text-saffron-glow uppercase">Heritage Revival</span>
-                  <span className="font-bold text-lg mt-1">Ancient Temple Consecration & Restoration</span>
-                  <p className="text-xs text-ethereal-white/80 mt-1 line-clamp-2">Reviving centuries-old rural temples with traditional Kumbabhishekam and architectural care.</p>
-                </div>
-              </motion.div>
-
-              {/* Highlight Card 3 */}
-              <motion.div
-                whileHover={{ scale: 1.03, y: -4 }}
-                transition={{ duration: 0.3 }}
-                className="relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl group cursor-pointer h-72"
-              >
-                <img src="/images/event-1.png" alt="Sacred Deity Worship" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/95 via-deep-forest/30 to-transparent p-6 flex flex-col justify-end text-white">
-                  <span className="text-xs font-mono font-bold text-saffron-glow uppercase">Vedic Heritage</span>
-                  <span className="font-bold text-lg mt-1">Sacred Deity Worship & Vedic Revival</span>
-                  <p className="text-xs text-ethereal-white/80 mt-1 line-clamp-2">Preserving ancient spiritual traditions, deity adornments, and community pooja observances.</p>
-                </div>
-              </motion.div>
+              {(dharmaHighlights.length > 0 ? dharmaHighlights : [
+                { id: 1, badge: "Spiritual Service", title: "Tiruvannamalai Girivalam Seva Camp", description: "Assisting Sadhus and lakhs of pilgrims during sacred full-moon circumambulation.", image_url: "/images/gallery-3.png", link_url: "/sevas/masi-pournami-girivalam" },
+                { id: 2, badge: "Heritage Revival", title: "Ancient Temple Consecration & Restoration", description: "Reviving centuries-old rural temples with traditional Kumbabhishekam and architectural care.", image_url: "/images/gallery-2.png", link_url: "/sevas/brindavana-kumbabhishekam" },
+                { id: 3, badge: "Vedic Heritage", title: "Sacred Deity Worship & Vedic Revival", description: "Preserving ancient spiritual traditions, deity adornments, and community pooja observances.", image_url: "/images/event-1.png", link_url: "/sevas/devotional-offering-kodai" }
+              ]).map((h, idx) => (
+                <motion.div
+                  key={h.id || idx}
+                  whileHover={{ scale: 1.03, y: -4 }}
+                  transition={{ duration: 0.3 }}
+                  onClick={() => { if (h.link_url) router.push(h.link_url); }}
+                  className="relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl group cursor-pointer h-72"
+                >
+                  <img src={h.image_url || "/images/event-1.png"} alt={h.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/95 via-deep-forest/30 to-transparent p-6 flex flex-col justify-end text-white">
+                    <span className="text-xs font-mono font-bold text-saffron-glow uppercase">{h.badge || "Highlight"}</span>
+                    <span className="font-bold text-lg mt-1">{h.title}</span>
+                    <p className="text-xs text-ethereal-white/80 mt-1 line-clamp-2">{h.description}</p>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
 

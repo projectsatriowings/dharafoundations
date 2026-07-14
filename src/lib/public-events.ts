@@ -42,6 +42,24 @@ export async function getPublicEvents(): Promise<Event[]> {
       ORDER BY event_date DESC
     `;
 
+    let allGalleryRows: any[] = [];
+    try {
+      allGalleryRows = await sql`
+        SELECT event_id, image_url, sort_order
+        FROM event_gallery_images
+        ORDER BY sort_order ASC
+      `;
+    } catch (gErr) {
+      console.warn("Could not load gallery rows for public events:", gErr);
+    }
+    const galleryByEventId = new Map<string, string[]>();
+    for (const g of allGalleryRows) {
+      if (!g.image_url) continue;
+      const key = String(g.event_id);
+      if (!galleryByEventId.has(key)) galleryByEventId.set(key, []);
+      galleryByEventId.get(key)!.push(g.image_url);
+    }
+
     const dbEvents: Event[] = rows.map((r, idx): Event => {
       const descList: string[] = [];
       if (r.full_description) {
@@ -56,6 +74,13 @@ export async function getPublicEvents(): Promise<Event[]> {
       }
 
       const cleanImg = getCleanEventImage(`${r.title || ""} ${r.slug || ""} ${r.cover_image_url || ""}`, r.cover_image_url);
+      const evIdStr = String(r.id);
+      const evSlugStr = String(r.slug || "");
+      const matchedGallery = Array.from(new Set([
+        ...(galleryByEventId.get(evIdStr) || []),
+        ...(galleryByEventId.get(evSlugStr) || []),
+      ]));
+
       return {
         id: r.slug || r.id.toString(),
         numericId: (idx + 40).toString(),
@@ -70,7 +95,7 @@ export async function getPublicEvents(): Promise<Event[]> {
         },
         coverImage: cleanImg,
         description: descList,
-        galleryImages: [],
+        galleryImages: matchedGallery,
       };
     });
 
@@ -121,7 +146,7 @@ export async function getPublicEventBySlug(slug: string): Promise<Event | null> 
       galleryRows = await sql`
         SELECT image_url
         FROM event_gallery_images
-        WHERE event_id::text = ${String(r.id)} OR event_id::text = ${String(r.slug || '')}
+        WHERE event_id::text = ${String(r.id)} OR event_id::text = ${String(r.slug || '')} OR event_id::text = ${String(lookupSlug)} OR event_id::text = ${String(slug)}
         ORDER BY sort_order ASC
       `;
     } catch (gErr) {
@@ -133,7 +158,7 @@ export async function getPublicEventBySlug(slug: string): Promise<Event | null> 
       videoRows = await sql`
         SELECT title, video_url
         FROM event_videos
-        WHERE event_id::text = ${String(r.id)} OR event_id::text = ${String(r.slug || '')}
+        WHERE event_id::text = ${String(r.id)} OR event_id::text = ${String(r.slug || '')} OR event_id::text = ${String(lookupSlug)} OR event_id::text = ${String(slug)}
         ORDER BY sort_order ASC
       `;
     } catch (vErr) {

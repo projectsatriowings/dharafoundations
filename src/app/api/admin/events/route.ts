@@ -4,6 +4,7 @@ import sql from "@/lib/db";
 import { getSession } from "@/lib/session";
 import { validateCoordinates } from "@/utils/validateCoords";
 import { slugify } from "@/utils/slugify";
+import { EVENTS_DATA, getCleanEventImage } from "@/data/events";
 
 export async function GET(req: NextRequest) {
   try {
@@ -21,34 +22,64 @@ export async function GET(req: NextRequest) {
     const limit = Number(searchParams.get("limit") || "10");
     const offset = (page - 1) * limit;
 
-    const events = await sql`
+    const dbEvents = await sql`
       SELECT id, slug, title, event_date, event_time, location_name,
-             cover_image_url, status, category, updated_at
+             cover_image_url, status, category, updated_at, sort_order
       FROM events
-      WHERE (${!status || status === "all"}::boolean OR status = ${status})
-        AND (${!year || year === "all"}::boolean OR EXTRACT(YEAR FROM event_date)::text = ${year})
-        AND (${!location || location === "all"}::boolean OR location_name ILIKE ${"%" + (location || "") + "%"})
-        AND (${!search}::boolean OR title ILIKE ${"%" + (search || "") + "%"})
-      ORDER BY event_date DESC
-      LIMIT ${limit} OFFSET ${offset}
+      ORDER BY sort_order ASC, event_date DESC
     `;
 
-    const [{ count }] = await sql`
-      SELECT COUNT(*)
-      FROM events
-      WHERE (${!status || status === "all"}::boolean OR status = ${status})
-        AND (${!year || year === "all"}::boolean OR EXTRACT(YEAR FROM event_date)::text = ${year})
-        AND (${!location || location === "all"}::boolean OR location_name ILIKE ${"%" + (location || "") + "%"})
-        AND (${!search}::boolean OR title ILIKE ${"%" + (search || "") + "%"})
-    `;
+    const existingSlugs = new Set((dbEvents || []).map((e: any) => (e.slug || "").toLowerCase()));
+    const existingIds = new Set((dbEvents || []).map((e: any) => String(e.id || "").toLowerCase()));
+    const existingTitles = new Set((dbEvents || []).map((e: any) => (e.title || "").toLowerCase().trim()));
+
+    const staticMapped = EVENTS_DATA.filter(
+      (e) => !existingSlugs.has(e.id.toLowerCase()) && !existingIds.has(e.id.toLowerCase()) && !existingTitles.has(e.title.toLowerCase().trim())
+    ).map((e) => {
+      const cleanImg = getCleanEventImage(`${e.title || ""} ${e.id || ""} ${e.coverImage || ""}`, e.coverImage);
+      const isSanatana =
+        e.category === "Sanatana Dharma" ||
+        (e.title && e.title.toLowerCase().includes("temple")) ||
+        (e.title && e.title.toLowerCase().includes("girivalam")) ||
+        (e.title && e.title.toLowerCase().includes("pooja"));
+
+      return {
+        id: e.id, // Use unique string id/slug to guarantee no collision with DB numeric IDs
+        slug: e.id,
+        title: e.title,
+        event_date: e.date,
+        event_time: e.time || "09:00",
+        location_name: e.location || "Cuddalore / Tamil Nadu",
+        cover_image_url: cleanImg,
+        status: "published",
+        category: e.category || (isSanatana ? "Sanatana Dharma" : "Welfare Drives"),
+        updated_at: new Date().toISOString(),
+      };
+    });
+
+    const allEvents = (dbEvents || []).concat(staticMapped);
+
+    // Apply filtering on combined events
+    const filteredEvents = allEvents.filter((ev: any) => {
+      if (status && status !== "all" && ev.status !== status) return false;
+      if (year && year !== "all") {
+        const evYear = new Date(ev.event_date).getFullYear().toString();
+        if (evYear !== year) return false;
+      }
+      if (location && location !== "all" && !((ev.location_name || "").toLowerCase().includes(location.toLowerCase()))) return false;
+      if (search && !((ev.title || "").toLowerCase().includes(search.toLowerCase()))) return false;
+      return true;
+    });
+
+    const paginatedEvents = filteredEvents.slice(offset, offset + limit);
 
     return NextResponse.json({
-      events,
+      events: paginatedEvents,
       pagination: {
-        total: Number(count),
+        total: filteredEvents.length,
         page,
         limit,
-        totalPages: Math.ceil(Number(count) / limit),
+        totalPages: Math.ceil(filteredEvents.length / limit),
       },
     });
   } catch (err) {
@@ -114,17 +145,11 @@ export async function POST(req: NextRequest) {
       INSERT INTO events (
         slug, title, event_date, event_time, location_name,
         latitude, longitude, cover_image_url, short_description,
-        full_description, category, show_register_btn, cta_label,
-        enable_social_share, twitter_share_url, facebook_share_url,
-        pinterest_share_url, instagram_share_url, status,
-        meta_title, meta_description
+        full_description, category, status
       ) VALUES (
         ${slug}, ${title}, ${event_date}, ${event_time}, ${location_name},
         ${latNum}, ${lngNum}, ${cover_image_url}, ${short_description || null},
-        ${full_description || null}, ${category || "General"}, ${show_register_btn}, ${cta_label},
-        ${enable_social_share}, ${twitter_share_url || null}, ${facebook_share_url || null},
-        ${pinterest_share_url || null}, ${instagram_share_url || null}, ${status},
-        ${meta_title || title}, ${meta_description || short_description || null}
+        ${full_description || null}, ${category || "General"}, ${status}
       )
       RETURNING *
     `;

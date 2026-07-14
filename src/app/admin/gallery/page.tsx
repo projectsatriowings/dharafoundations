@@ -29,18 +29,34 @@ import {
 export default function AdminGalleryPage() {
   const router = useRouter();
   // Master Tab State
-  const [activeTab, setActiveTab] = useState<"activities" | "chronicles">("activities");
+  const [activeTab, setActiveTab] = useState<"activities" | "highlights" | "chronicles">("activities");
 
   // --- TAB 1: SEVA ACTIVITIES & DETAIL PAGES STATE ---
   const [activities, setActivities] = useState<any[]>([]);
   const [activitiesLoading, setActivitiesLoading] = useState(true);
   const [activitySearch, setActivitySearch] = useState("");
   const [pillarFilter, setPillarFilter] = useState<"all" | "charity" | "sanatana">("all");
+  const [deleteActivityModalOpen, setDeleteActivityModalOpen] = useState(false);
+  const [selectedActivityForDelete, setSelectedActivityForDelete] = useState<any | null>(null);
 
   // --- TAB 2: SEVA PHOTO CHRONICLES STATE ---
   const [photos, setPhotos] = useState<any[]>([]);
   const [photosLoading, setPhotosLoading] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState("all");
+
+  // --- TAB 3: TOP MOMENTS HIGHLIGHTS STATE ---
+  const [highlights, setHighlights] = useState<any[]>([]);
+  const [highlightsLoading, setHighlightsLoading] = useState(true);
+  const [highlightModalOpen, setHighlightModalOpen] = useState(false);
+  const [editingHighlight, setEditingHighlight] = useState<any | null>(null);
+  const [hPillar, setHPillar] = useState("charity");
+  const [hBadge, setHBadge] = useState("Highlight");
+  const [hTitle, setHTitle] = useState("");
+  const [hDesc, setHDesc] = useState("");
+  const [hUrl, setHUrl] = useState("/images/event-1.png");
+  const [hLink, setHLink] = useState("");
+  const [hOrder, setHOrder] = useState(1);
+  const [hSaving, setHSaving] = useState(false);
 
   // Upload Modal for Standalone Chronicles
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
@@ -103,11 +119,33 @@ export default function AdminGalleryPage() {
     }
   };
 
+  // --- FETCH TOP MOMENTS HIGHLIGHTS (TAB 3) ---
+  const fetchHighlights = async () => {
+    setHighlightsLoading(true);
+    try {
+      const res = await fetch("/api/admin/highlights");
+      if (res.ok) {
+        const data = await res.json();
+        setHighlights(data.highlights || []);
+      }
+    } catch (err) {
+      console.error("Failed to load highlights:", err);
+    } finally {
+      setHighlightsLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (activeTab === "activities") {
       fetchActivities();
-    } else {
+    } else if (activeTab === "highlights") {
+      fetchHighlights();
+    } else if (activeTab === "chronicles") {
       fetchPhotos();
+    }
+    // Also fetch highlights right away so count badge and initial data are ready
+    if (highlights.length === 0) {
+      fetchHighlights();
     }
   }, [activeTab, categoryFilter]);
 
@@ -179,6 +217,97 @@ export default function AdminGalleryPage() {
       body: JSON.stringify({ is_featured: !photo.is_featured }),
     });
     fetchPhotos();
+    fetchHighlights();
+  };
+
+  const handleMoveActivity = async (ev: any, direction: 'up' | 'down') => {
+    const currentIdx = activities.findIndex((a) => (a.id || a.slug) === (ev.id || ev.slug));
+    if (currentIdx === -1) return;
+    const targetIdx = direction === 'up' ? currentIdx - 1 : currentIdx + 1;
+    if (targetIdx < 0 || targetIdx >= activities.length) return;
+
+    const targetEv = activities[targetIdx];
+    const orderA = Number(ev.sort_order || currentIdx + 1);
+    const orderB = Number(targetEv.sort_order || targetIdx + 1);
+
+    const newOrderA = orderB === orderA ? (direction === 'up' ? orderA - 1 : orderA + 1) : orderB;
+    const newOrderB = orderB === orderA ? (direction === 'up' ? orderB + 1 : orderB - 1) : orderA;
+
+    const newActivities = [...activities];
+    newActivities[currentIdx] = { ...ev, sort_order: newOrderA };
+    newActivities[targetIdx] = { ...targetEv, sort_order: newOrderB };
+    newActivities[currentIdx] = newActivities[targetIdx];
+    newActivities[targetIdx] = { ...ev, sort_order: newOrderA };
+    setActivities(newActivities);
+
+    await fetch("/api/admin/events/reorder", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        items: [
+          { id: ev.id || ev.slug, sort_order: newOrderA },
+          { id: targetEv.id || targetEv.slug, sort_order: newOrderB }
+        ]
+      })
+    });
+    fetchActivities();
+  };
+
+  const handleOpenHighlightModal = (item?: any) => {
+    if (item) {
+      setEditingHighlight(item);
+      setHPillar(item.pillar || "charity");
+      setHBadge(item.badge || "Highlight");
+      setHTitle(item.title || "");
+      setHDesc(item.description || "");
+      setHUrl(item.image_url || "/images/event-1.png");
+      setHLink(item.link_url || "");
+      setHOrder(item.sort_order || 1);
+    } else {
+      setEditingHighlight(null);
+      setHPillar("charity");
+      setHBadge("Anna Daanam");
+      setHTitle("New Top Moment Highlight");
+      setHDesc("Write a short engaging 2-line summary of this highlight for the public Seva page.");
+      setHUrl("/images/event-1.png");
+      setHLink("/sevas");
+      setHOrder(highlights.length + 1);
+    }
+    setHighlightModalOpen(true);
+  };
+
+  const handleSaveHighlight = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setHSaving(true);
+    try {
+      const method = editingHighlight ? "PUT" : "POST";
+      const res = await fetch("/api/admin/highlights", {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: editingHighlight?.id,
+          pillar: hPillar,
+          badge: hBadge,
+          title: hTitle,
+          description: hDesc,
+          image_url: hUrl,
+          link_url: hLink,
+          sort_order: hOrder,
+        }),
+      });
+      if (res.ok) {
+        setHighlightModalOpen(false);
+        fetchHighlights();
+      }
+    } finally {
+      setHSaving(false);
+    }
+  };
+
+  const handleDeleteHighlight = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this highlight card?")) return;
+    await fetch(`/api/admin/highlights?id=${id}`, { method: "DELETE" });
+    fetchHighlights();
   };
 
   const handleOpenEditModal = (photo: any) => {
@@ -212,6 +341,26 @@ export default function AdminGalleryPage() {
       }
     } finally {
       setEditing(false);
+    }
+  };
+
+  const handleDeleteActivity = async () => {
+    if (!selectedActivityForDelete) return;
+    try {
+      const res = await fetch(`/api/admin/events/${selectedActivityForDelete.id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        setDeleteActivityModalOpen(false);
+        setSelectedActivityForDelete(null);
+        fetchActivities();
+      } else {
+        const err = await res.json().catch(() => ({}));
+        alert(err.error || "Failed to delete activity");
+      }
+    } catch (err) {
+      console.error("Failed to delete activity:", err);
+      alert("Failed to delete activity");
     }
   };
 
@@ -262,6 +411,14 @@ export default function AdminGalleryPage() {
                   <PlusCircle size={18} className="text-[#FFD27F]" />
                   <span>+ Add New Seva Activity</span>
                 </Link>
+              ) : activeTab === "highlights" ? (
+                <button
+                  onClick={() => handleOpenHighlightModal()}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#8a5000] hover:bg-[#6e4000] text-white font-semibold text-sm shadow-sm transition-colors cursor-pointer"
+                >
+                  <PlusCircle size={18} />
+                  <span>+ Add Highlight Card</span>
+                </button>
               ) : (
                 <button
                   onClick={() => setUploadModalOpen(true)}
@@ -291,6 +448,20 @@ export default function AdminGalleryPage() {
               </span>
             </button>
             <button
+              onClick={() => setActiveTab("highlights")}
+              className={`flex items-center gap-2.5 px-5 py-3 rounded-t-xl font-bold text-sm transition-all border-b-2 cursor-pointer whitespace-nowrap ${
+                activeTab === "highlights"
+                  ? "bg-white border-[#8a5000] text-[#8a5000] shadow-sm"
+                  : "border-transparent text-gray-500 hover:text-gray-800 hover:bg-gray-100/60"
+              }`}
+            >
+              <Sparkles size={17} className={activeTab === "highlights" ? "text-[#8a5000]" : "text-gray-400"} />
+              <span>2. Top Moments Highlights Grid</span>
+              <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${activeTab === "highlights" ? "bg-[#8a5000]/15 text-[#8a5000]" : "bg-gray-200 text-gray-600"}`}>
+                {highlights.length || 6}
+              </span>
+            </button>
+            <button
               onClick={() => setActiveTab("chronicles")}
               className={`flex items-center gap-2.5 px-5 py-3 rounded-t-xl font-bold text-sm transition-all border-b-2 cursor-pointer whitespace-nowrap ${
                 activeTab === "chronicles"
@@ -299,7 +470,10 @@ export default function AdminGalleryPage() {
               }`}
             >
               <ImageIcon size={17} className={activeTab === "chronicles" ? "text-[#8a5000]" : "text-gray-400"} />
-              <span>2. Standalone Photo Chronicles Grid</span>
+              <span>3. Standalone Photo Chronicles Grid</span>
+              <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${activeTab === "chronicles" ? "bg-[#8a5000]/15 text-[#8a5000]" : "bg-gray-200 text-gray-600"}`}>
+                {photos.length}
+              </span>
             </button>
           </div>
 
@@ -382,7 +556,7 @@ export default function AdminGalleryPage() {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredActivities.map((act) => {
+                  {filteredActivities.map((act, idx) => {
                     const isSanatana =
                       act.category === "Sanatana Dharma" ||
                       act.category === "Temple Heritage" ||
@@ -390,7 +564,7 @@ export default function AdminGalleryPage() {
 
                     return (
                       <div
-                        key={act.id}
+                        key={`${act.id || act.slug}-${idx}`}
                         className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col group"
                       >
                         {/* Cover Image & Category Badge */}
@@ -455,10 +629,38 @@ export default function AdminGalleryPage() {
                             </div>
                           </div>
 
+                          {/* Reordering Controls */}
+                          <div className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded-xl border border-gray-200/80 text-xs">
+                            <span className="font-semibold text-gray-700 flex items-center gap-1.5">
+                              <Layers size={13} className="text-[#8a5000]" />
+                              Order #{act.sort_order || idx + 1}
+                            </span>
+                            <div className="flex items-center gap-1">
+                              <button
+                                type="button"
+                                onClick={() => handleMoveActivity(act, 'up')}
+                                disabled={idx === 0}
+                                title="Move Up on Seva Page"
+                                className="px-2.5 py-1 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed font-bold text-gray-700 shadow-sm transition-all active:scale-95"
+                              >
+                                ▲ Move Up
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleMoveActivity(act, 'down')}
+                                disabled={idx === filteredActivities.length - 1}
+                                title="Move Down on Seva Page"
+                                className="px-2.5 py-1 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed font-bold text-gray-700 shadow-sm transition-all active:scale-95"
+                              >
+                                ▼ Move Down
+                              </button>
+                            </div>
+                          </div>
+
                           {/* Action Buttons */}
                           <div className="pt-3 border-t border-gray-100 flex items-center justify-between gap-2">
                             <Link
-                              href={`/admin/events/${act.id}/edit`}
+                              href={`/admin/gallery/${act.id}/edit`}
                               className="flex-1 inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-[#8a5000] hover:bg-[#6e4000] text-white font-bold text-xs shadow transition-colors"
                             >
                               <Edit2 size={13} />
@@ -473,6 +675,17 @@ export default function AdminGalleryPage() {
                             >
                               <ExternalLink size={15} />
                             </a>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setSelectedActivityForDelete(act);
+                                setDeleteActivityModalOpen(true);
+                              }}
+                              title="Delete Seva Activity & Detail Page"
+                              className="p-2.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 transition-colors cursor-pointer shadow-sm"
+                            >
+                              <Trash2 size={15} />
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -484,7 +697,110 @@ export default function AdminGalleryPage() {
           )}
 
           {/* =========================================================================
-              TAB 2: SEVA PHOTO CHRONICLES (STANDALONE PHOTO ARCHIVE GRID)
+              TAB 2: TOP MOMENTS HIGHLIGHTS GRID (CHARITY & SANATANA DHARMA)
+             ========================================================================= */}
+          {activeTab === "highlights" && (
+            <div className="space-y-8">
+              <div className="bg-amber-50/70 border border-amber-200 rounded-2xl p-5 text-sm text-gray-800">
+                <h3 className="font-bold text-base text-[#8a5000] mb-1 flex items-center gap-2">
+                  <Sparkles size={18} /> Manage Top Highlights Section (Moments of Seva & Celebration)
+                </h3>
+                <p className="text-gray-600">
+                  These cards appear at the very top of each category section on the public Sevas page (<strong className="text-gray-900">Charity & Welfare</strong> and <strong className="text-gray-900">Sanatana Dharma</strong>). Click any card below to upload high-resolution Cloudinary photos or change badges and writeups.
+                </p>
+              </div>
+
+              {highlightsLoading ? (
+                <div className="flex flex-col items-center justify-center py-20 text-[#8a5000]">
+                  <Loader2 size={32} className="animate-spin mb-3" />
+                  <span>Loading highlights...</span>
+                </div>
+              ) : (
+                <div className="space-y-10">
+                  {/* Pillar 1 Highlights */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-bold text-[#00322B] flex items-center gap-2 border-b border-gray-200 pb-2">
+                      <span className="px-2.5 py-0.5 rounded-md bg-[#00322B] text-[#FFD27F] text-xs uppercase font-extrabold">Pillar 1</span>
+                      <span>Charity & Community Welfare Highlights</span>
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      {highlights.filter(h => h.pillar === "charity" || !h.pillar).map((h) => (
+                        <div key={h.id} className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                          <div className="relative h-48 bg-gray-100 overflow-hidden">
+                            <img src={h.image_url} alt={h.title} className="w-full h-full object-cover" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-4 flex flex-col justify-end text-white">
+                              <span className="text-[11px] font-mono font-bold text-[#FFD27F] uppercase">{h.badge}</span>
+                              <h4 className="font-bold text-base line-clamp-1">{h.title}</h4>
+                            </div>
+                          </div>
+                          <div className="p-4 flex-1 flex flex-col justify-between gap-4">
+                            <p className="text-xs text-gray-600 line-clamp-2">{h.description}</p>
+                            <div className="flex items-center justify-between gap-2 pt-2 border-t border-gray-100">
+                              <button
+                                onClick={() => handleOpenHighlightModal(h)}
+                                className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-[#8a5000] hover:bg-[#6e4000] text-white font-bold text-xs shadow-sm transition-colors cursor-pointer"
+                              >
+                                <Edit2 size={13} />
+                                <span>Edit Card</span>
+                              </button>
+                              <button
+                                onClick={() => handleDeleteHighlight(h.id)}
+                                className="p-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 transition-colors cursor-pointer"
+                              >
+                                <Trash2 size={14} />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Pillar 2 Highlights */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-bold text-[#8a5000] flex items-center gap-2 border-b border-gray-200 pb-2">
+                      <span className="px-2.5 py-0.5 rounded-md bg-[#8a5000] text-white text-xs uppercase font-extrabold">Pillar 2</span>
+                      <span>Sanatana Dharma & Temples Highlights</span>
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      {highlights.filter(h => h.pillar === "sanatana_dharma").map((h) => (
+                        <div key={h.id} className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                          <div className="relative h-48 bg-gray-100 overflow-hidden">
+                            <img src={h.image_url} alt={h.title} className="w-full h-full object-cover" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-4 flex flex-col justify-end text-white">
+                              <span className="text-[11px] font-mono font-bold text-amber-300 uppercase">{h.badge}</span>
+                              <h4 className="font-bold text-base line-clamp-1">{h.title}</h4>
+                            </div>
+                          </div>
+                          <div className="p-4 flex-1 flex flex-col justify-between gap-4">
+                            <p className="text-xs text-gray-600 line-clamp-2">{h.description}</p>
+                            <div className="flex items-center justify-between gap-2 pt-2 border-t border-gray-100">
+                              <button
+                                onClick={() => handleOpenHighlightModal(h)}
+                                className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-[#8a5000] hover:bg-[#6e4000] text-white font-bold text-xs shadow-sm transition-colors cursor-pointer"
+                              >
+                                <Edit2 size={13} />
+                                <span>Edit Card</span>
+                              </button>
+                              <button
+                                onClick={() => handleDeleteHighlight(h.id)}
+                                className="p-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 transition-colors cursor-pointer"
+                              >
+                                <Trash2 size={14} />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* =========================================================================
+              TAB 3: SEVA PHOTO CHRONICLES (STANDALONE PHOTO ARCHIVE GRID)
              ========================================================================= */}
           {activeTab === "chronicles" && (
             <div>
@@ -815,7 +1131,146 @@ export default function AdminGalleryPage() {
             </div>
           )}
 
-          {/* Delete Modal */}
+          {/* Highlight Modal */}
+          {highlightModalOpen && (
+            <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4 backdrop-blur-sm animate-fade-in">
+              <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl max-h-[90vh] overflow-y-auto border border-gray-100">
+                <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
+                  <h3 className="font-bold text-base text-gray-900 flex items-center gap-2 font-heading">
+                    <Sparkles className="text-[#8a5000]" size={18} />
+                    {editingHighlight ? "Edit Highlight Card" : "New Highlight Card"}
+                  </h3>
+                  <button onClick={() => setHighlightModalOpen(false)} className="text-gray-400 hover:text-gray-600">
+                    <X size={18} />
+                  </button>
+                </div>
+
+                <form onSubmit={handleSaveHighlight} className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 mb-1">
+                      Target Pillar Section
+                    </label>
+                    <select
+                      value={hPillar}
+                      onChange={(e) => setHPillar(e.target.value)}
+                      className="w-full px-3.5 py-2 text-sm rounded-lg border border-gray-200 bg-white font-medium text-gray-800 focus:outline-none focus:border-[#8a5000]"
+                    >
+                      <option value="charity">Pillar 1: Charity & Community Welfare</option>
+                      <option value="sanatana_dharma">Pillar 2: Sanatana Dharma & Temples</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 mb-1">
+                      Badge Text (e.g., Anna Daanam, Spiritual Service)
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={hBadge}
+                      onChange={(e) => setHBadge(e.target.value)}
+                      placeholder="e.g. Anna Daanam"
+                      className="w-full px-3.5 py-2 text-sm rounded-lg border border-gray-200 focus:outline-none focus:border-[#8a5000]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 mb-1">
+                      Main Title
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={hTitle}
+                      onChange={(e) => setHTitle(e.target.value)}
+                      placeholder="e.g. Anna Daanam Mega Food Drive"
+                      className="w-full px-3.5 py-2 text-sm rounded-lg border border-gray-200 focus:outline-none focus:border-[#8a5000]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 mb-1">
+                      2-Line Summary Description
+                    </label>
+                    <textarea
+                      rows={2}
+                      required
+                      value={hDesc}
+                      onChange={(e) => setHDesc(e.target.value)}
+                      placeholder="Short description..."
+                      className="w-full px-3.5 py-2 text-sm rounded-lg border border-gray-200 focus:outline-none focus:border-[#8a5000]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 mb-1">
+                      Card Photo (Cloudinary Image)
+                    </label>
+                    <ImageUploader
+                      value={hUrl}
+                      onChange={(url) => setHUrl(url)}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-bold text-gray-700 mb-1">
+                        Link URL (Optional)
+                      </label>
+                      <input
+                        type="text"
+                        value={hLink}
+                        onChange={(e) => setHLink(e.target.value)}
+                        placeholder="e.g. /sevas/slug"
+                        className="w-full px-3.5 py-2 text-sm rounded-lg border border-gray-200 focus:outline-none focus:border-[#8a5000]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-gray-700 mb-1">
+                        Sort Order Position
+                      </label>
+                      <input
+                        type="number"
+                        min={1}
+                        value={hOrder}
+                        onChange={(e) => setHOrder(Number(e.target.value))}
+                        className="w-full px-3.5 py-2 text-sm rounded-lg border border-gray-200 focus:outline-none focus:border-[#8a5000]"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end gap-2 pt-4 border-t border-gray-100">
+                    <button
+                      type="button"
+                      onClick={() => setHighlightModalOpen(false)}
+                      className="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={hSaving}
+                      className="inline-flex items-center gap-1.5 px-5 py-2 rounded-lg bg-[#8a5000] hover:bg-[#6e4000] text-white text-xs font-bold shadow-sm"
+                    >
+                      {hSaving ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
+                      <span>{editingHighlight ? "Save Changes" : "Create Highlight"}</span>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* Delete Seva Activity Modal */}
+          <DeleteConfirmDialog
+            isOpen={deleteActivityModalOpen}
+            onClose={() => { setDeleteActivityModalOpen(false); setSelectedActivityForDelete(null); }}
+            onConfirm={handleDeleteActivity}
+            title="Delete Seva Activity & Detail Page"
+            entityName={selectedActivityForDelete?.title || "this Seva activity"}
+          />
+
+          {/* Delete Photo Chronicle Modal */}
           <DeleteConfirmDialog
             isOpen={deleteModalOpen}
             onClose={() => { setDeleteModalOpen(false); setSelectedPhoto(null); }}
