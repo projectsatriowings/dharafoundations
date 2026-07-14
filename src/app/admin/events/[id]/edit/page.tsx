@@ -42,9 +42,9 @@ export default function EditEventPage() {
 
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-900">Edit Event</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Edit Seva / Activity Details & Gallery</h1>
             <p className="text-sm text-gray-500 mt-0.5">
-              Update existing event information or publish a draft.
+              Update the complete public detail page, paragraphs, category (Charity / Sanatana Dharma), and attached photo gallery for this activity.
             </p>
           </div>
 

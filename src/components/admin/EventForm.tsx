@@ -82,7 +82,18 @@ export function EventForm({ initialData, isEdit = false }: EventFormProps) {
   const [autoSaveStatus, setAutoSaveStatus] = useState<string>("All changes saved");
   const [seoOpen, setSeoOpen] = useState(false);
 
-  const DEFAULT_CATEGORIES = ["Welfare Drives", "Awards & Recognition", "Women's Empowerment", "Children & Education", "Healthcare & Nutrition", "General"];
+  const DEFAULT_CATEGORIES = [
+    "Women's Empowerment",
+    "Tribal Welfare",
+    "Children & Education",
+    "Sanatana Dharma",
+    "Temple Heritage",
+    "Vedic Heritage",
+    "Welfare Drives",
+    "Healthcare & Nutrition",
+    "Awards & Recognition",
+    "General"
+  ];
   const [customCategories, setCustomCategories] = useState<string[]>(() => {
     if (initialData?.category && !DEFAULT_CATEGORIES.includes(initialData.category)) {
       return [initialData.category];
