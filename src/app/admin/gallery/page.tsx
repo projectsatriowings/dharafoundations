@@ -221,34 +221,50 @@ export default function AdminGalleryPage() {
   };
 
   const handleMoveActivity = async (ev: any, direction: 'up' | 'down') => {
-    const currentIdx = activities.findIndex((a) => (a.id || a.slug) === (ev.id || ev.slug));
-    if (currentIdx === -1) return;
-    const targetIdx = direction === 'up' ? currentIdx - 1 : currentIdx + 1;
-    if (targetIdx < 0 || targetIdx >= activities.length) return;
+    const currentFilteredIdx = filteredActivities.findIndex((a) => (a.id || a.slug) === (ev.id || ev.slug));
+    if (currentFilteredIdx === -1) return;
+    const targetFilteredIdx = direction === 'up' ? currentFilteredIdx - 1 : currentFilteredIdx + 1;
+    if (targetFilteredIdx < 0 || targetFilteredIdx >= filteredActivities.length) return;
 
-    const targetEv = activities[targetIdx];
-    const orderA = Number(ev.sort_order || currentIdx + 1);
-    const orderB = Number(targetEv.sort_order || targetIdx + 1);
+    const reorderedFiltered = [...filteredActivities];
+    const temp = reorderedFiltered[currentFilteredIdx];
+    reorderedFiltered[currentFilteredIdx] = reorderedFiltered[targetFilteredIdx];
+    reorderedFiltered[targetFilteredIdx] = temp;
 
-    const newOrderA = orderB === orderA ? (direction === 'up' ? orderA - 1 : orderA + 1) : orderB;
-    const newOrderB = orderB === orderA ? (direction === 'up' ? orderB + 1 : orderB - 1) : orderA;
+    // Build sequential sort_order (1, 2, 3...) for every item in reorderedFiltered
+    const updatedFilteredMap = new Map<string, number>();
+    reorderedFiltered.forEach((item, idx) => {
+      const key = String(item.id || item.slug || "").toLowerCase().trim();
+      if (key) updatedFilteredMap.set(key, idx + 1);
+    });
 
-    const newActivities = [...activities];
-    newActivities[currentIdx] = { ...ev, sort_order: newOrderA };
-    newActivities[targetIdx] = { ...targetEv, sort_order: newOrderB };
-    newActivities[currentIdx] = newActivities[targetIdx];
-    newActivities[targetIdx] = { ...ev, sort_order: newOrderA };
+    const newActivities = activities.map((item) => {
+      const key = String(item.id || item.slug || "").toLowerCase().trim();
+      if (updatedFilteredMap.has(key)) {
+        return { ...item, sort_order: updatedFilteredMap.get(key) };
+      }
+      return item;
+    });
+
+    // Also sort activities so UI reflects immediate change cleanly
+    newActivities.sort((a, b) => {
+      const oA = typeof a.sort_order === "number" ? a.sort_order : 999;
+      const oB = typeof b.sort_order === "number" ? b.sort_order : 999;
+      return oA - oB;
+    });
+
     setActivities(newActivities);
+
+    // Send complete sequential order mapping to reorder endpoint
+    const payloadItems = newActivities.map((a, idx) => ({
+      id: a.id || a.slug,
+      sort_order: typeof a.sort_order === "number" ? a.sort_order : idx + 1,
+    }));
 
     await fetch("/api/admin/events/reorder", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        items: [
-          { id: ev.id || ev.slug, sort_order: newOrderA },
-          { id: targetEv.id || targetEv.slug, sort_order: newOrderB }
-        ]
-      })
+      body: JSON.stringify({ items: payloadItems }),
     });
     fetchActivities();
   };
@@ -633,7 +649,7 @@ export default function AdminGalleryPage() {
                           <div className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded-xl border border-gray-200/80 text-xs">
                             <span className="font-semibold text-gray-700 flex items-center gap-1.5">
                               <Layers size={13} className="text-[#8a5000]" />
-                              Order #{act.sort_order || idx + 1}
+                              Order #{idx + 1}
                             </span>
                             <div className="flex items-center gap-1">
                               <button

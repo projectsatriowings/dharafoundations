@@ -198,6 +198,7 @@ export default function GalleryClient({ initialPhotos, initialEvents = [] }: Gal
               mapsUrl: `https://www.google.com/maps?q=${encodeURIComponent(ev.location_name || "Tamil Nadu")}`,
               img: ev.cover_image_url || "/images/event-1.png",
               desc: ev.short_description || ev.desc || "Dedicated seva and welfare drive uplifting communities and preserving cultural heritage across Tamil Nadu.",
+              sort_order: typeof ev.sort_order === "number" ? ev.sort_order : Number(ev.sort_order || 999),
             };
           });
           setEventItems(dbEvents);
@@ -219,8 +220,16 @@ export default function GalleryClient({ initialPhotos, initialEvents = [] }: Gal
     });
   };
 
-  const charityEvents = deduplicateEvents(eventItems.filter((ev) => !isDharmaCategory(ev.category)));
-  const dharmaEvents = deduplicateEvents(eventItems.filter((ev) => isDharmaCategory(ev.category)));
+  const sortByOrder = (list: any[]) => {
+    return [...list].sort((a, b) => {
+      const oA = typeof a.sort_order === "number" ? a.sort_order : 999;
+      const oB = typeof b.sort_order === "number" ? b.sort_order : 999;
+      return oA - oB;
+    });
+  };
+
+  const charityEvents = sortByOrder(deduplicateEvents(eventItems.filter((ev) => !isDharmaCategory(ev.category))));
+  const dharmaEvents = sortByOrder(deduplicateEvents(eventItems.filter((ev) => isDharmaCategory(ev.category))));
 
   const charityHighlights = highlightItems.filter((h) => h.pillar === "charity" || !h.pillar);
   const dharmaHighlights = highlightItems.filter((h) => h.pillar === "sanatana_dharma");

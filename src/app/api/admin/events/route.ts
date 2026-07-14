@@ -70,10 +70,19 @@ export async function GET(req: NextRequest) {
         status: "published",
         category: e.category || (isSanatana ? "Sanatana Dharma" : "Welfare Drives"),
         updated_at: new Date().toISOString(),
+        sort_order: 1000 + (EVENTS_DATA.indexOf(e) || 0),
       };
     });
 
     const allEvents = (dbEvents || []).concat(staticMapped);
+    allEvents.sort((a: any, b: any) => {
+      const oA = typeof a.sort_order === "number" ? a.sort_order : 999;
+      const oB = typeof b.sort_order === "number" ? b.sort_order : 999;
+      if (oA !== oB) return oA - oB;
+      const dA = new Date(a.event_date || 0).getTime();
+      const dB = new Date(b.event_date || 0).getTime();
+      return dB - dA;
+    });
 
     // Apply filtering on combined events
     const filteredEvents = allEvents.filter((ev: any) => {

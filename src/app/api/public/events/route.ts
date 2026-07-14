@@ -57,12 +57,22 @@ export async function GET(req: NextRequest) {
       cover_image_url: e.coverImage,
       short_description: e.description[0] || "",
       desc: e.description[0] || "",
-      status: "published",
       category: e.category,
       updated_at: null,
+      sort_order: 1000 + (EVENTS_DATA.indexOf(e) || 0),
     }));
 
-    return NextResponse.json({ events: [...cleanEvents, ...staticMapped] });
+    const allEvents = [...cleanEvents, ...staticMapped];
+    allEvents.sort((a: any, b: any) => {
+      const oA = typeof a.sort_order === "number" ? a.sort_order : 999;
+      const oB = typeof b.sort_order === "number" ? b.sort_order : 999;
+      if (oA !== oB) return oA - oB;
+      const dA = new Date(a.event_date || 0).getTime();
+      const dB = new Date(b.event_date || 0).getTime();
+      return dB - dA;
+    });
+
+    return NextResponse.json({ events: allEvents });
   } catch (err) {
     console.warn("GET /api/public/events DB error, returning static fallback:", err);
     const fallbackEvents = EVENTS_DATA.map((e) => ({

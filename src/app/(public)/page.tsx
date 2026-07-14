@@ -112,7 +112,12 @@ export default function HomePage() {
       .then((res) => res.json())
       .then((d) => {
         if (d && Array.isArray(d.events) && d.events.length > 0) {
-          const dbEvents = d.events.slice(0, 6).map((ev: any) => ({
+          const sortedData = [...d.events].sort((a: any, b: any) => {
+            const oA = typeof a.sort_order === "number" ? a.sort_order : 999;
+            const oB = typeof b.sort_order === "number" ? b.sort_order : 999;
+            return oA - oB;
+          });
+          const dbEvents = sortedData.slice(0, 10).map((ev: any) => ({
             id: ev.slug || String(ev.id),
             date: ev.event_date
               ? new Date(ev.event_date).toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" })
@@ -122,6 +127,7 @@ export default function HomePage() {
             title: ev.title,
             img: ev.cover_image_url || "/images/event-1.png",
             tag: ev.category || "Events",
+            sort_order: typeof ev.sort_order === "number" ? ev.sort_order : 999,
           }));
           const seenImg = new Set<string>();
           const seenId = new Set<string>();
