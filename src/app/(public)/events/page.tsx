@@ -73,12 +73,87 @@ function CounterItem({ target, staticText, shouldReduceMotion }: { target: numbe
 
 
 
+const DEFAULT_CONFIG = {
+  hero: {
+    badge: "Annual Flagship Ceremony",
+    title: "Dhara Divine Awards",
+    description: "Our flagship national celebration honoring grassroots Sanatana Dharma champions, unheralded traditional artists, temple caretakers, and selflessly dedicated volunteers.",
+    button_text: "Explore Awards Spotlight",
+    image_url: "/images/hero-devi.png",
+    stats_badge_title: "25+ Events",
+    stats_badge_sub: "Conducted across Tamil Nadu communities"
+  },
+  spotlight: {
+    badge: "Annual Flagship Ceremony",
+    location: "Chetpet, Chennai",
+    title: "Dhara Divine Awards",
+    description: "Over 500 distinguished guests, CSR leaders, retired high court judges, spiritual leaders, and grassroots service champions assemble for an extraordinary celebration of honor, cultural tribute, and community upliftment.",
+    button_text: "Explore Divine Awards Portal",
+    portal_url: "https://dhara-divine-awards-2025.vercel.app/"
+  },
+  ceremony: {
+    badge: "COMPLETE CEREMONY • EXCLUSIVE COVERAGE",
+    title: "Experience the Dhara Divine Awards Ceremony",
+    description: "Relive the full 4-hour live national ceremony from Chetpet, Chennai — featuring keynote addresses, soul-stirring cultural tributes, and the historic honoring of grassroots Sanatana Dharma champions.",
+    duration: "4 Hours",
+    location: "Chetpet, Chennai",
+    card_title: "Visit the Divine Awards Portal",
+    card_desc: "Explore awardees, ceremony highlights, photo galleries, and the complete 4-hour broadcast",
+    portal_url: "https://dhara-divine-awards-2025.vercel.app/",
+    image_url: "/images/hero-devi.png",
+    milestones: [
+      { title: "Vedic Invocation & Deepa Pragatya", description: "Sacred Vedic mantras, traditional lamp lighting ceremony, and divine blessings from spiritual dignitaries." },
+      { title: "Founder's Keynote & Vision", description: "Inspiring address highlighting our mission to protect temple heritage and uplift rural welfare across Tamil Nadu." },
+      { title: "Traditional Cultural Tributes", description: "Classical dance, devotional music, and authentic folk art performances by renowned traditional artists." },
+      { title: "Seva Ratna Awards Conferral", description: "The defining moment honoring 25+ unheralded grassroots champions before 500+ distinguished guests." }
+    ]
+  },
+  why_matter: {
+    heading: "Why Dhara Divine Awards Matter",
+    subheading: "We approach the prestigious Dhara Divine Awards not as a momentary ceremony, but as a national movement recognizing our unsung grassroots custodians and spiritual protectors.",
+    features: [
+      { title: "1. Honoring Unsung Custodians", description: "Recognizing grassroots protectors, traditional temple priests, and Vedic scholars whose lifelong devotion preserves our sacred heritage in remote corners of Bharat." },
+      { title: "2. Empowering Artisan Communities", description: "Celebrating traditional craftsmen, sculptors, and heritage revivalists by bringing national visibility and tangible support to their sacred livelihoods." },
+      { title: "3. Rigorous & Transparent Selection", description: "An uncompromised, merit-based selection process honoring genuine cultural elevation across rural hamlets and historic temple ecosystems." },
+      { title: "4. National Inspiration & Legacy", description: "Inspiring future generations to take pride in Sanatana Dharma by celebrating extraordinary lives of selflessness, Dharma preservation, and community leadership." }
+    ]
+  },
+  stats_bar: {
+    heading: "Creating Real Impact Across Communities",
+    subheading: "Verifiable milestones in service & cultural revival",
+    items: [
+      { target: 2024, staticText: "", label: "Year Founded & Trust Registered" },
+      { target: 4, staticText: "", label: "Core Sectors Served" },
+      { target: null, staticText: "25+", label: "Events & Welfare Drives" },
+      { target: null, staticText: "10,000+", label: "Beneficiaries Reached" }
+    ]
+  },
+  testimonials_section: {
+    heading: "Voices From the Community",
+    subheading: "Listen to the heartfelt experiences of village elders, volunteer coordinators, and temple trustees whose lives have been impacted by Dhara initiatives.",
+    items: [
+      { quote: "The footwear and school supplies distributed to our Javadhu Hills students brought immense joy. Dhara Foundations serves with genuine devotion.", name: "K. Ramachandran", role: "Headmaster, Tribal School", initials: "KR" },
+      { quote: "During our ancient temple Kumbabhishekam, Dhara volunteers stood by us with flawless organization and Anna Daanam support. Truly blessed work!", name: "Sivakumar Sastry", role: "Temple Trustee, Kanchipuram", initials: "SS" },
+      { quote: "Volunteering at the Dhara Divine Awards showed me how deeply they care for unheralded traditional artists. It is an honor to be part of this mission.", name: "Anitha Lakshmi", role: "Youth Volunteer Coordinator", initials: "AL" }
+    ]
+  }
+};
+
 export default function EventsPage() {
   const rawReducedMotion = useReducedMotion();
   const [isMounted, setIsMounted] = useState(false);
+  const [config, setConfig] = useState<any>(DEFAULT_CONFIG);
   
   useEffect(() => {
     setIsMounted(true);
+    fetch(`/api/public/flagship-page?t=${Date.now()}`)
+      .then((res) => res.ok ? res.json() : null)
+      .then((data) => {
+        if (data && data.config) {
+          setConfig((prev: any) => ({ ...prev, ...data.config }));
+        }
+      })
+      .catch((err) => console.warn("Failed to fetch flagship config:", err));
   }, []);
 
   const shouldReduceMotion = isMounted ? rawReducedMotion : false;
@@ -117,7 +192,7 @@ export default function EventsPage() {
               className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/15 text-primary font-label-lg font-bold text-xs uppercase tracking-widest"
             >
               <Award size={14} className="text-primary shrink-0" />
-              <span>Annual Flagship Ceremony</span>
+              <span>{config.hero?.badge || "Annual Flagship Ceremony"}</span>
             </motion.div>
             
             <motion.h1 
@@ -126,7 +201,7 @@ export default function EventsPage() {
               transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
               className="font-headline-md text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-deep-forest leading-[1.15]"
             >
-              Dhara Divine Awards
+              {config.hero?.title || "Dhara Divine Awards"}
             </motion.h1>
             
             <motion.p 
@@ -135,7 +210,7 @@ export default function EventsPage() {
               transition={{ duration: 0.7, delay: 0.25, ease: "easeOut" }}
               className="font-body-lg text-on-surface-variant text-base sm:text-lg leading-relaxed pt-2"
             >
-              Our flagship national celebration honoring grassroots Sanatana Dharma champions, unheralded traditional artists, temple caretakers, and selflessly dedicated volunteers.
+              {config.hero?.description || "Our flagship national celebration honoring grassroots Sanatana Dharma champions, unheralded traditional artists, temple caretakers, and selflessly dedicated volunteers."}
             </motion.p>
 
             <motion.div 
@@ -148,7 +223,7 @@ export default function EventsPage() {
                 onClick={scrollToAwardsSection}
                 className="px-8 py-3.5 rounded-full bg-primary hover:bg-[#633800] text-white font-label-lg font-bold transition-all duration-300 shadow-md hover:shadow-xl cursor-pointer flex items-center gap-2"
               >
-                <span>Explore Awards Spotlight</span>
+                <span>{config.hero?.button_text || "Explore Awards Spotlight"}</span>
                 <ArrowRight size={18} />
               </button>
             </motion.div>
@@ -166,7 +241,7 @@ export default function EventsPage() {
               <motion.img 
                 whileHover={shouldReduceMotion ? {} : { scale: 1.05 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                src="/images/hero-devi.png" 
+                src={config.hero?.image_url || "/images/hero-devi.png"} 
                 alt="Dhara Divine Awards Hero Devi" 
                 className="w-full h-full object-cover object-center"
               />
@@ -211,11 +286,10 @@ export default function EventsPage() {
               </div>
               <div>
                 <div className="font-headline-md font-bold text-xl sm:text-2xl text-deep-forest leading-none">
-                  25+ <span className="text-xs text-primary font-normal">Events</span>
+                  {config.hero?.stats_badge_title || "25+ Events"}
                 </div>
-                {/* [CLIENT TO CONFIRM EXACT STAT] */}
                 <div className="font-body-sm text-xs text-on-surface-variant pt-1 font-medium">
-                  Conducted across Tamil Nadu communities
+                  {config.hero?.stats_badge_sub || "Conducted across Tamil Nadu communities"}
                 </div>
               </div>
             </motion.div>
@@ -280,26 +354,26 @@ export default function EventsPage() {
                 <div className="space-y-4 flex-1 relative z-10 text-left">
                   <div className="flex flex-wrap items-center gap-3">
                     <span className="px-3.5 py-1 rounded-full bg-saffron-glow/20 text-saffron-glow font-bold text-xs uppercase tracking-wider border border-saffron-glow/40 shadow-sm">
-                      Annual Flagship Ceremony
+                      {config.spotlight?.badge || "Annual Flagship Ceremony"}
                     </span>
-                    <span className="text-xs font-mono text-ethereal-white/80">Chetpet, Chennai</span>
+                    <span className="text-xs font-mono text-ethereal-white/80">{config.spotlight?.location || "Chetpet, Chennai"}</span>
                   </div>
                   <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white group-hover:text-saffron-glow transition-colors">
-                    Dhara Divine Awards
+                    {config.spotlight?.title || "Dhara Divine Awards"}
                   </h3>
                   <p className="text-sm sm:text-base text-ethereal-white/80 leading-relaxed max-w-2xl">
-                    Over 500 distinguished guests, CSR leaders, retired high court judges, spiritual leaders, and grassroots service champions assemble for an extraordinary celebration of honor, cultural tribute, and community upliftment.
+                    {config.spotlight?.description || "Over 500 distinguished guests, CSR leaders, retired high court judges, spiritual leaders, and grassroots service champions assemble for an extraordinary celebration of honor, cultural tribute, and community upliftment."}
                   </p>
                 </div>
 
                 <div className="shrink-0 w-full md:w-auto relative z-10">
                   <Link 
-                    href="https://dhara-divine-awards.vercel.app"
+                    href={config.spotlight?.portal_url || "https://dhara-divine-awards-2025.vercel.app/"}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center w-full md:w-auto py-4 px-8 rounded-2xl bg-saffron-glow hover:bg-amber-400 text-deep-forest font-bold text-base transition-all shadow-xl gap-3 group-hover:scale-105"
                   >
-                    <span>Explore Divine Awards Portal</span>
+                    <span>{config.spotlight?.button_text || "Explore Divine Awards Portal"}</span>
                     <ArrowRight size={18} />
                   </Link>
                 </div>
@@ -331,7 +405,7 @@ export default function EventsPage() {
                 className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-saffron-glow/20 text-saffron-glow font-mono font-bold text-xs uppercase tracking-widest border border-saffron-glow/40 shadow-inner"
               >
                 <Award size={15} className="text-saffron-glow shrink-0" />
-                <span>COMPLETE CEREMONY • EXCLUSIVE COVERAGE</span>
+                <span>{config.ceremony?.badge || "COMPLETE CEREMONY • EXCLUSIVE COVERAGE"}</span>
               </motion.div>
 
               <motion.h2 
@@ -341,7 +415,7 @@ export default function EventsPage() {
                 variants={fadeUpVariant}
                 className="font-headline-md text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight"
               >
-                Experience the Dhara Divine Awards Ceremony
+                {config.ceremony?.title || "Experience the Dhara Divine Awards Ceremony"}
               </motion.h2>
 
               <motion.p 
@@ -351,7 +425,7 @@ export default function EventsPage() {
                 variants={fadeUpVariant}
                 className="font-body-lg text-ethereal-white/85 text-sm sm:text-base leading-relaxed"
               >
-                Relive the full 4-hour live national ceremony from Chetpet, Chennai — featuring keynote addresses, soul-stirring cultural tributes, and the historic honoring of grassroots Sanatana Dharma champions.
+                {config.ceremony?.description || "Relive the full 4-hour live national ceremony from Chetpet, Chennai — featuring keynote addresses, soul-stirring cultural tributes, and the historic honoring of grassroots Sanatana Dharma champions."}
               </motion.p>
             </div>
 
@@ -367,14 +441,14 @@ export default function EventsPage() {
                 className="lg:col-span-8 space-y-5"
               >
                 <Link
-                  href="https://dhara-divine-awards.vercel.app"
+                  href={config.ceremony?.portal_url || "https://dhara-divine-awards-2025.vercel.app/"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group block relative aspect-video w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.6)] border-2 border-saffron-glow/40 bg-deep-forest"
                 >
                   {/* Background Image */}
                   <img
-                    src="/images/hero-devi.png"
+                    src={config.ceremony?.image_url || "/images/hero-devi.png"}
                     alt="Dhara Divine Awards Ceremony"
                     className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-75 group-hover:scale-105 transition-all duration-700"
                   />
@@ -389,10 +463,10 @@ export default function EventsPage() {
                     </div>
                     <div className="space-y-2">
                       <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white drop-shadow-lg">
-                        Visit the Divine Awards Portal
+                        {config.ceremony?.card_title || "Visit the Divine Awards Portal"}
                       </h3>
                       <p className="text-sm sm:text-base text-ethereal-white/80 max-w-md mx-auto">
-                        Explore awardees, ceremony highlights, photo galleries, and the complete 4-hour broadcast
+                        {config.ceremony?.card_desc || "Explore awardees, ceremony highlights, photo galleries, and the complete 4-hour broadcast"}
                       </p>
                     </div>
                   </div>
@@ -410,11 +484,11 @@ export default function EventsPage() {
                   <div className="flex items-center gap-6">
                     <span className="flex items-center gap-1.5">
                       <Clock className="text-amber-400 shrink-0" size={16} />
-                      <span>Duration: <strong>4 Hours</strong></span>
+                      <span>Duration: <strong>{config.ceremony?.duration || "4 Hours"}</strong></span>
                     </span>
                     <span className="flex items-center gap-1.5">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
-                      <span>Chetpet, Chennai</span>
+                      <span>{config.ceremony?.location || "Chetpet, Chennai"}</span>
                     </span>
                   </div>
                 </div>
@@ -440,55 +514,21 @@ export default function EventsPage() {
                   </div>
 
                   <div className="space-y-4">
-                    <div className="flex gap-3.5 items-start">
-                      <div className="p-1.5 rounded-lg bg-saffron-glow/15 text-saffron-glow mt-0.5 shrink-0">
-                        <CheckCircle2 size={16} />
+                    {(config.ceremony?.milestones || DEFAULT_CONFIG.ceremony.milestones).map((m: any, idx: number) => (
+                      <div key={idx} className="flex gap-3.5 items-start">
+                        <div className="p-1.5 rounded-lg bg-saffron-glow/15 text-saffron-glow mt-0.5 shrink-0">
+                          <CheckCircle2 size={16} />
+                        </div>
+                        <div className="space-y-1">
+                          <h4 className={`font-bold text-sm ${idx === 3 ? "text-amber-300" : "text-white"}`}>
+                            {m.title}
+                          </h4>
+                          <p className="text-xs text-ethereal-white/75 leading-relaxed">
+                            {m.description}
+                          </p>
+                        </div>
                       </div>
-                      <div className="space-y-1">
-                        <h4 className="font-bold text-sm text-white">Vedic Invocation &amp; Deepa Pragatya</h4>
-                        <p className="text-xs text-ethereal-white/75 leading-relaxed">
-                          Sacred Vedic mantras, traditional lamp lighting ceremony, and divine blessings from spiritual dignitaries.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-3.5 items-start">
-                      <div className="p-1.5 rounded-lg bg-saffron-glow/15 text-saffron-glow mt-0.5 shrink-0">
-                        <CheckCircle2 size={16} />
-                      </div>
-                      <div className="space-y-1">
-                        <h4 className="font-bold text-sm text-white">
-                          Founder&apos;s Keynote &amp; Vision
-                        </h4>
-                        <p className="text-xs text-ethereal-white/75 leading-relaxed">
-                          Inspiring address highlighting our mission to protect temple heritage and uplift rural welfare across Tamil Nadu.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-3.5 items-start">
-                      <div className="p-1.5 rounded-lg bg-saffron-glow/15 text-saffron-glow mt-0.5 shrink-0">
-                        <CheckCircle2 size={16} />
-                      </div>
-                      <div className="space-y-1">
-                        <h4 className="font-bold text-sm text-white">Traditional Cultural Tributes</h4>
-                        <p className="text-xs text-ethereal-white/75 leading-relaxed">
-                          Classical dance, devotional music, and authentic folk art performances by renowned traditional artists.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-3.5 items-start">
-                      <div className="p-1.5 rounded-lg bg-saffron-glow/15 text-saffron-glow mt-0.5 shrink-0">
-                        <CheckCircle2 size={16} />
-                      </div>
-                      <div className="space-y-1">
-                        <h4 className="font-bold text-sm text-amber-300">Seva Ratna Awards Conferral</h4>
-                        <p className="text-xs text-ethereal-white/80 leading-relaxed">
-                          The defining moment honoring 25+ unheralded grassroots champions before 500+ distinguished guests.
-                        </p>
-                      </div>
-                    </div>
+                    ))}
                   </div>
 
                   <div className="pt-3 border-t border-white/10 space-y-4">
@@ -496,7 +536,7 @@ export default function EventsPage() {
                       &quot;Recognizing those who serve the divine by serving humanity without seeking fame or reward.&quot;
                     </p>
                     <Link
-                      href="https://dhara-divine-awards.vercel.app"
+                      href={config.ceremony?.portal_url || config.spotlight?.portal_url || "https://dhara-divine-awards-2025.vercel.app/"}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-saffron-glow hover:bg-amber-400 text-deep-forest font-bold text-sm transition-all shadow-lg hover:scale-[1.02]"
@@ -516,6 +556,55 @@ export default function EventsPage() {
 
 
       {/* ==========================================
+          SECTION 2 — WHY DHARA DIVINE AWARDS MATTER (4 PILLARS)
+         ========================================== */}
+      <section className="py-20 px-6 md:px-12 max-w-7xl mx-auto w-full">
+        <div className="space-y-12">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={fadeUpVariant}
+            className="text-center max-w-3xl mx-auto space-y-3"
+          >
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/15 text-primary font-bold text-xs uppercase tracking-widest">
+              <span>Sanatana Dharma Movement</span>
+            </div>
+            <h2 className="font-headline-md text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-deep-forest">
+              {config.why_matter?.heading || "Why Dhara Divine Awards Matter"}
+            </h2>
+            <p className="font-body-lg text-on-surface-variant text-base leading-relaxed">
+              {config.why_matter?.subheading || "We approach the prestigious Dhara Divine Awards not as a momentary ceremony, but as a national movement recognizing our unsung grassroots custodians and spiritual protectors."}
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 pt-4">
+            {(config.why_matter?.features || DEFAULT_CONFIG.why_matter.features).map((feat: any, idx: number) => (
+              <motion.div
+                key={idx}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.1 }}
+                variants={fadeUpVariant}
+                whileHover={shouldReduceMotion ? {} : { scale: 1.02, y: -4 }}
+                className="bg-white p-8 sm:p-10 rounded-3xl border border-gray-200/80 shadow-lg hover:shadow-xl transition-all relative overflow-hidden space-y-4 group"
+              >
+                <div className="w-12 h-12 rounded-2xl bg-[#00322B] text-[#FFD27F] flex items-center justify-center font-bold text-lg shadow-md group-hover:scale-110 group-hover:bg-[#FFD27F] group-hover:text-[#00322B] transition-all">
+                  #{idx + 1}
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-[#00322B] group-hover:text-[#633800] transition-colors">
+                  {feat.title.replace(/^\d+\.\s*/, "")}
+                </h3>
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed font-medium">
+                  {feat.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ==========================================
           SECTION 3 — STATS BAR
          ========================================== */}
       <section className="bg-[#EFECE6] border-y border-[#D9CBB0]/40 py-16 px-6 md:px-12">
@@ -528,10 +617,10 @@ export default function EventsPage() {
             className="text-center max-w-2xl mx-auto space-y-2"
           >
             <h2 className="font-headline-md text-2xl sm:text-3xl font-bold text-deep-forest">
-              Creating Real Impact Across Communities
+              {config.stats_bar?.heading || "Creating Real Impact Across Communities"}
             </h2>
             <p className="font-body-sm text-xs text-on-surface-variant uppercase tracking-wider font-semibold">
-              /* Verifiable milestones in service & cultural revival */
+              {config.stats_bar?.subheading || "Verifiable milestones in service & cultural revival"}
             </p>
           </motion.div>
 
@@ -544,45 +633,20 @@ export default function EventsPage() {
             }}
             className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-[#D9CBB0]/60 text-center"
           >
-            {/* Stat 1 */}
-            <motion.div variants={fadeUpVariant} whileHover={shouldReduceMotion ? {} : { scale: 1.08, y: -4 }} transition={{ type: "spring", stiffness: 300 }} className="p-4 space-y-2 cursor-pointer rounded-2xl hover:bg-white/50 transition-colors">
-              <div className="font-headline-md text-3xl sm:text-4xl lg:text-5xl font-bold text-primary">
-                <CounterItem target={2024} shouldReduceMotion={shouldReduceMotion} />
-              </div>
-              <div className="font-body-md text-xs sm:text-sm text-on-surface-variant font-medium">
-                Year Founded & Trust Registered
-              </div>
-            </motion.div>
-
-            {/* Stat 2 */}
-            <motion.div variants={fadeUpVariant} whileHover={shouldReduceMotion ? {} : { scale: 1.08, y: -4 }} transition={{ type: "spring", stiffness: 300 }} className="p-4 space-y-2 cursor-pointer rounded-2xl hover:bg-white/50 transition-colors">
-              <div className="font-headline-md text-3xl sm:text-4xl lg:text-5xl font-bold text-primary">
-                <CounterItem target={4} shouldReduceMotion={shouldReduceMotion} />
-              </div>
-              <div className="font-body-md text-xs sm:text-sm text-on-surface-variant font-medium">
-                Core Sectors Served
-              </div>
-            </motion.div>
-
-            {/* Stat 3 - [CLIENT TO CONFIRM] -> static render per instruction */}
-            <motion.div variants={fadeUpVariant} whileHover={shouldReduceMotion ? {} : { scale: 1.08, y: -4 }} transition={{ type: "spring", stiffness: 300 }} className="p-4 space-y-2 cursor-pointer rounded-2xl hover:bg-white/50 transition-colors">
-              <div className="font-headline-md text-3xl sm:text-4xl lg:text-5xl font-bold text-primary">
-                <CounterItem target={null} staticText="25+" shouldReduceMotion={shouldReduceMotion} />
-              </div>
-              <div className="font-body-md text-xs sm:text-sm text-on-surface-variant font-medium">
-                Events & Welfare Drives
-              </div>
-            </motion.div>
-
-            {/* Stat 4 - [CLIENT TO CONFIRM] -> static render per instruction */}
-            <motion.div variants={fadeUpVariant} whileHover={shouldReduceMotion ? {} : { scale: 1.08, y: -4 }} transition={{ type: "spring", stiffness: 300 }} className="p-4 space-y-2 cursor-pointer rounded-2xl hover:bg-white/50 transition-colors">
-              <div className="font-headline-md text-3xl sm:text-4xl lg:text-5xl font-bold text-primary">
-                <CounterItem target={null} staticText="10,000+" shouldReduceMotion={shouldReduceMotion} />
-              </div>
-              <div className="font-body-md text-xs sm:text-sm text-on-surface-variant font-medium">
-                Beneficiaries Reached
-              </div>
-            </motion.div>
+            {(config.stats_bar?.items || DEFAULT_CONFIG.stats_bar.items).map((st: any, idx: number) => (
+              <motion.div key={idx} variants={fadeUpVariant} whileHover={shouldReduceMotion ? {} : { scale: 1.08, y: -4 }} transition={{ type: "spring", stiffness: 300 }} className="p-4 space-y-2 cursor-pointer rounded-2xl hover:bg-white/50 transition-colors">
+                <div className="font-headline-md text-3xl sm:text-4xl lg:text-5xl font-bold text-primary">
+                  {st.target !== null && st.target !== undefined ? (
+                    <CounterItem target={st.target} shouldReduceMotion={shouldReduceMotion} />
+                  ) : (
+                    <CounterItem target={null} staticText={st.staticText || ""} shouldReduceMotion={shouldReduceMotion} />
+                  )}
+                </div>
+                <div className="font-body-md text-xs sm:text-sm text-on-surface-variant font-medium">
+                  {st.label}
+                </div>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </section>
@@ -607,11 +671,10 @@ export default function EventsPage() {
               Community Feedback
             </div>
             <h2 className="font-headline-md text-3xl sm:text-4xl font-bold leading-tight">
-              Voices From the Community
+              {config.testimonials_section?.heading || "Voices From the Community"}
             </h2>
             <p className="font-body-md text-ethereal-white/80 text-sm leading-relaxed">
-              /* [CLIENT TO SUPPLY TESTIMONIAL CONTENT] */ <br/>
-              Listen to the heartfelt experiences of village elders, volunteer coordinators, and temple trustees whose lives have been impacted by Dhara initiatives.
+              {config.testimonials_section?.subheading || "Listen to the heartfelt experiences of village elders, volunteer coordinators, and temple trustees whose lives have been impacted by Dhara initiatives."}
             </p>
             <div className="pt-2">
               <Link 
@@ -623,99 +686,45 @@ export default function EventsPage() {
             </div>
           </motion.div>
 
-          {/* Right Column: Staggered Overlapping Cards (Side -> Side -> Center) */}
+          {/* Right Column: Dynamic Cards */}
           <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-            
-            {/* Card 1 (Side 1) */}
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={{
-                hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 30 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.1, ease: "easeOut" } }
-              }}
-              whileHover={shouldReduceMotion ? {} : { scale: 1.04, y: -6 }}
-              transition={{ type: "spring", stiffness: 300 }}
-              className="bg-white/5 border border-white/10 p-6 rounded-2xl backdrop-blur-sm space-y-4 relative group cursor-pointer hover:bg-white/10 transition-colors"
-            >
-              <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 0.4 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-                <Quote className="text-primary absolute top-4 right-4 group-hover:scale-125 group-hover:rotate-12 transition-transform duration-300" size={32} />
+            {(config.testimonials_section?.items || DEFAULT_CONFIG.testimonials_section.items).map((t: any, idx: number) => (
+              <motion.div 
+                key={idx}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+                variants={{
+                  hidden: { opacity: 0, y: shouldReduceMotion ? 0 : (idx === 1 ? 20 : 30) },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.1 + idx * 0.12, ease: "easeOut" } }
+                }}
+                whileHover={shouldReduceMotion ? {} : { scale: idx === 1 ? 1.05 : 1.04, y: idx === 1 ? -10 : -6 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className={`p-6 rounded-2xl backdrop-blur-sm space-y-4 relative group cursor-pointer transition-all ${
+                  idx === 1
+                    ? "bg-white/10 border-2 border-saffron-glow/50 sm:p-8 rounded-3xl shadow-2xl md:-translate-y-4 z-10 hover:border-saffron-glow"
+                    : "bg-white/5 border border-white/10 hover:bg-white/10"
+                }`}
+              >
+                <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 0.4 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
+                  <Quote className={`${idx === 1 ? "text-saffron-glow top-6 right-6" : "text-primary top-4 right-4"} absolute group-hover:scale-125 group-hover:rotate-12 transition-transform duration-300`} size={idx === 1 ? 40 : 32} />
+                </motion.div>
+                <p className={`font-body-sm leading-relaxed italic ${idx === 1 ? "text-sm text-ethereal-white font-medium" : "text-xs sm:text-sm text-ethereal-white/90"}`}>
+                  &ldquo;{t.quote}&rdquo;
+                </p>
+                <div className={`flex items-center gap-3 pt-2 border-t ${idx === 1 ? "border-white/15 pt-4" : "border-white/10"}`}>
+                  <div className={`rounded-full flex items-center justify-center font-bold group-hover:scale-110 transition-transform ${
+                    idx === 1 ? "w-10 h-10 bg-saffron-glow text-deep-forest text-sm" : "w-9 h-9 bg-primary text-white text-xs"
+                  }`}>
+                    {t.initials || t.name.slice(0, 2).toUpperCase()}
+                  </div>
+                  <div>
+                    <div className={`font-bold ${idx === 1 ? "text-sm text-saffron-glow" : "text-xs text-white"}`}>{t.name}</div>
+                    <div className={`font-mono ${idx === 1 ? "text-xs text-ethereal-white/80" : "text-[10px] text-saffron-glow"}`}>{t.role}</div>
+                  </div>
+                </div>
               </motion.div>
-              <p className="font-body-sm text-xs sm:text-sm leading-relaxed text-ethereal-white/90 italic">
-                &ldquo;The footwear and school supplies distributed to our Javadhu Hills students brought immense joy. Dhara Foundations serves with genuine devotion.&rdquo;
-              </p>
-              <div className="flex items-center gap-3 pt-2 border-t border-white/10">
-                <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center font-bold text-xs text-white group-hover:scale-110 transition-transform">
-                  KR
-                </div>
-                <div>
-                  <div className="font-bold text-xs">K. Ramachandran</div>
-                  <div className="text-[10px] text-saffron-glow font-mono">Headmaster, Tribal School</div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Card 2 (Center Raised - Delayed to settle on top last) */}
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={{
-                hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 20 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.35, ease: "easeOut" } }
-              }}
-              whileHover={shouldReduceMotion ? {} : { scale: 1.05, y: -10 }}
-              transition={{ type: "spring", stiffness: 300 }}
-              className="bg-white/10 border-2 border-saffron-glow/50 p-6 sm:p-8 rounded-3xl backdrop-blur-md shadow-2xl space-y-4 relative md:-translate-y-4 z-10 group cursor-pointer hover:border-saffron-glow transition-colors"
-            >
-              <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 0.4 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-                <Quote className="text-saffron-glow absolute top-6 right-6 group-hover:scale-125 group-hover:-rotate-12 transition-transform duration-300" size={40} />
-              </motion.div>
-              <p className="font-body-md text-sm leading-relaxed text-ethereal-white font-medium italic">
-                &ldquo;During our ancient temple Kumbabhishekam, Dhara volunteers stood by us with flawless organization and Anna Daanam support. Truly blessed work!&rdquo;
-              </p>
-              <div className="flex items-center gap-3 pt-4 border-t border-white/15">
-                <div className="w-10 h-10 rounded-full bg-saffron-glow text-deep-forest flex items-center justify-center font-bold text-sm group-hover:scale-110 transition-transform">
-                  SS
-                </div>
-                <div>
-                  <div className="font-bold text-sm text-saffron-glow">Sivakumar Sastry</div>
-                  <div className="text-xs text-ethereal-white/80 font-mono">Temple Trustee, Kanchipuram</div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Card 3 (Side 2) */}
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={{
-                hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 30 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2, ease: "easeOut" } }
-              }}
-              whileHover={shouldReduceMotion ? {} : { scale: 1.04, y: -6 }}
-              transition={{ type: "spring", stiffness: 300 }}
-              className="bg-white/5 border border-white/10 p-6 rounded-2xl backdrop-blur-sm space-y-4 relative group cursor-pointer hover:bg-white/10 transition-colors"
-            >
-              <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 0.4 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-                <Quote className="text-primary absolute top-4 right-4 group-hover:scale-125 group-hover:rotate-12 transition-transform duration-300" size={32} />
-              </motion.div>
-              <p className="font-body-sm text-xs sm:text-sm leading-relaxed text-ethereal-white/90 italic">
-                &ldquo;Volunteering at the Dhara Divine Awards showed me how deeply they care for unheralded traditional artists. It is an honor to be part of this mission.&rdquo;
-              </p>
-              <div className="flex items-center gap-3 pt-2 border-t border-white/10">
-                <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center font-bold text-xs text-white group-hover:scale-110 transition-transform">
-                  AL
-                </div>
-                <div>
-                  <div className="font-bold text-xs">Anitha Lakshmi</div>
-                  <div className="text-[10px] text-saffron-glow font-mono">Youth Volunteer Coordinator</div>
-                </div>
-              </div>
-            </motion.div>
-
+            ))}
           </div>
 
         </div>

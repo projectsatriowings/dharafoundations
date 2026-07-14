@@ -51,7 +51,7 @@ const NAV_LINKS: NavLink[] = [
     href: "/events", 
     label: "Events",
     dropdown: [
-      { href: "https://dhara-divine-awards.vercel.app", label: "Dhara Divine Awards", desc: "Awardees, highlights & video archives" },
+      { href: "https://dhara-divine-awards-2025.vercel.app/", label: "Dhara Divine Awards", desc: "Awardees, highlights & video archives" },
     ],
     popup: { badge: "Complete Schedule", desc: "Discover upcoming heritage discourses & community gatherings." }
   },
@@ -85,6 +85,31 @@ export function Header() {
   const [isScrolledPastHero, setIsScrolledPastHero] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hoveredDropdown, setHoveredDropdown] = useState<string | null>(null);
+  const [dynamicLinks, setDynamicLinks] = useState<NavLink[]>(NAV_LINKS);
+
+  useEffect(() => {
+    fetch(`/api/public/flagship-page?t=${Date.now()}`)
+      .then((res) => res.ok ? res.json() : null)
+      .then((data) => {
+        const portalUrl = data?.config?.spotlight?.portal_url || data?.config?.ceremony?.portal_url;
+        if (portalUrl) {
+          setDynamicLinks((prev) =>
+            prev.map((item) => {
+              if (item.label === "Events" && item.dropdown) {
+                return {
+                  ...item,
+                  dropdown: item.dropdown.map((d) =>
+                    d.label === "Dhara Divine Awards" ? { ...d, href: portalUrl } : d
+                  )
+                };
+              }
+              return item;
+            })
+          );
+        }
+      })
+      .catch((err) => console.warn("Header dynamic links fetch error:", err));
+  }, []);
 
   useEffect(() => {
     const updateIndicator = () => {
@@ -149,19 +174,23 @@ export function Header() {
             alt="Dhara Foundations Emblem"
             className="h-11 w-11 sm:h-13 sm:w-13 object-contain block shrink-0"
           />
-          <div className="flex flex-col justify-center py-0.5">
-            <span className="font-heading font-black text-lg sm:text-xl tracking-[0.12em] text-ethereal-white group-hover/logo:text-saffron-glow transition-colors leading-none drop-shadow-[0_2px_6px_rgba(0,0,0,0.85)]">
-              DHARA
-            </span>
-            <span className="font-title font-extrabold text-[9px] sm:text-[10.5px] tracking-[0.34em] text-saffron-glow uppercase leading-tight mt-1 drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
-              FOUNDATIONS
-            </span>
+          <div className="flex flex-col justify-center py-0.5 w-[102px] sm:w-[116px]">
+            <div className="flex justify-between items-center w-full font-heading font-black text-[15.5px] sm:text-[17.5px] text-ethereal-white group-hover/logo:text-saffron-glow transition-colors leading-none drop-shadow-[0_2px_6px_rgba(0,0,0,0.85)]">
+              {"DHARA".split("").map((char, idx) => (
+                <span key={idx}>{char}</span>
+              ))}
+            </div>
+            <div className="flex justify-between items-center w-full font-title font-extrabold text-[7.2px] sm:text-[8.2px] text-saffron-glow uppercase leading-tight mt-1 drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
+              {"FOUNDATIONS".split("").map((char, idx) => (
+                <span key={idx}>{char}</span>
+              ))}
+            </div>
           </div>
         </Link>
 
         {/* Desktop Navigation */}
         <nav ref={navRef} className="hidden lg:flex items-center gap-0.5 xl:gap-1.5 relative">
-          {NAV_LINKS.map((link) => {
+          {dynamicLinks.map((link) => {
             const isTopActive =
               pathname === link.href ||
               (link.dropdown && link.dropdown.some((d) => d.href === pathname));
@@ -347,8 +376,8 @@ export function Header() {
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="pointer-events-auto lg:hidden mt-3 mx-auto max-w-[1380px] bg-deep-forest/95 backdrop-blur-2xl rounded-3xl border border-ethereal-white/20 overflow-hidden shadow-2xl p-6 text-ethereal-white"
           >
-            <div className="flex flex-col space-y-3 max-h-[75vh] overflow-y-auto">
-              {NAV_LINKS.map((link, i) => {
+            <div className="flex flex-col space-y-1.5 py-4">
+              {dynamicLinks.map((link, i) => {
                 const isTopActive =
                   pathname === link.href ||
                   (link.dropdown && link.dropdown.some((d) => d.href === pathname));
