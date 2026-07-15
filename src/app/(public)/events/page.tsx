@@ -97,9 +97,10 @@ const DEFAULT_CONFIG = {
     description: "Relive the full 4-hour live national ceremony from Chetpet, Chennai — featuring keynote addresses, soul-stirring cultural tributes, and the historic honoring of grassroots Sanatana Dharma champions.",
     duration: "4 Hours",
     location: "Chetpet, Chennai",
-    card_title: "Visit the Divine Awards Portal",
+    card_title: "Watch Official Ceremony Broadcast",
     card_desc: "Explore awardees, ceremony highlights, photo galleries, and the complete 4-hour broadcast",
     portal_url: "https://dhara-divine-awards-2025.vercel.app/",
+    video_url: "https://www.youtube.com/live/qOAbFfB22uI",
     image_url: "/images/hero-devi.png",
     milestones: [
       { title: "Vedic Invocation & Deepa Pragatya", description: "Sacred Vedic mantras, traditional lamp lighting ceremony, and divine blessings from spiritual dignitaries." },
@@ -432,65 +433,92 @@ export default function EventsPage() {
             {/* CTA Card + Highlights Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start pt-2">
               
-              {/* Left Column: Premium CTA Card (8 cols) */}
+              {/* Left Column: Premium Embedded YouTube Cinema Player (8 cols) */}
               <motion.div 
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
                 variants={fadeUpVariant}
-                className="lg:col-span-8 space-y-5"
+                className="lg:col-span-8"
               >
-                <Link
-                  href={config.ceremony?.portal_url || "https://dhara-divine-awards-2025.vercel.app/"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group block relative aspect-video w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.6)] border-2 border-saffron-glow/40 bg-deep-forest"
-                >
-                  {/* Background Image */}
-                  <img
-                    src={config.ceremony?.image_url || "/images/hero-devi.png"}
-                    alt="Dhara Divine Awards Ceremony"
-                    className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-75 group-hover:scale-105 transition-all duration-700"
-                  />
-                  {/* Overlay Gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
+                <div className="bg-gradient-to-b from-[#0e2c23] via-[#071913] to-[#04110d] p-3 sm:p-4 rounded-3xl sm:rounded-[2rem] border-2 border-saffron-glow/60 shadow-[0_25px_70px_rgba(0,0,0,0.8)] transition-all duration-500 hover:shadow-[0_0_55px_rgba(255,183,3,0.22)]">
                   
-                  {/* Content Overlay */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 p-6 text-center">
-                    {/* Play Button Circle */}
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-saffron-glow/90 flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:bg-saffron-glow transition-all duration-300">
-                      <ArrowRight size={36} className="text-deep-forest ml-1" />
+                  {/* Top Header Badge Bar */}
+                  <div className="flex flex-wrap items-center justify-between gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 bg-black/60 backdrop-blur-md rounded-2xl border border-white/10 mb-3 text-xs">
+                    <div className="flex items-center gap-2 font-mono font-bold text-white tracking-wide">
+                      <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse shrink-0 shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
+                      <span>OFFICIAL LIVE RECORDING ARCHIVE</span>
                     </div>
-                    <div className="space-y-2">
-                      <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white drop-shadow-lg">
-                        {config.ceremony?.card_title || "Visit the Divine Awards Portal"}
+                    <div className="flex items-center gap-2">
+                      <span className="px-2.5 py-0.5 rounded-full bg-saffron-glow/20 text-saffron-glow border border-saffron-glow/40 text-[10px] sm:text-xs font-mono font-bold">
+                        4K HD BROADCAST
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* 16:9 Responsive YouTube Player Frame */}
+                  <div className="relative aspect-video w-full rounded-2xl overflow-hidden shadow-2xl bg-black border border-white/15">
+                    {(() => {
+                      const rawUrl = config.ceremony?.video_url || "https://www.youtube.com/live/qOAbFfB22uI";
+                      let vidId = "qOAbFfB22uI";
+                      if (rawUrl.includes("live/")) vidId = rawUrl.split("live/")[1]?.split("?")[0] || vidId;
+                      else if (rawUrl.includes("v=")) vidId = rawUrl.split("v=")[1]?.split("&")[0] || vidId;
+                      else if (rawUrl.includes("youtu.be/")) vidId = rawUrl.split("youtu.be/")[1]?.split("?")[0] || vidId;
+                      else if (rawUrl.includes("embed/")) vidId = rawUrl.split("embed/")[1]?.split("?")[0] || vidId;
+                      
+                      return (
+                        <iframe
+                          src={`https://www.youtube.com/embed/${vidId}?rel=0&modestbranding=1`}
+                          title="Dhara Divine Awards 2025 Complete Ceremony Broadcast"
+                          className="absolute inset-0 w-full h-full border-0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          allowFullScreen
+                        />
+                      );
+                    })()}
+                  </div>
+
+                  {/* Interactive Broadcast Controls Deck */}
+                  <div className="mt-3 bg-white/[0.05] backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/10 space-y-4">
+                    <div className="space-y-1.5">
+                      <h3 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+                        <Video className="text-saffron-glow shrink-0" size={22} />
+                        <span>{config.ceremony?.card_title || "Watch Official Ceremony Broadcast"}</span>
                       </h3>
-                      <p className="text-sm sm:text-base text-ethereal-white/80 max-w-md mx-auto">
+                      <p className="text-sm sm:text-base text-ethereal-white/80">
                         {config.ceremony?.card_desc || "Explore awardees, ceremony highlights, photo galleries, and the complete 4-hour broadcast"}
                       </p>
                     </div>
+
+                    {/* Meta Status Strip & Quick Actions */}
+                    <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-white/10 text-xs sm:text-sm text-ethereal-white/85">
+                      <div className="flex flex-wrap items-center gap-4 sm:gap-6 font-mono">
+                        <span className="flex items-center gap-1.5">
+                          <Clock className="text-amber-400 shrink-0" size={16} />
+                          <span>Duration: <strong className="text-white">{config.ceremony?.duration || "4 Hours"}</strong></span>
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
+                          <strong className="text-white">{config.ceremony?.location || "Chetpet, Chennai"}</strong>
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-2.5 sm:gap-3 w-full sm:w-auto justify-end">
+                        <Link
+                          href={config.ceremony?.video_url || "https://www.youtube.com/live/qOAbFfB22uI"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs sm:text-sm transition-all shadow-lg shadow-red-600/20 active:scale-95 shrink-0"
+                        >
+                          <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                          </svg>
+                          <span>YouTube App</span>
+                        </Link>
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Hover Shine Effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                </Link>
-
-                {/* Meta Bar */}
-                <div className="bg-white/5 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs sm:text-sm text-ethereal-white/80">
-                  <div className="flex items-center gap-2">
-                    <Video className="text-saffron-glow shrink-0" size={18} />
-                    <span className="font-bold text-white font-mono">Official Ceremony Archive</span>
-                  </div>
-                  <div className="flex items-center gap-6">
-                    <span className="flex items-center gap-1.5">
-                      <Clock className="text-amber-400 shrink-0" size={16} />
-                      <span>Duration: <strong>{config.ceremony?.duration || "4 Hours"}</strong></span>
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
-                      <span>{config.ceremony?.location || "Chetpet, Chennai"}</span>
-                    </span>
-                  </div>
                 </div>
               </motion.div>
 
@@ -531,19 +559,10 @@ export default function EventsPage() {
                     ))}
                   </div>
 
-                  <div className="pt-3 border-t border-white/10 space-y-4">
-                    <p className="text-[11px] font-mono text-saffron-glow/90 italic text-center">
+                  <div className="pt-4 border-t border-white/10">
+                    <p className="text-xs font-mono text-saffron-glow/90 italic text-center leading-relaxed px-2">
                       &quot;Recognizing those who serve the divine by serving humanity without seeking fame or reward.&quot;
                     </p>
-                    <Link
-                      href={config.ceremony?.portal_url || config.spotlight?.portal_url || "https://dhara-divine-awards-2025.vercel.app/"}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-saffron-glow hover:bg-amber-400 text-deep-forest font-bold text-sm transition-all shadow-lg hover:scale-[1.02]"
-                    >
-                      <span>Explore Awards Portal</span>
-                      <ArrowRight size={16} />
-                    </Link>
                   </div>
                 </div>
               </motion.div>

@@ -29,9 +29,10 @@ export const DEFAULT_FLAGSHIP_CONFIG = {
     description: "Relive the full 4-hour live national ceremony from Chetpet, Chennai — featuring keynote addresses, soul-stirring cultural tributes, and the historic honoring of grassroots Sanatana Dharma champions.",
     duration: "4 Hours",
     location: "Chetpet, Chennai",
-    card_title: "Visit the Divine Awards Portal",
+    card_title: "Watch Official Ceremony Broadcast",
     card_desc: "Explore awardees, ceremony highlights, photo galleries, and the complete 4-hour broadcast",
     portal_url: "https://dhara-divine-awards-2025.vercel.app/",
+    video_url: "https://www.youtube.com/live/qOAbFfB22uI",
     image_url: "/images/hero-devi.png",
     milestones: [
       {

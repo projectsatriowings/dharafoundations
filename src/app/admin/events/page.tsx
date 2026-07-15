@@ -55,9 +55,10 @@ export default function AdminEventsPage() {
       description: "Relive the full 4-hour live national ceremony from Chetpet, Chennai — featuring keynote addresses, soul-stirring cultural tributes, and the historic honoring of grassroots Sanatana Dharma champions.",
       duration: "4 Hours",
       location: "Chetpet, Chennai",
-      card_title: "Visit the Divine Awards Portal",
+      card_title: "Watch Official Ceremony Broadcast",
       card_desc: "Explore awardees, ceremony highlights, photo galleries, and the complete 4-hour broadcast",
       portal_url: "https://dhara-divine-awards-2025.vercel.app/",
+      video_url: "https://www.youtube.com/live/qOAbFfB22uI",
       image_url: "/images/hero-devi.png",
       milestones: [
         { title: "Vedic Invocation & Deepa Pragatya", description: "Sacred Vedic mantras, traditional lamp lighting ceremony, and divine blessings from spiritual dignitaries." },
@@ -497,7 +498,7 @@ export default function AdminEventsPage() {
                   </button>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Section Heading</label>
                     <input
@@ -505,6 +506,16 @@ export default function AdminEventsPage() {
                       value={config.ceremony.title}
                       onChange={(e) => setConfig({ ...config, ceremony: { ...config.ceremony, title: e.target.value } })}
                       className="w-full px-3 py-2 rounded-xl border border-gray-300 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#00322B]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 uppercase mb-1">YouTube Live / Video URL</label>
+                    <input
+                      type="text"
+                      value={config.ceremony.video_url || ""}
+                      onChange={(e) => setConfig({ ...config, ceremony: { ...config.ceremony, video_url: e.target.value } })}
+                      placeholder="https://www.youtube.com/live/qOAbFfB22uI"
+                      className="w-full px-3 py-2 rounded-xl border border-gray-300 text-sm font-mono text-blue-700 font-semibold focus:outline-none focus:ring-2 focus:ring-[#00322B]"
                     />
                   </div>
                   <div>
