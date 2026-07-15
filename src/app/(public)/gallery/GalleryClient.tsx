@@ -8,7 +8,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 import { PillButton } from "@/components/ui/PillButton";
 
-const PHOTO_FILTERS = ["All Seva", "Charity", "Sanatana Dharma"];
+const PHOTO_FILTERS = ["All Sevas", "Charity", "Sanatana Dharma"];
 
 export interface GalleryClientProps {
   initialPhotos: any[];
@@ -130,7 +130,7 @@ export default function GalleryClient({ initialPhotos, initialEvents = [] }: Gal
   const router = useRouter();
   const [eventItems, setEventItems] = useState<any[]>(initialEvents);
   const [highlightItems, setHighlightItems] = useState<any[]>([]);
-  const [activePhotoTab, setActivePhotoTab] = useState("All Seva");
+  const [activePhotoTab, setActivePhotoTab] = useState("All Sevas");
 
   useEffect(() => {
     // Check URL search parameters for automatic tab selection when clicking navbar dropdowns
@@ -282,7 +282,7 @@ export default function GalleryClient({ initialPhotos, initialEvents = [] }: Gal
       {/* =========================================================================
           SECTION 1: CHARITY & COMMUNITY WELFARE (Highlights + Photos + Events)
          ========================================================================= */}
-      {(activePhotoTab === "All Seva" || activePhotoTab === "Charity") && (
+      {(activePhotoTab === "All Sevas" || activePhotoTab === "All Seva" || activePhotoTab === "Charity") && (
         <section className="px-4 md:px-8 max-w-7xl mx-auto pt-10 pb-20 w-full space-y-16">
           <ScrollReveal className="text-center space-y-2 border-b border-gray-200 pb-8">
             <span className="font-label font-bold text-xs tracking-[0.2em] text-primary uppercase">
@@ -357,8 +357,8 @@ export default function GalleryClient({ initialPhotos, initialEvents = [] }: Gal
         </section>
       )}
 
-      {/* Divider when viewing All Seva */}
-      {activePhotoTab === "All Seva" && (
+      {/* Divider when viewing All Sevas */}
+      {(activePhotoTab === "All Sevas" || activePhotoTab === "All Seva") && (
         <div className="max-w-6xl mx-auto w-full px-8">
           <div className="h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent my-8 rounded-full" />
         </div>
@@ -367,7 +367,7 @@ export default function GalleryClient({ initialPhotos, initialEvents = [] }: Gal
       {/* =========================================================================
           SECTION 2: SANATANA DHARMA & TEMPLE HERITAGE (Highlights + Photos + Events)
          ========================================================================= */}
-      {(activePhotoTab === "All Seva" || activePhotoTab === "Sanatana Dharma") && (
+      {(activePhotoTab === "All Sevas" || activePhotoTab === "All Seva" || activePhotoTab === "Sanatana Dharma") && (
         <section className="px-4 md:px-8 max-w-7xl mx-auto pt-10 pb-24 w-full space-y-16">
           <ScrollReveal className="text-center space-y-2 border-b border-gray-200 pb-8">
             <span className="font-label font-bold text-xs tracking-[0.2em] text-[#8a5000] uppercase">
