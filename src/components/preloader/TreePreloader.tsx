@@ -4,31 +4,25 @@ import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 export default function TreePreloader() {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
   const [exiting, setExiting] = useState(false);
 
   useEffect(() => {
-    // Force animation by using a new session storage key
-    const hasVisited = sessionStorage.getItem("dhara_visited_seed_to_banyan_v2");
-    if (!hasVisited) {
-      setShow(true);
-      sessionStorage.setItem("dhara_visited_seed_to_banyan_v2", "true");
-      
-      document.body.style.overflow = "hidden";
-      document.documentElement.style.overflow = "hidden";
+    // Run unconditionally on mount
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
 
-      const exitTimer = setTimeout(() => {
-        setExiting(true);
-        // After the curtain slides up (600ms), we unmount the whole preloader
-        setTimeout(() => {
-          setShow(false);
-          document.body.style.overflow = "";
-          document.documentElement.style.overflow = "";
-        }, 600);
-      }, 5500); // 5.5s total preloader duration to show the full growth sequence
+    const exitTimer = setTimeout(() => {
+      setExiting(true);
+      // After the curtain slides up (600ms), we unmount the whole preloader
+      setTimeout(() => {
+        setShow(false);
+        document.body.style.overflow = "";
+        document.documentElement.style.overflow = "";
+      }, 600);
+    }, 5500); // 5.5s total preloader duration to show the full growth sequence
 
-      return () => clearTimeout(exitTimer);
-    }
+    return () => clearTimeout(exitTimer);
   }, []);
 
   if (!show) return null;
