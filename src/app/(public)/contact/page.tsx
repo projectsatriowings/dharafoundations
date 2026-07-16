@@ -295,7 +295,7 @@ export default function ContactPage() {
 
             <div className="space-y-1.5 font-body text-on-surface-variant text-base sm:text-lg leading-relaxed">
               <p className="font-title font-medium text-on-surface dark:text-ethereal-white">
-                No 44A, 3rd Street, Judge Colony
+                #44A, 3rd Street, Judge Colony
               </p>
               <p>Tambaram Sanatorium, Chennai</p>
               <p>Tamil Nadu - 600047, India</p>

@@ -71,7 +71,7 @@ export function NeoMinimalFooter() {
               </div>
               <div className="flex items-start gap-2.5">
                 <MapPin size={16} className="text-saffron-glow shrink-0 mt-0.5" />
-                <span>No 44A, 3rd St, Judge Colony, Tambaram Sanatorium, Chennai - 600047</span>
+                <span>#44A, 3rd St, Judge Colony, Tambaram Sanatorium, Chennai - 600047</span>
               </div>
             </div>
           </div>

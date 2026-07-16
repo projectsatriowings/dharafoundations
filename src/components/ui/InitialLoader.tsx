@@ -4,9 +4,10 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const quotes = [
-  "Reviving Sanatana Dharma & Sacred Traditions...",
-  "Empowering Rural Communities Across Tamil Nadu...",
-  "Preserving Heritage · Uplifting Lives · Spiritual Seva...",
+  "A tiny seed of Seva...",
+  "Taking root in Sanatana Dharma...",
+  "Branching out to communities...",
+  "Sheltering the marginalized...",
   "Welcome to Dhara Foundations..."
 ];
 
@@ -18,8 +19,7 @@ export function InitialLoader() {
 
   useEffect(() => {
     setMounted(true);
-    // Check session storage after client hydration is complete
-    const hasVisited = sessionStorage.getItem("dhara_initial_loader_v2");
+    const hasVisited = sessionStorage.getItem("dhara_initial_loader_banyan_v1");
     if (!hasVisited) {
       setIsLoading(true);
       document.body.style.overflow = "hidden";
@@ -29,14 +29,12 @@ export function InitialLoader() {
   useEffect(() => {
     if (!isLoading) return;
 
-    // Cycle through inspiring quotes every 750ms
     const quoteInterval = setInterval(() => {
       setQuoteIdx((prev) => (prev + 1) % quotes.length);
-    }, 750);
+    }, 1100);
 
-    // Smooth progress bar simulation over ~2.4 seconds
     const startTime = Date.now();
-    const duration = 2400; // 2.4 seconds total intro time
+    const duration = 5500; 
 
     const progressInterval = setInterval(() => {
       const elapsed = Date.now() - startTime;
@@ -48,11 +46,11 @@ export function InitialLoader() {
         clearInterval(quoteInterval);
         setTimeout(() => {
           setIsLoading(false);
-          sessionStorage.setItem("dhara_initial_loader_v2", "true");
+          sessionStorage.setItem("dhara_initial_loader_banyan_v1", "true");
           document.body.style.overflow = "";
-        }, 350); // slight pause at 100% for satisfaction before curtain exit
+        }, 1000); 
       }
-    }, 25);
+    }, 30);
 
     return () => {
       clearInterval(progressInterval);
@@ -67,130 +65,195 @@ export function InitialLoader() {
     <AnimatePresence>
       {isLoading && (
         <motion.div
-          key="dhara-initial-loader"
+          key="dhara-banyan-loader"
           suppressHydrationWarning={true}
           initial={{ opacity: 1 }}
           exit={{
             opacity: 0,
-            scale: 1.03,
-            transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] }
+            scale: 1.05,
+            transition: { duration: 1.2, ease: [0.25, 1, 0.5, 1] }
           }}
-          className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-deep-forest/98 backdrop-blur-3xl overflow-hidden select-none px-4 sm:px-6"
+          className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#f4fcf7] overflow-hidden select-none"
         >
-          {/* Background Spiritual Aura & Rotating Sacred Rings */}
+          {/* Subtle nature glow background */}
           <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-            {/* Soft Saffron Glowing Center Halo */}
-            <motion.div
-              animate={{ scale: [1, 1.18, 1], opacity: [0.35, 0.55, 0.35] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-              className="w-[320px] h-[320px] sm:w-[480px] sm:h-[480px] rounded-full bg-radial from-saffron-glow/25 via-saffron-glow/5 to-transparent blur-3xl"
-            />
-            
-            {/* Outer Slow Rotating Gold Ring */}
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
-              className="absolute w-[280px] h-[280px] sm:w-[420px] sm:h-[420px] rounded-full border border-saffron-glow/15 border-dashed"
-            />
-
-            {/* Inner Counter-Rotating Emerald/Gold Ring */}
-            <motion.div
-              animate={{ rotate: -360 }}
-              transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-              className="absolute w-[220px] h-[220px] sm:w-[320px] sm:h-[320px] rounded-full border border-ethereal-white/10"
-            />
+             <motion.div
+                animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.7, 0.4] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="w-[350px] h-[350px] bg-emerald-100 rounded-full blur-[90px]"
+             />
           </div>
 
-          {/* Main Logo & Emblem Showcase */}
-          <div className="relative z-10 flex flex-col items-center text-center max-w-lg w-full">
-            {/* Pulsating Logo Emblem with Golden Drop Shadow */}
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0, y: 15 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="relative mb-6 sm:mb-8 p-3 sm:p-4 rounded-full bg-gradient-to-b from-white/10 to-white/5 border border-saffron-glow/30 shadow-[0_0_45px_rgba(244,180,26,0.35)]"
-            >
-              <img
-                src="/logo-icon-only.png?v=10"
-                alt="Dhara Foundations Emblem"
-                className="w-20 h-20 sm:w-28 sm:h-28 object-contain filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] animate-pulse"
-              />
-            </motion.div>
+          <div className="relative z-10 flex flex-col items-center w-full max-w-lg">
+            
+            {/* THE GROWING BANYAN TREE ANIMATION */}
+            <div className="relative w-64 h-64 sm:w-80 sm:h-80 flex items-center justify-center mb-2">
+              <svg viewBox="0 0 100 100" className="w-full h-full overflow-visible drop-shadow-lg">
+                
+                {/* 1. The Ground */}
+                <motion.line 
+                  x1="10" y1="90" x2="90" y2="90" 
+                  stroke="#059669" strokeWidth="2" strokeLinecap="round"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: 1, opacity: 1 }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                />
+                
+                {/* 2. PHASE 1: Seedling Sprout (Fades out as tree grows) */}
+                <motion.g
+                  initial={{ opacity: 1 }}
+                  animate={{ opacity: 0 }}
+                  transition={{ duration: 0.8, delay: 1.8 }}
+                >
+                  <motion.path
+                    d="M 50 90 Q 45 75 50 65"
+                    stroke="#10b981" strokeWidth="2.5" fill="none" strokeLinecap="round"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+                  />
+                  <motion.path
+                    d="M 49 75 Q 35 75 38 65 Q 45 65 49 75"
+                    fill="#34d399"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    style={{ transformOrigin: "49px 75px" }}
+                    transition={{ duration: 0.6, delay: 1.0 }}
+                  />
+                </motion.g>
 
-            {/* Title: DHARA */}
+                {/* 3. PHASE 2: The Banyan Trunk & Main Branches */}
+                {/* Thick Trunk Base */}
+                <motion.path
+                  d="M 45 90 Q 48 60 50 45"
+                  stroke="#064e3b" strokeWidth="4" fill="none" strokeLinecap="round"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1.5, delay: 1.6, ease: "easeOut" }}
+                />
+                <motion.path
+                  d="M 55 90 Q 52 60 50 45"
+                  stroke="#064e3b" strokeWidth="4" fill="none" strokeLinecap="round"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1.5, delay: 1.6, ease: "easeOut" }}
+                />
+                
+                {/* Left Main Branch */}
+                <motion.path
+                  d="M 49 55 Q 35 48 22 45"
+                  stroke="#064e3b" strokeWidth="3" fill="none" strokeLinecap="round"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1.2, delay: 2.2, ease: "easeOut" }}
+                />
+                {/* Right Main Branch */}
+                <motion.path
+                  d="M 51 52 Q 65 45 78 42"
+                  stroke="#064e3b" strokeWidth="3" fill="none" strokeLinecap="round"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1.2, delay: 2.4, ease: "easeOut" }}
+                />
+
+                {/* 4. PHASE 3: Aerial Roots (Classic Banyan Feature) */}
+                <motion.line x1="28" y1="47" x2="28" y2="90" stroke="#064e3b" strokeWidth="1.5"
+                  initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.2, delay: 3.0 }} />
+                <motion.line x1="36" y1="50" x2="36" y2="90" stroke="#064e3b" strokeWidth="1"
+                  initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 3.3 }} />
+                <motion.line x1="68" y1="45" x2="68" y2="90" stroke="#064e3b" strokeWidth="1.5"
+                  initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.2, delay: 3.1 }} />
+                <motion.line x1="76" y1="43" x2="76" y2="90" stroke="#064e3b" strokeWidth="1"
+                  initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.4, delay: 3.5 }} />
+                <motion.line x1="60" y1="48" x2="60" y2="90" stroke="#064e3b" strokeWidth="1"
+                  initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.0, delay: 3.6 }} />
+
+                {/* 5. PHASE 4: The Lush Canopy (Leaves scaling in) */}
+                {/* Back Canopy */}
+                <motion.path
+                  d="M 50 35 C 20 35 10 15 30 10 C 40 0 60 0 70 10 C 90 15 80 35 50 35 Z"
+                  fill="#10b981"
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 0.95 }}
+                  style={{ transformOrigin: "50px 35px" }}
+                  transition={{ duration: 1.5, delay: 3.4, ease: "easeOut" }}
+                />
+                {/* Left Canopy */}
+                <motion.path
+                  d="M 35 50 C 5 50 0 25 15 15 C 25 5 45 10 45 25 C 55 45 40 50 35 50 Z"
+                  fill="#34d399"
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 0.95 }}
+                  style={{ transformOrigin: "35px 50px" }}
+                  transition={{ duration: 1.5, delay: 3.7, ease: "easeOut" }}
+                />
+                {/* Right Canopy */}
+                <motion.path
+                  d="M 65 48 C 95 48 100 22 85 12 C 75 2 55 8 55 22 C 45 42 60 48 65 48 Z"
+                  fill="#059669"
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 0.95 }}
+                  style={{ transformOrigin: "65px 48px" }}
+                  transition={{ duration: 1.5, delay: 4.0, ease: "easeOut" }}
+                />
+                
+                {/* Magic Sparks floating upwards around the Banyan */}
+                <motion.circle cx="25" cy="35" r="1.5" fill="#f59e0b" 
+                  initial={{ opacity: 0, y: 10 }} animate={{ opacity: [0, 1, 0], y: -20 }} 
+                  transition={{ duration: 2.5, delay: 4.2, repeat: Infinity }} 
+                />
+                <motion.circle cx="75" cy="25" r="2" fill="#f59e0b" 
+                  initial={{ opacity: 0, y: 10 }} animate={{ opacity: [0, 1, 0], y: -15 }} 
+                  transition={{ duration: 3, delay: 4.5, repeat: Infinity }} 
+                />
+                <motion.circle cx="50" cy="5" r="1.5" fill="#f59e0b" 
+                  initial={{ opacity: 0, y: 5 }} animate={{ opacity: [0, 1, 0], y: -25 }} 
+                  transition={{ duration: 2.8, delay: 4.8, repeat: Infinity }} 
+                />
+              </svg>
+            </div>
+
+            {/* DHARA LOGO TEXT */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex items-center justify-center gap-1 sm:gap-1.5 font-heading font-black text-3xl sm:text-5xl text-ethereal-white tracking-[0.2em] leading-none drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
+              transition={{ duration: 1.5, delay: 2.0 }}
+              className="text-center"
             >
-              {"DHARA".split("").map((char, idx) => (
-                <motion.span
-                  key={idx}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.3 + idx * 0.08 }}
-                  className="text-ethereal-white group-hover:text-saffron-glow"
-                >
-                  {char}
-                </motion.span>
-              ))}
+               <h1 className="font-heading font-bold text-3xl sm:text-4xl text-emerald-950 tracking-[0.2em] uppercase">
+                Dhara
+              </h1>
+              <p className="font-title font-bold text-[10px] sm:text-xs text-emerald-600 tracking-[0.4em] uppercase mt-1">
+                Foundations
+              </p>
             </motion.div>
 
-            {/* Title: FOUNDATIONS */}
+            {/* PERCENTAGE */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.7, delay: 0.7 }}
-              className="mt-2 font-title font-extrabold text-[11px] sm:text-sm text-saffron-glow tracking-[0.38em] uppercase drop-shadow-[0_1px_6px_rgba(244,180,26,0.4)]"
+              transition={{ duration: 1, delay: 1.0 }}
+              className="mt-6 font-mono text-xs sm:text-sm text-emerald-800/50 tracking-widest"
             >
-              FOUNDATIONS
+              {progress.toString().padStart(2, '0')}%
             </motion.div>
 
-            {/* Thin Glowing Golden Progress Bar */}
-            <motion.div
-              initial={{ opacity: 0, width: "60%" }}
-              animate={{ opacity: 1, width: "100%" }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="mt-8 sm:mt-10 w-64 sm:w-80 max-w-full flex flex-col items-center"
-            >
-              <div className="w-full h-1.5 sm:h-2 bg-black/40 rounded-full overflow-hidden border border-white/10 p-0.5 backdrop-blur-sm shadow-inner relative">
-                <motion.div
-                  className="h-full bg-gradient-to-r from-amber-600 via-saffron-glow to-amber-300 rounded-full shadow-[0_0_12px_rgba(244,180,26,0.8)] relative"
-                  style={{ width: `${progress}%` }}
-                  transition={{ duration: 0.05 }}
-                >
-                  {/* Shimmer light reflection inside progress bar */}
-                  <div className="absolute top-0 right-0 bottom-0 w-4 bg-white/60 blur-[1px]" />
-                </motion.div>
-              </div>
-
-              {/* Progress Percentage & Rotating Dharmic Quote */}
-              <div className="mt-3 flex items-center justify-between w-full font-mono text-xs sm:text-sm">
-                <span className="text-saffron-glow font-bold tracking-wider">
-                  LOADING...
-                </span>
-                <span className="text-ethereal-white font-black">
-                  {progress}%
-                </span>
-              </div>
-            </motion.div>
-
-            {/* Inspirational Rotating Tagline */}
-            <div className="mt-6 sm:mt-8 min-h-[36px] flex items-center justify-center px-4">
+            {/* QUOTES */}
+            <div className="mt-6 h-8 flex items-center justify-center overflow-hidden">
               <AnimatePresence mode="wait">
-                <motion.p
+                <motion.div
                   key={quoteIdx}
-                  initial={{ opacity: 0, y: 6 }}
+                  initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.25 }}
-                  className="font-body text-xs sm:text-sm text-ethereal-white/80 text-center italic tracking-wide max-w-md"
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.5 }}
+                  className="font-body italic font-light text-sm text-emerald-700/80 tracking-wide"
                 >
-                  "{quotes[quoteIdx]}"
-                </motion.p>
+                  {quotes[quoteIdx]}
+                </motion.div>
               </AnimatePresence>
             </div>
+
           </div>
         </motion.div>
       )}
