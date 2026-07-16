@@ -305,7 +305,7 @@ export default function ContactPage() {
 
             <div className="space-y-3 font-title text-base sm:text-lg">
               <div className="flex items-center gap-3">
-                <span className="text-on-surface-variant w-16">Email —</span>
+                <span className="text-on-surface-variant w-20 whitespace-nowrap">Email —</span>
                 <a
                   href="mailto:info@dharafoundations.in"
                   className="font-medium text-primary hover:underline"
@@ -314,7 +314,7 @@ export default function ContactPage() {
                 </a>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-on-surface-variant w-16">Phone —</span>
+                <span className="text-on-surface-variant w-20 whitespace-nowrap">Phone —</span>
                 <a
                   href="tel:04422236641"
                   className="font-medium text-on-surface dark:text-ethereal-white hover:text-primary transition-colors"

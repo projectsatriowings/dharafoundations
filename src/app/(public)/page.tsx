@@ -91,7 +91,11 @@ export default function HomePage() {
       cache: "no-store",
       headers: { "Cache-Control": "no-cache" },
     })
-      .then((res) => res.json())
+      .then(async (res) => {
+        const text = await res.text();
+        if (text === "Offline" || !text.startsWith("{")) throw new Error("Offline or invalid JSON");
+        return JSON.parse(text);
+      })
       .then((d) => {
         if (d.stats && d.stats.length > 0) setStats(d.stats);
         if (d.gallery && d.gallery.length > 0) setGallery(d.gallery);
@@ -103,13 +107,17 @@ export default function HomePage() {
           setConfig((prev) => ({ ...prev, ...d.config, hero_image_url: updatedHero }));
         }
       })
-      .catch(console.error);
+      .catch((err) => console.warn("Fetch homepage config error:", err));
 
     fetch(`/api/public/events?t=${Date.now()}`, {
       cache: "no-store",
       headers: { "Cache-Control": "no-cache" },
     })
-      .then((res) => res.json())
+      .then(async (res) => {
+        const text = await res.text();
+        if (text === "Offline" || !text.startsWith("{")) throw new Error("Offline or invalid JSON");
+        return JSON.parse(text);
+      })
       .then((d) => {
         if (d && Array.isArray(d.events) && d.events.length > 0) {
           const sortedData = [...d.events].sort((a: any, b: any) => {

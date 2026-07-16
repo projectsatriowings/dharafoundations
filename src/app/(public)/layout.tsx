@@ -39,7 +39,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${robotoSlab.variable} ${montserrat.variable} scroll-smooth`}>
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth" className={`${robotoSlab.variable} ${montserrat.variable} scroll-smooth`}>
       <head>
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#00322B" />
