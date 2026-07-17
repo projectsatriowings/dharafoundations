@@ -44,7 +44,7 @@ const PREVIEW_SLIDES = [
 ];
 
 export default function HomePage() {
-  const [isHeroMuted, setIsHeroMuted] = useState(false);
+  const [isHeroMuted, setIsHeroMuted] = useState(true);
   const heroVideoRef = useRef<HTMLVideoElement>(null);
   const [activeModalItem, setActiveModalItem] = useState<(typeof HOME_GALLERY)[0] | null>(null);
   const [stats, setStats] = useState<any[]>([
