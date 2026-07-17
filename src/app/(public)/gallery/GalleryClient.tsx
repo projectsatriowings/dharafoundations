@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Calendar, Clock, MapPin, ArrowRight, ExternalLink, Sparkles } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
@@ -128,15 +128,15 @@ function EventCard({ ev, router }: { ev: any; router: any }) {
 
 export default function GalleryClient({ initialPhotos, initialEvents = [] }: GalleryClientProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [eventItems, setEventItems] = useState<any[]>(initialEvents);
   const [highlightItems, setHighlightItems] = useState<any[]>([]);
   const [activePhotoTab, setActivePhotoTab] = useState("All Sevas");
 
+  // React to URL changes (e.g. clicking dropdown links from header)
   useEffect(() => {
-    // Check URL search parameters for automatic tab selection when clicking navbar dropdowns
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      const catParam = params.get("category");
+    if (searchParams) {
+      const catParam = searchParams.get("category");
       if (catParam) {
         if (catParam.toLowerCase() === "charity") {
           setActivePhotoTab("Charity");
@@ -145,7 +145,9 @@ export default function GalleryClient({ initialPhotos, initialEvents = [] }: Gal
         }
       }
     }
+  }, [searchParams]);
 
+  useEffect(() => {
     // Fetch latest highlights
     fetch(`/api/public/highlights?t=${Date.now()}`, {
       cache: "no-store",
