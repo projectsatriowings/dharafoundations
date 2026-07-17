@@ -155,6 +155,35 @@ export default function HomePage() {
       .catch(console.error);
   }, []);
 
+  // Pause video when scrolled out of view or navigating away
+  useEffect(() => {
+    const videoElement = heroVideoRef.current;
+    if (!videoElement) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            videoElement.play().catch(e => console.error("Auto-play prevented by browser policy", e));
+          } else {
+            videoElement.pause();
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(videoElement);
+
+    return () => {
+      observer.disconnect();
+      // Ensure video is explicitly paused when component unmounts
+      if (videoElement) {
+        videoElement.pause();
+      }
+    };
+  }, []);
+
   return (
     <div className="relative w-full overflow-hidden bg-background text-on-background">
       {/* ==========================================

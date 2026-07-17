@@ -143,6 +143,9 @@ export default function GalleryClient({ initialPhotos, initialEvents = [] }: Gal
         } else if (catParam.toLowerCase().includes("sanatana") || catParam.toLowerCase().includes("dharma")) {
           setActivePhotoTab("Sanatana Dharma");
         }
+      } else {
+        // If navigating to the base /gallery page without a category, reset to All Sevas
+        setActivePhotoTab("All Sevas");
       }
     }
   }, [searchParams]);
