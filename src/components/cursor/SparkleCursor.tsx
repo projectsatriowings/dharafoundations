@@ -24,8 +24,8 @@ export default function SparkleCursor() {
     }
 
     const onMove = (e: MouseEvent) => {
-      // Hotspot is the exact tip of the arrow at (10,0)
-      cursorX.set(e.clientX - 10);
+      // Hotspot is the scaled tip of the arrow (10 * 36/44)
+      cursorX.set(e.clientX - 8);
       cursorY.set(e.clientY);
     };
 
@@ -97,8 +97,8 @@ export default function SparkleCursor() {
         }}
       >
         <motion.svg
-          width="44"
-          height="44"
+          width="36"
+          height="36"
           viewBox="0 0 44 44"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
