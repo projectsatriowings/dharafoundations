@@ -161,47 +161,7 @@ p, li, input, textarea {
   box-shadow: 0 0 20px rgba(255, 210, 127, 0.4);
 }
 
-/* Custom Cursor styles */
-.custom-cursor-dot {
-  pointer-events: none;
-  position: fixed;
-  top: -4px;
-  left: -4px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #8a5000;
-  box-shadow: 0 0 10px #FFD27F;
-  z-index: 9999;
-  transition: opacity 0.15s ease-in-out;
-}
 
-.custom-cursor-ring {
-  pointer-events: none;
-  position: fixed;
-  top: -16px;
-  left: -16px;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(138, 80, 0, 0.5);
-  background-color: rgba(255, 210, 127, 0.08);
-  z-index: 9998;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 8px;
-  font-weight: 700;
-  color: #8a5000;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-@media (pointer: coarse) {
-  .custom-cursor-dot, .custom-cursor-ring {
-    display: none !important;
-  }
-}
 
 /* Deep Forest Emerald Gradient Scrollbar */
 * {

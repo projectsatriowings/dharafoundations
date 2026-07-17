@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Roboto_Slab, Montserrat } from "next/font/google";
 import "../globals.css";
 import { LenisProvider } from "@/components/motion/LenisProvider";
-import RingCursor from "@/components/RingCursor/RingCursor";
+import SparkleCursor from "@/components/cursor/SparkleCursor";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PwaRegistry } from "@/components/pwa/PwaRegistry";
@@ -50,6 +50,7 @@ export default function RootLayout({
       </head>
       <body suppressHydrationWarning className="bg-background text-on-background font-body antialiased overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
         <LenisProvider>
+          <SparkleCursor />
           <TreePreloader />
           <PwaRegistry />
           <Header />

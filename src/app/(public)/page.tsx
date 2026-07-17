@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrollReveal, RevealItem } from "@/components/motion/ScrollReveal";
@@ -44,6 +44,8 @@ const PREVIEW_SLIDES = [
 ];
 
 export default function HomePage() {
+  const [isHeroMuted, setIsHeroMuted] = useState(false);
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
   const [activeModalItem, setActiveModalItem] = useState<(typeof HOME_GALLERY)[0] | null>(null);
   const [stats, setStats] = useState<any[]>([
     { stat_value: "3", stat_label: "FOUNDING TRUSTEES" },
@@ -261,22 +263,28 @@ export default function HomePage() {
             <div className="relative z-10 p-2 sm:p-0">
               {/* Media: Video or Image */}
               {(config.hero_image_url || "").match(/\.(mp4|webm|mov)$/i) || (config.hero_image_url || "").includes("/video/") ? (
-                <video
-                  ref={(el) => {
-                    if (el) {
-                      el.defaultMuted = true;
-                      el.muted = true;
-                      el.play().catch(() => {});
-                    }
-                  }}
-                  src={config.hero_image_url || "https://res.cloudinary.com/woo94xq2/video/upload/v1783578753/dhara_foundations/videos/eqhpq0vprlx7zbcmbg06.mp4"}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  preload="auto"
-                  className="w-full h-[360px] sm:h-[480px] lg:h-[540px] object-cover rounded-[20px] shadow-2xl relative z-10 block bg-black/5"
-                />
+                <div className="relative z-10 w-full h-[360px] sm:h-[480px] lg:h-[540px]">
+                  <video
+                    ref={heroVideoRef}
+                    src={config.hero_image_url || "https://res.cloudinary.com/woo94xq2/video/upload/v1783578753/dhara_foundations/videos/eqhpq0vprlx7zbcmbg06.mp4"}
+                    autoPlay
+                    loop
+                    muted={isHeroMuted}
+                    playsInline
+                    preload="auto"
+                    className="w-full h-full object-cover rounded-[20px] shadow-2xl block bg-black/5"
+                  />
+                  {/* Audio Toggle Button */}
+                  <button
+                    onClick={() => setIsHeroMuted(!isHeroMuted)}
+                    className="absolute bottom-4 right-4 z-20 w-10 h-10 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md flex items-center justify-center text-white transition-all shadow-lg border border-white/10"
+                    aria-label={isHeroMuted ? "Unmute video" : "Mute video"}
+                  >
+                    <span className="material-symbols-outlined text-[20px]">
+                      {isHeroMuted ? "volume_off" : "volume_up"}
+                    </span>
+                  </button>
+                </div>
               ) : (
                 /* eslint-disable-next-line @next/next/no-img-element */
                 <img

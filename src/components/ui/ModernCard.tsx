@@ -33,7 +33,6 @@ export function ModernCard({
       onClick={onClick}
       role={onClick ? "button" : undefined}
       tabIndex={onClick ? 0 : undefined}
-      data-cursor-label={cursorLabel}
     >
       {children}
     </div>
