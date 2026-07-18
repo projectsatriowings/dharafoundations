@@ -3,12 +3,15 @@
 import React, { useState, useEffect } from "react";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AdminTopBar } from "@/components/admin/AdminTopBar";
+import { DeleteConfirmDialog } from "@/components/admin/DeleteConfirmDialog";
 import { Download, CheckCircle, Clock, Trash2, Mail, Calendar, User, Phone, Loader2 } from "lucide-react";
 
 export default function AdminSubmissionsPage() {
   const [tab, setTab] = useState<"contact" | "registrations" | "sponsorship">("contact");
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<any | null>(null);
 
   const fetchItems = async () => {
     setLoading(true);
@@ -36,13 +39,20 @@ export default function AdminSubmissionsPage() {
     fetchItems();
   };
 
-  const deleteItem = async (id: string) => {
-    if (!confirm("Delete this submission?")) return;
+  const requestDelete = (item: any) => {
+    setItemToDelete(item);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!itemToDelete) return;
     await fetch("/api/admin/submissions", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, type: tab }),
+      body: JSON.stringify({ id: itemToDelete.id, type: tab }),
     });
+    setDeleteModalOpen(false);
+    setItemToDelete(null);
     fetchItems();
   };
 
@@ -168,7 +178,7 @@ export default function AdminSubmissionsPage() {
                           </select>
                         </td>
                         <td className="py-4 px-4 text-right whitespace-nowrap">
-                          <button onClick={() => deleteItem(item.id)} className="p-1.5 text-gray-400 hover:text-red-600 rounded-lg hover:bg-red-50">
+                          <button onClick={() => requestDelete(item)} className="p-1.5 text-gray-400 hover:text-red-600 rounded-lg hover:bg-red-50">
                             <Trash2 size={16} />
                           </button>
                         </td>
@@ -181,6 +191,13 @@ export default function AdminSubmissionsPage() {
           </div>
         </main>
       </div>
+      <DeleteConfirmDialog
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={confirmDelete}
+        title={itemToDelete?.full_name || itemToDelete?.org_name || "this submission"}
+        entityName={tab === "contact" ? "contact message" : tab === "registrations" ? "event registration" : "sponsor enquiry"}
+      />
     </div>
   );
 }
