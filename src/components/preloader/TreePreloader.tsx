@@ -92,7 +92,7 @@ export default function TreePreloader() {
             <img 
               src="/logo-icon-only.png?v=4" 
               alt="Dhara Logo" 
-              style={{ width: "80px", height: "80px", marginBottom: "24px", objectFit: "contain", filter: "drop-shadow(0 0 15px rgba(255,255,255,0.4))" }} 
+              style={{ width: "160px", height: "160px", marginBottom: "24px", objectFit: "contain", filter: "drop-shadow(0 0 15px rgba(255,255,255,0.4))" }} 
             />
             <h1
               style={{

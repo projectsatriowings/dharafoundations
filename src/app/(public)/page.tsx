@@ -212,9 +212,9 @@ export default function HomePage() {
          ========================================== */}
       <div className="w-full bg-surface text-on-surface pb-20 pt-4 sm:pt-6 selection:bg-primary/20 selection:text-deep-forest">
         
-        {/* 3. CENTERED CINEMATIC VIDEO BANNER (Perfect aspect ratio, no cropping, no black bars) */}
+        {/* 3. CENTERED CINEMATIC VIDEO BANNER (Panoramic ultra-wide rectangle) */}
         <div className="w-full px-4 sm:px-6 lg:px-8 flex justify-center mb-16">
-          <section className="relative w-full max-w-[900px] aspect-video bg-black overflow-hidden rounded-2xl shadow-2xl">
+          <section className="relative w-full max-w-[1200px] aspect-[21/9] lg:aspect-[2.35/1] bg-[#061224] overflow-hidden rounded-2xl shadow-2xl">
             {(config.hero_image_url || "").match(/\.(mp4|webm|mov)$/i) || (config.hero_image_url || "").includes("/video/") ? (
               <div className="absolute inset-0 w-full h-full">
                 <video
@@ -226,7 +226,7 @@ export default function HomePage() {
                   onEnded={() => {
                     hasHeroVideoPlayed = true;
                   }}
-                  className="w-full h-full object-cover opacity-95"
+                  className="w-full h-full object-contain opacity-95"
                 />
               {/* Audio Toggle Button */}
               <button
@@ -243,7 +243,7 @@ export default function HomePage() {
             <img
               src={config.hero_image_url || "/images/hero-devi.png"}
               alt="Devotional ritual offering and spiritual restoration"
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-contain"
             />
           )}
         </section>
