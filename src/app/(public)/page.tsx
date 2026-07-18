@@ -9,6 +9,10 @@ import { LightboxModal } from "@/components/ui/LightboxModal";
 import InteractiveSelector from "@/components/ui/interactive-selector";
 import BorderGlow from "@/components/ui/BorderGlow";
 
+// Tracks if the video has played during the current client-side session.
+// This resets to false on a hard page refresh (F5), but persists across Next.js page navigations.
+let hasHeroVideoPlayed = false;
+
 const HOME_GALLERY = [
   {
     src: "/images/gallery-1.png",
@@ -164,7 +168,7 @@ export default function HomePage() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const alreadyPlayed = typeof window !== 'undefined' && sessionStorage.getItem('dhara_hero_played') === 'true';
+            const alreadyPlayed = hasHeroVideoPlayed;
             
             if (alreadyPlayed) {
               // Fast forward to the end frame and keep it paused
@@ -219,9 +223,7 @@ export default function HomePage() {
                 playsInline
                 preload="auto"
                 onEnded={() => {
-                  if (typeof window !== 'undefined') {
-                    sessionStorage.setItem('dhara_hero_played', 'true');
-                  }
+                  hasHeroVideoPlayed = true;
                 }}
                 className="w-full h-full object-cover opacity-95"
               />
