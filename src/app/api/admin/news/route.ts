@@ -15,19 +15,37 @@ export async function GET(req: NextRequest) {
     const status = searchParams.get("status");
     const search = searchParams.get("search");
 
-    const articles = await sql`
-      SELECT id, slug, headline, publish_date, read_time_minutes, excerpt, body_content,
-             featured_image_url, is_external, external_url, status, priority, updated_at
-      FROM news_articles
-      WHERE (${!status || status === "all"}::boolean OR status = ${status})
-        AND (${!search}::boolean OR headline ILIKE ${"%" + (search || "") + "%"})
-      ORDER BY priority DESC, publish_date DESC
-    `;
+    let articles;
+    try {
+      articles = await sql`
+        SELECT id, slug, headline, publish_date, read_time_minutes, excerpt, body_content,
+               featured_image_url, is_external, external_url, status, priority, updated_at
+        FROM news_articles
+        WHERE (${!status || status === "all"}::boolean OR status = ${status})
+          AND (${!search}::boolean OR headline ILIKE ${"%" + (search || "") + "%"})
+        ORDER BY priority DESC, publish_date DESC
+      `;
+    } catch (dbErr: any) {
+      if (dbErr.message && dbErr.message.includes('column "priority" does not exist')) {
+        console.log("Auto-migrating priority column...");
+        await sql`ALTER TABLE news_articles ADD COLUMN priority INT DEFAULT 0`;
+        articles = await sql`
+          SELECT id, slug, headline, publish_date, read_time_minutes, excerpt, body_content,
+                 featured_image_url, is_external, external_url, status, priority, updated_at
+          FROM news_articles
+          WHERE (${!status || status === "all"}::boolean OR status = ${status})
+            AND (${!search}::boolean OR headline ILIKE ${"%" + (search || "") + "%"})
+          ORDER BY priority DESC, publish_date DESC
+        `;
+      } else {
+        throw dbErr;
+      }
+    }
 
     return NextResponse.json({ articles });
   } catch (err) {
     console.error("GET /api/admin/news error:", err);
-    return NextResponse.json({ error: "Failed to fetch news articles" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to fetch news articles", details: err instanceof Error ? err.message : String(err) }, { status: 500 });
   }
 }
 

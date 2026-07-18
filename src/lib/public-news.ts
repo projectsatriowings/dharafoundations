@@ -5,13 +5,30 @@ export { SIX_MODERN_CARDS, type NewsArticle };
 
 export async function getPublicNews(): Promise<NewsArticle[]> {
   try {
-    const rows = await sql`
-      SELECT id, slug, headline, publish_date, read_time_minutes, excerpt, body_content,
-             featured_image_url, is_external, external_url, status, priority
-      FROM news_articles
-      WHERE status = 'published' OR status IS NULL
-      ORDER BY priority DESC, publish_date DESC
-    `;
+    let rows;
+    try {
+      rows = await sql`
+        SELECT id, slug, headline, publish_date, read_time_minutes, excerpt, body_content,
+               featured_image_url, is_external, external_url, status, priority
+        FROM news_articles
+        WHERE status = 'published' OR status IS NULL
+        ORDER BY priority DESC, publish_date DESC
+      `;
+    } catch (dbErr: any) {
+      if (dbErr.message && dbErr.message.includes('column "priority" does not exist')) {
+        console.log("Auto-migrating priority column in public-news...");
+        await sql`ALTER TABLE news_articles ADD COLUMN priority INT DEFAULT 0`;
+        rows = await sql`
+          SELECT id, slug, headline, publish_date, read_time_minutes, excerpt, body_content,
+                 featured_image_url, is_external, external_url, status, priority
+          FROM news_articles
+          WHERE status = 'published' OR status IS NULL
+          ORDER BY priority DESC, publish_date DESC
+        `;
+      } else {
+        throw dbErr;
+      }
+    }
 
     if (!rows || rows.length === 0) {
       return SIX_MODERN_CARDS;
