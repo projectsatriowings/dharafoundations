@@ -6,7 +6,7 @@ import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AdminTopBar } from "@/components/admin/AdminTopBar";
 import { DeleteConfirmDialog } from "@/components/admin/DeleteConfirmDialog";
 import { ViewItemModal } from "@/components/admin/ViewItemModal";
-import { PlusCircle, Search, Eye, Edit, Trash2, Calendar, Loader2, ExternalLink } from "lucide-react";
+import { PlusCircle, Search, Eye, Edit, Trash2, Calendar, Loader2, ExternalLink, ArrowUp, ArrowDown } from "lucide-react";
 
 export default function AdminNewsPage() {
   const [articles, setArticles] = useState<any[]>([]);
@@ -44,6 +44,40 @@ export default function AdminNewsPage() {
     if (!selectedArticle) return;
     const res = await fetch(`/api/admin/news/${selectedArticle.id}`, { method: "DELETE" });
     if (res.ok) fetchArticles();
+  };
+
+  const isFiltering = search.trim() !== "" || statusFilter !== "all";
+
+  const moveRow = async (index: number, direction: 'up' | 'down') => {
+    if (isFiltering) return; // Cannot reorder while filtering
+    if (
+      (direction === 'up' && index === 0) ||
+      (direction === 'down' && index === articles.length - 1)
+    ) {
+      return;
+    }
+
+    const newArticles = [...articles];
+    const swapIndex = direction === 'up' ? index - 1 : index + 1;
+    
+    // Swap items in the local state
+    const temp = newArticles[index];
+    newArticles[index] = newArticles[swapIndex];
+    newArticles[swapIndex] = temp;
+    
+    setArticles(newArticles);
+
+    // Send the new ordered IDs to the backend
+    const orderedIds = newArticles.map(a => a.id);
+    try {
+      await fetch('/api/admin/news/reorder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderedIds })
+      });
+    } catch (err) {
+      console.error("Failed to update priority", err);
+    }
   };
 
   return (
@@ -127,7 +161,7 @@ export default function AdminNewsPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 text-sm">
-                    {articles.map((art) => (
+                    {articles.map((art, index) => (
                       <tr key={art.id} className="hover:bg-[#fbf9f4]/70">
                         <td className="py-3 px-4 w-16">
                           <div className="w-12 h-10 rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
@@ -160,7 +194,23 @@ export default function AdminNewsPage() {
                           </span>
                         </td>
                         <td className="py-3 px-4 text-right whitespace-nowrap">
-                          <div className="flex items-center justify-end gap-2">
+                          <div className="flex items-center justify-end gap-1">
+                            <div className="flex flex-col mr-2" title={isFiltering ? "Clear search/filters to reorder" : "Reorder article priority"}>
+                              <button 
+                                onClick={() => moveRow(index, 'up')}
+                                disabled={isFiltering || index === 0}
+                                className={`p-0.5 rounded text-gray-400 hover:text-[#8a5000] hover:bg-gray-100 ${(isFiltering || index === 0) ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}`}
+                              >
+                                <ArrowUp size={14} />
+                              </button>
+                              <button 
+                                onClick={() => moveRow(index, 'down')}
+                                disabled={isFiltering || index === articles.length - 1}
+                                className={`p-0.5 rounded text-gray-400 hover:text-[#8a5000] hover:bg-gray-100 ${(isFiltering || index === articles.length - 1) ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}`}
+                              >
+                                <ArrowDown size={14} />
+                              </button>
+                            </div>
                             <button onClick={() => setViewModalArticle(art)} className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 cursor-pointer" title="Preview Article">
                               <Eye size={16} />
                             </button>

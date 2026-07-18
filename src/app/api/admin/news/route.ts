@@ -17,11 +17,11 @@ export async function GET(req: NextRequest) {
 
     const articles = await sql`
       SELECT id, slug, headline, publish_date, read_time_minutes, excerpt, body_content,
-             featured_image_url, is_external, external_url, status, updated_at
+             featured_image_url, is_external, external_url, status, priority, updated_at
       FROM news_articles
       WHERE (${!status || status === "all"}::boolean OR status = ${status})
         AND (${!search}::boolean OR headline ILIKE ${"%" + (search || "") + "%"})
-      ORDER BY publish_date DESC
+      ORDER BY priority DESC, publish_date DESC
     `;
 
     return NextResponse.json({ articles });

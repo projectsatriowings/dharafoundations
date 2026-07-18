@@ -7,10 +7,10 @@ export async function getPublicNews(): Promise<NewsArticle[]> {
   try {
     const rows = await sql`
       SELECT id, slug, headline, publish_date, read_time_minutes, excerpt, body_content,
-             featured_image_url, is_external, external_url, status
+             featured_image_url, is_external, external_url, status, priority
       FROM news_articles
       WHERE status = 'published' OR status IS NULL
-      ORDER BY publish_date DESC
+      ORDER BY priority DESC, publish_date DESC
     `;
 
     if (!rows || rows.length === 0) {
