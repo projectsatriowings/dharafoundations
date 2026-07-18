@@ -6,7 +6,7 @@ import { motion, useMotionValue, useSpring, AnimatePresence } from 'framer-motio
 // ─── Brand Colors ──────────────────────────────────────────────────────
 const COLORS = {
   arrow:     '#24695c',   // Emerald green (Main cursor color)
-  clickRing: '#F49B33',   // Saffron glow (Click burst color)
+  clickRing: '#FFD27F',   // Saffron glow (Matches Donate Now button)
 }
 
 export default function SparkleCursor() {
@@ -17,6 +17,7 @@ export default function SparkleCursor() {
   const [clicks, setClicks]       = useState<{id: number, x: number, y: number}[]>([])
   const [isPointer, setIsPointer] = useState(false)
   const [isHidden, setIsHidden]   = useState(false)
+  const [cursorColor, setCursorColor] = useState(COLORS.arrow)
   const clickIdRef = useRef(0)
 
   useEffect(() => {
@@ -46,6 +47,8 @@ export default function SparkleCursor() {
       }
     }
 
+
+
     const onMouseOver = (e: MouseEvent) => {
       const t = e.target as HTMLElement
       const c = window.getComputedStyle(t).cursor
@@ -57,6 +60,19 @@ export default function SparkleCursor() {
         t.closest('a') !== null ||
         t.getAttribute('role') === 'button'
       )
+
+      // Robust DOM-based background detection
+      // 1. Check if the element is inside a known dark container
+      const isInsideDarkSection = t.closest('header, footer, section.bg-black, [class*="bg-deep-forest"], [class*="bg-black"], [class*="bg-secondary"]');
+      
+      // 2. Check if we are hovering over a light element (like the Donate Now button) INSIDE that dark container
+      // We exclude transparent hover classes (like /10 or /20)
+      const isOverLightElement = t.closest('[class*="bg-saffron-glow"], [class*="bg-white"]:not([class*="/10"]):not([class*="/20"])');
+
+      // 3. Set to Golden Yellow if it's over a dark section, but NOT over a bright button
+      const isDarkBg = isInsideDarkSection && !isOverLightElement;
+        
+      setCursorColor(isDarkBg ? COLORS.clickRing : COLORS.arrow);
     }
 
     const onLeave = () => setIsHidden(true)
@@ -116,9 +132,10 @@ export default function SparkleCursor() {
           animate={{ scale: isPointer ? 0.9 : 1 }}
           transition={{ duration: 0.15 }}
         >
-          <path
+          <motion.path
             d="M 1 1 L 1 22 L 7 16 L 17 16 Z"
-            fill={COLORS.arrow}
+            animate={{ fill: cursorColor }}
+            transition={{ duration: 0.2 }}
           />
         </motion.svg>
       </motion.div>
