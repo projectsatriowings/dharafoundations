@@ -164,7 +164,24 @@ export default function HomePage() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            videoElement.play().catch(e => console.error("Auto-play prevented by browser policy", e));
+            const alreadyPlayed = typeof window !== 'undefined' && sessionStorage.getItem('dhara_hero_played') === 'true';
+            
+            if (alreadyPlayed) {
+              // Fast forward to the end frame and keep it paused
+              if (videoElement.readyState >= 1) {
+                videoElement.currentTime = videoElement.duration || 9999;
+              } else {
+                videoElement.onloadedmetadata = () => {
+                  videoElement.currentTime = videoElement.duration || 9999;
+                };
+              }
+              return;
+            }
+
+            // Do not restart if the video has already reached the end natively
+            if (!videoElement.ended) {
+              videoElement.play().catch(e => console.error("Auto-play prevented by browser policy", e));
+            }
           } else {
             videoElement.pause();
           }
@@ -189,167 +206,144 @@ export default function HomePage() {
       {/* ==========================================
           SCOPED HOME PAGE TOP SECTION (Global surface background)
          ========================================== */}
-      <div className="w-full bg-surface text-on-surface pb-20 pt-4 sm:pt-8 selection:bg-primary/20 selection:text-deep-forest">
+      <div className="w-full bg-surface text-on-surface pb-20 pt-4 sm:pt-6 selection:bg-primary/20 selection:text-deep-forest">
         
-        {/* 3. HERO SECTION — TWO COLUMN LAYOUT */}
-        <section className="min-h-[80vh] max-w-[1400px] mx-auto px-6 sm:px-8 md:px-12 py-6 md:py-12 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        {/* 3. FULL-WIDTH VIDEO BANNER (Perfect 16:9 Aspect Ratio to prevent cropping) */}
+        <section className="relative w-full aspect-video bg-black overflow-hidden mb-16">
+          {(config.hero_image_url || "").match(/\.(mp4|webm|mov)$/i) || (config.hero_image_url || "").includes("/video/") ? (
+            <div className="absolute inset-0 w-full h-full">
+              <video
+                ref={heroVideoRef}
+                src={config.hero_image_url || "https://res.cloudinary.com/woo94xq2/video/upload/v1783578753/dhara_foundations/videos/eqhpq0vprlx7zbcmbg06.mp4"}
+                muted={isHeroMuted}
+                playsInline
+                preload="auto"
+                onEnded={() => {
+                  if (typeof window !== 'undefined') {
+                    sessionStorage.setItem('dhara_hero_played', 'true');
+                  }
+                }}
+                className="w-full h-full object-cover opacity-95"
+              />
+              {/* Audio Toggle Button */}
+              <button
+                onClick={() => setIsHeroMuted(!isHeroMuted)}
+                className="absolute bottom-6 right-6 z-20 w-12 h-12 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md flex items-center justify-center text-white transition-all shadow-lg border border-white/10"
+                aria-label={isHeroMuted ? "Unmute video" : "Mute video"}
+              >
+                <span className="material-symbols-outlined text-[24px]">
+                  {isHeroMuted ? "volume_off" : "volume_up"}
+                </span>
+              </button>
+            </div>
+          ) : (
+            <img
+              src={config.hero_image_url || "/images/hero-devi.png"}
+              alt="Devotional ritual offering and spiritual restoration"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          )}
+        </section>
+
+        {/* 4. INTRO TEXT SECTION */}
+        <section className="max-w-[1000px] mx-auto px-6 sm:px-8 md:px-12 flex flex-col items-center text-center space-y-8 relative z-10">
           
-          {/* LEFT COLUMN (~52% -> col-span-6 on lg) */}
-          <div className="lg:col-span-6 space-y-6 flex flex-col justify-center">
-            
-            {/* A) EYEBROW LABEL */}
+          {/* A) EYEBROW LABEL & CSR BADGE */}
+          <div className="flex flex-col sm:flex-row items-center gap-4 justify-center">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-              className="inline-flex items-center gap-2 bg-saffron-glow/30 text-primary font-bold px-4 py-1.5 rounded-full text-xs tracking-wider uppercase self-start"
+              className="inline-flex items-center gap-2 bg-saffron-glow/30 text-primary font-bold px-4 py-1.5 rounded-full text-xs tracking-wider uppercase"
             >
               <svg className="w-3.5 h-3.5 fill-current shrink-0" viewBox="0 0 24 24">
                 <path d="M12 2C8.5 7 5.5 10.5 5.5 14.5c0 3.6 2.9 6.5 6.5 6.5s6.5-2.9 6.5-6.5C18.5 10.5 15.5 7 12 2zm0 17c-2.5 0-4.5-2-4.5-4.5 0-2.8 2.2-5.5 4.5-8.9 2.3 3.4 4.5 6.1 4.5 8.9 0 2.5-2 4.5-4.5 4.5z"/>
               </svg>
               <span>REGISTERED PUBLIC TRUST · EST. 2024</span>
             </motion.div>
-
-            {/* B) MAIN HEADING */}
-            <motion.h1
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.25, ease: "easeOut" }}
-              className="font-heading font-bold text-deep-forest leading-[1.15] text-[clamp(36px,4vw,58px)]"
-            >
-              Transforming Lives,<br />
-              <em className="text-primary italic font-bold not-italic">Preserving</em> Traditions.
-            </motion.h1>
-
-            {/* C) BODY PARAGRAPH */}
-            <motion.p
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-              className="font-body text-on-surface-variant text-[16px] sm:text-[17px] leading-[1.7] max-w-[480px]"
-            >
-              Dhara Foundations stands beside the poor, the forgotten, and the faithful — feeding the hungry, restoring sacred spaces, and giving dignity to those society often overlooks.
-            </motion.p>
-
-            {/* D) TWO BUTTONS */}
+            
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.55, ease: "easeOut" }}
-              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2"
+              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+              className="inline-flex items-center gap-2 bg-surface-container-lowest text-deep-forest font-bold px-4 py-1.5 rounded-full text-xs tracking-wider border border-outline-variant/30 shadow-sm"
             >
-              <Link
-                href="/contact"
-                className="bg-primary hover:opacity-90 text-on-primary rounded-full px-8 py-4 font-label-lg font-bold text-[15px] text-center transition-all hover:-translate-y-0.5 hover:scale-105 shadow-md hover:shadow-lg"
-              >
-                Get Involved
-              </Link>
-              <Link
-                href="/events"
-                className="bg-transparent hover:bg-primary text-primary hover:text-on-primary border-2 border-primary rounded-full px-8 py-4 font-label-lg font-semibold text-[15px] text-center transition-all hover:scale-105"
-              >
-                Explore Our Events →
-              </Link>
+              <div className="w-6 h-6 rounded-full bg-saffron-glow/20 flex items-center justify-center text-primary shrink-0">
+                <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+                </svg>
+              </div>
+              <span>CSR Reg. No. CSR00086947</span>
             </motion.div>
-
-            {/* E) STATS ROW */}
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.7, ease: "easeOut" }}
-              className={`grid gap-3 sm:gap-6 pt-10 border-t border-outline-variant/40 mt-8 ${
-                stats.length === 1
-                  ? "grid-cols-1"
-                  : stats.length === 2
-                  ? "grid-cols-2"
-                  : stats.length >= 4
-                  ? "grid-cols-2 sm:grid-cols-4"
-                  : "grid-cols-3"
-              }`}
-            >
-              {stats.map((st, idx) => (
-                <div key={idx} className={idx > 0 ? "border-l border-outline-variant/40 pl-3 sm:pl-6" : ""}>
-                  <div className="font-heading font-bold text-primary text-[28px] sm:text-[32px] leading-tight">
-                    {st.stat_value}
-                  </div>
-                  <div className="font-title text-deep-forest font-semibold text-[10px] tracking-[0.12em] uppercase mt-1">
-                    {st.stat_label}
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-
           </div>
 
-          {/* RIGHT COLUMN (~48% -> col-span-6 on lg) */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="lg:col-span-6 relative mt-6 lg:mt-0"
+          {/* B) MAIN HEADING */}
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+            className="font-heading font-bold text-deep-forest leading-[1.15] text-[clamp(40px,5vw,72px)]"
           >
-            {/* A) AMBER OFFSET FRAME */}
-            <div className="relative z-10 p-2 sm:p-0">
-              {/* Media: Video or Image */}
-              {(config.hero_image_url || "").match(/\.(mp4|webm|mov)$/i) || (config.hero_image_url || "").includes("/video/") ? (
-                <div className="relative z-10 w-full h-[360px] sm:h-[480px] lg:h-[540px]">
-                  <video
-                    ref={heroVideoRef}
-                    src={config.hero_image_url || "https://res.cloudinary.com/woo94xq2/video/upload/v1783578753/dhara_foundations/videos/eqhpq0vprlx7zbcmbg06.mp4"}
-                    autoPlay
-                    loop
-                    muted={isHeroMuted}
-                    playsInline
-                    preload="auto"
-                    className="w-full h-full object-cover rounded-[20px] shadow-2xl block bg-black/5"
-                  />
-                  {/* Audio Toggle Button */}
-                  <button
-                    onClick={() => setIsHeroMuted(!isHeroMuted)}
-                    className="absolute bottom-4 right-4 z-20 w-10 h-10 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md flex items-center justify-center text-white transition-all shadow-lg border border-white/10"
-                    aria-label={isHeroMuted ? "Unmute video" : "Mute video"}
-                  >
-                    <span className="material-symbols-outlined text-[20px]">
-                      {isHeroMuted ? "volume_off" : "volume_up"}
-                    </span>
-                  </button>
-                </div>
-              ) : (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img
-                  src={config.hero_image_url || "/images/hero-devi.png"}
-                  alt="Devotional ritual offering and spiritual restoration"
-                  className="w-full h-[360px] sm:h-[480px] lg:h-[540px] object-cover rounded-[20px] shadow-2xl relative z-10 block"
-                />
-              )}
+            Transforming Lives,<br />
+            <em className="text-primary italic font-bold not-italic">Preserving</em> Traditions.
+          </motion.h1>
 
-              {/* Double-border effect: Frame offset -8px behind image showing background gap */}
-              <div
-                className="absolute -inset-2 rounded-[26px] border-2 border-primary z-0 pointer-events-none bg-surface"
-              />
+          {/* C) BODY PARAGRAPH */}
+          <motion.p
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.45, ease: "easeOut" }}
+            className="font-body text-on-surface-variant text-[18px] sm:text-[20px] leading-[1.7] max-w-[760px] mx-auto"
+          >
+            Dhara Foundations stands beside the poor, the forgotten, and the faithful — feeding the hungry, restoring sacred spaces, and giving dignity to those society often overlooks.
+          </motion.p>
 
-              {/* C) FLOATING CSR BADGE */}
-              <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.9 }}
-                className="absolute -top-4 -left-3 sm:-top-5 sm:-left-5 z-20 bg-surface-container-lowest rounded-[14px] p-3.5 sm:px-4 sm:py-3.5 shadow-xl border border-outline-variant/30 flex items-center gap-3"
-              >
-                <div className="w-9 h-9 rounded-full bg-saffron-glow/20 flex items-center justify-center text-primary shrink-0">
-                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
-                  </svg>
+          {/* D) TWO BUTTONS */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
+            className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 pt-6"
+          >
+            <Link
+              href="/contact"
+              className="bg-primary hover:opacity-90 text-on-primary rounded-full px-8 py-4 font-label-lg font-bold text-[16px] text-center transition-all hover:-translate-y-0.5 hover:scale-105 shadow-md hover:shadow-lg min-w-[200px]"
+            >
+              Get Involved
+            </Link>
+            <Link
+              href="/events"
+              className="bg-transparent hover:bg-primary text-primary hover:text-on-primary border-2 border-primary rounded-full px-8 py-4 font-label-lg font-semibold text-[16px] text-center transition-all hover:scale-105 min-w-[200px]"
+            >
+              Explore Our Events →
+            </Link>
+          </motion.div>
+
+          {/* E) STATS ROW */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.75, ease: "easeOut" }}
+            className={`grid gap-6 sm:gap-12 pt-14 border-t border-outline-variant/40 mt-14 w-full max-w-[900px] ${
+              stats.length === 1
+                ? "grid-cols-1"
+                : stats.length === 2
+                ? "grid-cols-2"
+                : stats.length >= 4
+                ? "grid-cols-2 sm:grid-cols-4"
+                : "grid-cols-1 sm:grid-cols-3"
+            }`}
+          >
+            {stats.map((st, idx) => (
+              <div key={idx} className={idx > 0 ? "sm:border-l border-outline-variant/40 sm:pl-12" : ""}>
+                <div className="font-heading font-bold text-primary text-[36px] sm:text-[42px] leading-tight">
+                  {st.stat_value}
                 </div>
-                <div>
-                  <div className="font-title font-bold text-deep-forest text-[14px] leading-tight">
-                    CSR Registered
-                  </div>
-                  <div className="font-title text-on-surface-variant text-[12px] leading-tight mt-0.5">
-                    Reg. No. CSR00086947
-                  </div>
+                <div className="font-title text-deep-forest font-semibold text-[11px] tracking-[0.15em] uppercase mt-2">
+                  {st.stat_label}
                 </div>
-              </motion.div>
-            </div>
+              </div>
+            ))}
           </motion.div>
 
         </section>
