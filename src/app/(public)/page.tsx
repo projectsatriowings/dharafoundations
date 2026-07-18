@@ -212,21 +212,22 @@ export default function HomePage() {
          ========================================== */}
       <div className="w-full bg-surface text-on-surface pb-20 pt-4 sm:pt-6 selection:bg-primary/20 selection:text-deep-forest">
         
-        {/* 3. FULL-WIDTH VIDEO BANNER (Perfect 16:9 Aspect Ratio to prevent cropping) */}
-        <section className="relative w-full aspect-video bg-black overflow-hidden mb-16">
-          {(config.hero_image_url || "").match(/\.(mp4|webm|mov)$/i) || (config.hero_image_url || "").includes("/video/") ? (
-            <div className="absolute inset-0 w-full h-full">
-              <video
-                ref={heroVideoRef}
-                src={config.hero_image_url || "https://res.cloudinary.com/woo94xq2/video/upload/v1783578753/dhara_foundations/videos/eqhpq0vprlx7zbcmbg06.mp4"}
-                muted={isHeroMuted}
-                playsInline
-                preload="auto"
-                onEnded={() => {
-                  hasHeroVideoPlayed = true;
-                }}
-                className="w-full h-full object-cover opacity-95"
-              />
+        {/* 3. CENTERED CINEMATIC VIDEO BANNER (Perfect aspect ratio, no cropping, no black bars) */}
+        <div className="w-full px-4 sm:px-6 lg:px-8 flex justify-center mb-16">
+          <section className="relative w-full max-w-[900px] aspect-video bg-black overflow-hidden rounded-2xl shadow-2xl">
+            {(config.hero_image_url || "").match(/\.(mp4|webm|mov)$/i) || (config.hero_image_url || "").includes("/video/") ? (
+              <div className="absolute inset-0 w-full h-full">
+                <video
+                  ref={heroVideoRef}
+                  src={config.hero_image_url || "https://res.cloudinary.com/woo94xq2/video/upload/v1783578753/dhara_foundations/videos/eqhpq0vprlx7zbcmbg06.mp4"}
+                  muted={isHeroMuted}
+                  playsInline
+                  preload="auto"
+                  onEnded={() => {
+                    hasHeroVideoPlayed = true;
+                  }}
+                  className="w-full h-full object-cover opacity-95"
+                />
               {/* Audio Toggle Button */}
               <button
                 onClick={() => setIsHeroMuted(!isHeroMuted)}
@@ -246,9 +247,10 @@ export default function HomePage() {
             />
           )}
         </section>
+        </div>
 
         {/* 4. INTRO TEXT SECTION */}
-        <section className="max-w-[1000px] mx-auto px-6 sm:px-8 md:px-12 flex flex-col items-center text-center space-y-8 relative z-10">
+        <section className="w-full max-w-[1400px] mx-auto px-6 sm:px-8 md:px-12 flex flex-col items-center text-center space-y-8 relative z-10">
           
           {/* A) EYEBROW LABEL & CSR BADGE */}
           <div className="flex flex-col sm:flex-row items-center gap-4 justify-center">
@@ -284,10 +286,9 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-            className="font-heading font-bold text-deep-forest leading-[1.15] text-[clamp(40px,5vw,72px)]"
+            className="font-heading font-bold text-deep-forest leading-[1.15] text-[clamp(28px,3.5vw,52px)]"
           >
-            Transforming Lives,<br />
-            <em className="text-primary italic font-bold not-italic">Preserving</em> Traditions.
+            Transforming Lives, <em className="text-primary italic font-bold not-italic">Preserving</em> Traditions.
           </motion.h1>
 
           {/* C) BODY PARAGRAPH */}
@@ -295,7 +296,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.45, ease: "easeOut" }}
-            className="font-body text-on-surface-variant text-[18px] sm:text-[20px] leading-[1.7] max-w-[760px] mx-auto"
+            className="font-body text-on-surface-variant text-[18px] sm:text-[20px] leading-[1.7] max-w-[1200px] mx-auto"
           >
             Dhara Foundations stands beside the poor, the forgotten, and the faithful — feeding the hungry, restoring sacred spaces, and giving dignity to those society often overlooks.
           </motion.p>

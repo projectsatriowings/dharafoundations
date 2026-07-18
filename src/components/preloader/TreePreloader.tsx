@@ -55,7 +55,7 @@ export default function TreePreloader() {
               loop 
               muted 
               playsInline 
-              style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.85 }}
+              style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.85, transform: "scale(1.25)" }}
             />
             {/* Deep emerald overlay for readability and branding */}
             <div style={{ position: "absolute", inset: 0, background: "rgba(0, 30, 20, 0.55)" }} />
