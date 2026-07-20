@@ -13,6 +13,7 @@ interface ImageUploaderProps {
   value: string;
   onChange: (url: string) => void;
   helperText?: string;
+  accept?: string;
 }
 
 export function ImageUploader({
@@ -20,6 +21,7 @@ export function ImageUploader({
   value,
   onChange,
   helperText = "PNG, JPG, WEBP up to 5MB",
+  accept = "image/jpeg,image/png,image/webp,image/gif",
 }: ImageUploaderProps) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -74,11 +76,19 @@ export function ImageUploader({
 
       {value ? (
         <div className="relative rounded-2xl overflow-hidden border-2 border-gray-200/80 bg-gray-900/5 group w-full flex items-center justify-center min-h-[220px] max-h-[440px] p-3 shadow-inner">
-          <img
-            src={value}
-            alt="Uploaded preview"
-            className="max-h-[400px] w-auto max-w-full object-contain rounded-xl shadow-sm transition-transform duration-300 group-hover:scale-[1.01]"
-          />
+          {value.match(/\.(mp4|webm|mov|mkv)$/i) || value.includes('/video/upload/') ? (
+            <video
+              src={value}
+              controls
+              className="max-h-[400px] w-auto max-w-full object-contain rounded-xl shadow-sm transition-transform duration-300 group-hover:scale-[1.01]"
+            />
+          ) : (
+            <img
+              src={value}
+              alt="Uploaded preview"
+              className="max-h-[400px] w-auto max-w-full object-contain rounded-xl shadow-sm transition-transform duration-300 group-hover:scale-[1.01]"
+            />
+          )}
           <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-3 backdrop-blur-[2px]">
             <button
               type="button"
@@ -131,7 +141,7 @@ export function ImageUploader({
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/jpeg,image/png,image/webp,image/gif"
+        accept={accept}
         onChange={handleFileChange}
         className="hidden"
       />

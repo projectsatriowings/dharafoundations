@@ -155,7 +155,9 @@ export function NewsForm({ initialData, isEdit = false }: { initialData?: any; i
         <div className="space-y-6">
           <div className="bg-white p-6 rounded-xl border border-gray-200">
             <ImageUploader
-              label="Featured Image *"
+              label="Featured Media (Image/Video) *"
+              helperText="JPG, PNG, WEBP, MP4, WEBM up to 100MB"
+              accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime,video/x-m4v"
               value={formData.featured_image_url}
               onChange={(url) => setFormData({ ...formData, featured_image_url: url })}
             />

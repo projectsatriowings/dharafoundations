@@ -102,7 +102,11 @@ export function NewsDetailClient({ article }: NewsDetailClientProps) {
 
         {/* Subtle background cover overlay */}
         <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
-          <img src={article.img} alt={article.title} className="w-full h-full object-cover object-top blur-sm" />
+          {article.img && (article.img.match(/\.(mp4|webm|mov|mkv)$/i) || article.img.includes('/video/upload/')) ? (
+            <video src={article.img} muted loop autoPlay playsInline className="w-full h-full object-cover object-top blur-sm" />
+          ) : (
+            <img src={article.img} alt={article.title} className="w-full h-full object-cover object-top blur-sm" />
+          )}
         </div>
       </section>
 
@@ -114,11 +118,20 @@ export function NewsDetailClient({ article }: NewsDetailClientProps) {
           
           {/* Featured Image Box (Uncropped, Full Visibility) */}
           <div className={`rounded-3xl overflow-hidden shadow-2xl border border-outline-variant/30 relative p-3 sm:p-6 flex flex-col items-center justify-center ${article.isDoc ? "bg-white" : "bg-surface-container-low dark:bg-surface-container"}`}>
-            <img
-              src={article.img}
-              alt={article.title}
-              className="max-h-[580px] w-auto object-contain rounded-2xl mx-auto shadow-md"
-            />
+            {article.img && (article.img.match(/\.(mp4|webm|mov|mkv)$/i) || article.img.includes('/video/upload/')) ? (
+              <video
+                src={article.img}
+                controls
+                autoPlay
+                className="max-h-[580px] w-auto object-contain rounded-2xl mx-auto shadow-md"
+              />
+            ) : (
+              <img
+                src={article.img}
+                alt={article.title}
+                className="max-h-[580px] w-auto object-contain rounded-2xl mx-auto shadow-md"
+              />
+            )}
             <div className="w-full pt-3 px-2 flex items-center justify-between text-xs font-mono text-on-surface-variant border-t border-outline-variant/20 mt-3">
               <span className="inline-flex items-center gap-1.5 text-primary font-semibold">
                 <ShieldCheck size={14} /> Official Dhara Foundation Archive

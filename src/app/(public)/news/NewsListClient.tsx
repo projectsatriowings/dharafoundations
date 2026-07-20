@@ -55,14 +55,27 @@ export function NewsListClient({ initialArticles }: NewsListClientProps) {
                         : "bg-surface-container-low"
                     }`}
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={art.img}
-                      alt={art.title}
-                      className={`w-full h-full transition-transform duration-500 ease-out group-hover:scale-105 ${
-                        art.isDoc ? "object-contain" : "object-cover object-top"
-                      }`}
-                    />
+                    {art.img && (art.img.match(/\.(mp4|webm|mov|mkv)$/i) || art.img.includes('/video/upload/')) ? (
+                      <video
+                        src={art.img}
+                        muted
+                        loop
+                        playsInline
+                        autoPlay
+                        className={`w-full h-full transition-transform duration-500 ease-out group-hover:scale-105 ${
+                          art.isDoc ? "object-contain" : "object-cover object-top"
+                        }`}
+                      />
+                    ) : (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img
+                        src={art.img}
+                        alt={art.title}
+                        className={`w-full h-full transition-transform duration-500 ease-out group-hover:scale-105 ${
+                          art.isDoc ? "object-contain" : "object-cover object-top"
+                        }`}
+                      />
+                    )}
                   </div>
 
                   {/* Overlapping Pill Date Badge */}
