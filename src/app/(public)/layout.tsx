@@ -23,8 +23,34 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://dharafoundations.in"),
-  title: "Dhara Foundations - Transforming Lives, Preserving Traditions",
-  description: "A non-profit organization dedicated to cultural revival, compassionate service, and spiritual awareness.",
+  title: {
+    default: "Dhara Foundation - Transforming Lives, Preserving Traditions",
+    template: "%s | Dhara Foundation",
+  },
+  description: "A non-profit organization dedicated to cultural revival, compassionate service, and spiritual awareness across rural communities.",
+  keywords: ["NGO", "Dhara Foundation", "Cultural Revival", "Compassionate Service", "Sanatana Dharma", "Charity India", "Rural Development"],
+  openGraph: {
+    title: "Dhara Foundation - Transforming Lives, Preserving Traditions",
+    description: "A non-profit organization dedicated to cultural revival, compassionate service, and spiritual awareness across rural communities.",
+    url: "https://dharafoundations.in",
+    siteName: "Dhara Foundation",
+    images: [
+      {
+        url: "/logo-icon-only.png?v=4",
+        width: 800,
+        height: 600,
+        alt: "Dhara Foundation Logo",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Dhara Foundation",
+    description: "Dedicated to cultural revival and compassionate service.",
+    images: ["/logo-icon-only.png?v=4"],
+  },
   icons: {
     icon: [{ url: "/logo-icon-only.png?v=4", type: "image/png" }],
     shortcut: ["/logo-icon-only.png?v=4"],
@@ -40,6 +66,24 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth" className={`${robotoSlab.variable} ${montserrat.variable} scroll-smooth`}>
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "NGO",
+              name: "Dhara Foundation",
+              url: "https://dharafoundations.in",
+              logo: "https://dharafoundations.in/logo-icon-only.png?v=4",
+              description: "A non-profit organization dedicated to cultural revival, compassionate service, and spiritual awareness across rural communities.",
+              contactPoint: {
+                "@type": "ContactPoint",
+                email: "techgeninvt@gmail.com",
+                contactType: "customer service"
+              }
+            })
+          }}
+        />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#00322B" />
         <link
