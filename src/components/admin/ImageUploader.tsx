@@ -38,20 +38,35 @@ export function ImageUploader({
     setUploading(true);
 
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const res = await fetch("/api/admin/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || "Failed to upload image");
+      const isVideo = file.type.startsWith("video/") || /\.(mp4|webm|mov|mkv)$/i.test(file.name);
+      
+      // 1. Get upload signature from our backend
+      const sigRes = await fetch(`/api/admin/upload/signature?isVideo=${isVideo}`);
+      const sigData = await sigRes.json();
+      
+      if (!sigRes.ok) {
+        throw new Error(sigData.error || "Failed to get upload signature");
       }
 
-      onChange(data.url);
+      // 2. Upload directly to Cloudinary from the browser
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("api_key", sigData.apiKey);
+      formData.append("timestamp", sigData.timestamp);
+      formData.append("signature", sigData.signature);
+      formData.append("folder", sigData.folder);
+
+      const cloudRes = await fetch(
+        `https://api.cloudinary.com/v1_1/${sigData.cloudName}/${sigData.resourceType}/upload`,
+        { method: "POST", body: formData }
+      );
+
+      const cloudData = await cloudRes.json();
+      if (!cloudRes.ok) {
+        throw new Error(cloudData.error?.message || "Cloudinary upload failed");
+      }
+
+      onChange(cloudData.secure_url);
     } catch (err: any) {
       setError(err.message || "Upload failed");
     } finally {
