@@ -165,7 +165,11 @@ export default function AdminNewsPage() {
                       <tr key={art.id} className="hover:bg-[#fbf9f4]/70">
                         <td className="py-3 px-4 w-16">
                           <div className="w-12 h-10 rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
-                            <img src={art.featured_image_url} alt="" className="w-full h-full object-cover" />
+                            {art.featured_image_url && (art.featured_image_url.match(/\.(mp4|webm|mov|mkv)$/i) || art.featured_image_url.includes('/video/upload/')) ? (
+                              <video src={art.featured_image_url} muted loop autoPlay playsInline className="w-full h-full object-cover" />
+                            ) : (
+                              <img src={art.featured_image_url || ''} alt="" className="w-full h-full object-cover" />
+                            )}
                           </div>
                         </td>
                         <td className="py-3 px-4 max-w-xs font-semibold text-gray-900 truncate">
