@@ -103,9 +103,9 @@ export function NewsDetailClient({ article }: NewsDetailClientProps) {
         {/* Subtle background cover overlay */}
         <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
           {article.img && (article.img.match(/\.(mp4|webm|mov|mkv)$/i) || article.img.includes('/video/upload/')) ? (
-            <video src={article.img} muted loop autoPlay playsInline className="w-full h-full object-cover object-center blur-sm" />
+            <video src={article.img} muted loop autoPlay playsInline className={`w-full h-full object-cover blur-sm ${article.id === "dhara-divine-awards" ? "object-center" : "object-top"}`} />
           ) : (
-            <img src={article.img} alt={article.title} className="w-full h-full object-cover object-center blur-sm" />
+            <img src={article.img} alt={article.title} className={`w-full h-full object-cover blur-sm ${article.id === "dhara-divine-awards" ? "object-center" : "object-top"}`} />
           )}
         </div>
       </section>
