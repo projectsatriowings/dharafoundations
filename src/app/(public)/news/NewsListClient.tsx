@@ -63,7 +63,7 @@ export function NewsListClient({ initialArticles }: NewsListClientProps) {
                         playsInline
                         autoPlay
                         className={`w-full h-full transition-transform duration-500 ease-out group-hover:scale-105 ${
-                          art.isDoc ? "object-contain" : "object-cover object-top"
+                          art.isDoc ? "object-contain" : "object-cover object-center"
                         }`}
                       />
                     ) : (
@@ -72,7 +72,7 @@ export function NewsListClient({ initialArticles }: NewsListClientProps) {
                         src={art.img}
                         alt={art.title}
                         className={`w-full h-full transition-transform duration-500 ease-out group-hover:scale-105 ${
-                          art.isDoc ? "object-contain" : "object-cover object-top"
+                          art.isDoc ? "object-contain" : "object-cover object-center"
                         }`}
                       />
                     )}

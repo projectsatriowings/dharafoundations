@@ -169,14 +169,14 @@ export default function AboutPage() {
         <ScrollReveal className="bg-deep-forest text-ethereal-white rounded-[40px] py-12 px-8 sm:px-12 md:px-16 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl border border-ethereal-white/10 relative overflow-hidden">
           <div className="absolute -left-12 -bottom-12 w-48 h-48 bg-saffron-glow/15 rounded-full blur-3xl pointer-events-none" />
           <div className="text-center md:text-left space-y-2 relative z-10">
-            <h2 className="font-headline-md text-3xl sm:text-4xl font-bold text-ethereal-white">Ready to make a divine impact?</h2>
-            <p className="font-body-md text-surface-container-high text-base sm:text-lg">Join hands with us in preserving our sacred heritage and lifting communities.</p>
+            <h2 className="font-headline-md text-3xl sm:text-4xl font-bold text-ethereal-white">Together for a Better Tomorrow</h2>
+            <p className="font-body-md text-surface-container-high text-base sm:text-lg">Join us in advancing education, supporting underprivileged families, providing relief, and preserving our cultural heritage.</p>
           </div>
           <Link
             href="/contact"
             className="bg-saffron-glow text-deep-forest font-label-lg font-bold px-8 py-4 rounded-full hover:bg-ethereal-white hover:scale-105 transition-all shrink-0 shadow-lg uppercase tracking-wider relative z-10 cursor-pointer"
           >
-            Get Involved Now
+            Join Us
           </Link>
         </ScrollReveal>
       </section>
